@@ -37,3 +37,4 @@ content/uploads/
 content/upgrade/
 content/wp-cache-config.php
 
+/production-config.php
