@@ -9,7 +9,7 @@ if (file_exists(dirname(__FILE__) . '/env-config.php')) {
 if (file_exists(dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php')) {
   include(dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php');
 } else {
-  // Error message anf die
+  // Error message and die
   echo 'We can\'t find the config file for this environment  : ' . dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php';
   die();
 }
@@ -18,7 +18,7 @@ if (file_exists(dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php')) {
 if (file_exists(dirname(__FILE__) . '/wrapper-config.php')) {
   include(dirname(__FILE__) . '/wrapper-config.php');
 } else {
-  // Error message anf die
+  // Error message and die
   echo 'We can\'t find the file wrapper-config.php ';
   die();
 }
