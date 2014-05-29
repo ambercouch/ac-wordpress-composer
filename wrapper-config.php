@@ -17,3 +17,6 @@ if (!defined('WP_CONTENT_DIR')) {
 if (!defined('WP_CONTENT_URL')) {
   define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content');
 }
+if (!defined('WP_CONTENT_URL')) {
+  define('UPLOADS', 'http://' . $_SERVER['SERVER_NAME'] . '/content/uploads');
+}
