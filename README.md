@@ -12,7 +12,7 @@ A simple wrapper to get wordpress working as a submodule
 
      $ git submodule update --init --recursive
 
-3 Copy wp-config-sample.php and rename it for your environment (See Environment Config Files).
+3 Copy wp-config-sample.php and rename it for your environment (See [Environment Config Files](#environment-config-files)).
 
 4 Add your database info and your unique [salt](https://api.wordpress.org/secret-key/1.1/salt/)
 to your *new* config file.
