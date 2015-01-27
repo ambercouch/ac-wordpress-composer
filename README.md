@@ -37,4 +37,4 @@ is used.
 
 ##Why should I install WordPress like this?
 
-**Because I am dogmatic**
+*Because I am dogmatic*
