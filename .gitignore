@@ -8,6 +8,8 @@ node_modules
 
 # Ignore config
 local-config.php
+development-config.php
+production-config.php
 
 
 # Operating system files
