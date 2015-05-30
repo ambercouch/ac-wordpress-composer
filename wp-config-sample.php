@@ -54,6 +54,7 @@ define('NONCE_SALT', 'put your unique phrase here');
 /* * #@- */
 
 /**
+ *
  * WordPress Database Table prefix.
  *
  * You can have multiple installations in one database if you give each a unique
