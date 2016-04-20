@@ -12,11 +12,11 @@ if (!defined('WP_HOME')) {
   define('WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] . '');
 }
 if (!defined('WP_CONTENT_DIR')) {
-  define('WP_CONTENT_DIR', dirname(__FILE__) . '/content');
+  define('WP_CONTENT_DIR', dirname(__FILE__) . '/wp-content');
 }
 if (!defined('WP_CONTENT_URL')) {
-  define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content');
+  define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-content');
 }
 if (!defined('UPLOADS')) {
-  define('UPLOADS', '../content/uploads');
+  define('UPLOADS', '../wp-content/uploads');
 }
