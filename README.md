@@ -1,16 +1,18 @@
-#WordPress Submodule Wrapper
+#Ac WordPress Composer
 
-A simple wrapper to get wordpress working as a submodule
+Based on [Ambercouch/wordpress-submodule-wrapper](https://github.com/ambercouch/wordpress-submodule-wrapper)
+
+Install WordPress using git and composer. Includes multiple environments
 
 ##How to use
 
 1 Clone this repo.
 
-     $ git clone https://github.com/ambercouch/wordpress-submodule-wrapper.git your-wp-folder 
+     $ git clone https://github.com/ambercouch/ac-wordpess-composer.git your-site-folder
 
-2 Initiate submodules to download WordPress.
+2 Install WordPress and dependencies.
 
-     $ git submodule update --init --recursive
+     $ composer install
 
 3 Copy wp-config-sample.php and rename it for your environment (See [Environment Config Files](#environment-config-files)).
 
@@ -37,4 +39,5 @@ is used.
 
 ##Why should I install WordPress like this?
 
+*Composer is better than git submodule*
 *Because I am dogmatic*
