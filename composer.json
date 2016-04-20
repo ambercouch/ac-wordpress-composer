@@ -1,7 +1,17 @@
 {
+  "name": "ambercouch/wpac",
+  "description": "WordPress setup",
+  "repositories":[
+    {
+      "type":"composer",
+      "url":"https://wpackagist.org"
+    }
+  ],
   "require": {
     "php": ">=5.4",
-    "johnpbloch/wordpress": "4.5"
+    "johnpbloch/wordpress": "4.5",
+    "wpackagist-theme/twentysixteen": "1.2",
+    "wpackagist-plugin/akismet":"*"
   },
   "extra": {
     "wordpress-install-dir": "cms"
