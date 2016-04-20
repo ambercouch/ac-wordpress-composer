@@ -41,3 +41,5 @@ content/wp-cache-config.php
 
 /production-config.php
 /dev-config.php
+/vendor/
+/cms/
