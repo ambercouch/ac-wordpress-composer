@@ -23,7 +23,13 @@
     "wpackagist-plugin/duplicate-post": "3.2",
     "wpackagist-plugin/google-analytics-for-wordpress": "6.2.3",
     "wpackagist-plugin/wp-nested-pages": "2.0.2",
-    "wpackagist-plugin/intuitive-custom-post-order": "3.1.0"
+    "wpackagist-plugin/intuitive-custom-post-order": "3.1.0",
+    "wpackagist-plugin/tiny-compress-images": "2.2.6",
+    "wpackagist-plugin/cloudflare": "3.3.1",
+    "wpackagist-plugin/jp-custom-css": "3.9.6",
+    "wpackagist-plugin/html-editor-syntax-highlighter": "2.2.2",
+    "wpackagist-plugin/redirection": "2.7.3",
+    "wpackagist-plugin/wp-super-cache": "1.5.6"
   },
   "extra": {
     "wordpress-install-dir": "cms"
