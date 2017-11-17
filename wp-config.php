@@ -23,6 +23,9 @@ if (file_exists(dirname(__FILE__) . '/wrapper-config.php')) {
   die();
 }
 
+/* wp-contact-from-7 */
+define ('WPCF7_AUTOP', false );   // set to false to remove <br> tags
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
