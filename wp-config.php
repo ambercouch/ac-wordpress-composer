@@ -1,25 +1,25 @@
 <?php
 
 // Include ENVIRONMENT setup
-if (file_exists(dirname(__FILE__) . '/env-config.php')) {
-  include(dirname(__FILE__) . '/env-config.php');
+if (file_exists(dirname(__FILE__) . '/ac-config-environment.php')) {
+  include(dirname(__FILE__) . '/ac-config-environment.php');
 }
 
 // Include ENVIRONMENT config
-if (file_exists(dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php')) {
-  include(dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php');
+if (file_exists(dirname(__FILE__) . '/ac-config-' . ENVIRONMENT . '.php')) {
+  include(dirname(__FILE__) . '/ac-config-' . ENVIRONMENT . '.php');
 } else {
   // Error message and die
-  echo 'We can\'t find the config file for this environment  : ' . dirname(__FILE__) . '/' . ENVIRONMENT . '-config.php';
+  echo 'We can\'t find the config file for this environment  : ' . dirname(__FILE__) . '/ac-config-' . ENVIRONMENT . '.php';
   die();
 }
 
 // Include wrapper config file
-if (file_exists(dirname(__FILE__) . '/wrapper-config.php')) {
-  include(dirname(__FILE__) . '/wrapper-config.php');
+if (file_exists(dirname(__FILE__) . '/ac-config-wrapper.php')) {
+  include(dirname(__FILE__) . '/ac-config-wrapper.php');
 } else {
   // Error message and die
-  echo 'We can\'t find the file wrapper-config.php ';
+  echo 'We can\'t find the file ac-config-wrapper.php ';
   die();
 }
 

@@ -4,7 +4,9 @@
 $environments = array(
     'local' => '.local',
     'development' => ['.test', '.dev','.sta'],
-    'production' => ['.prod','.live']
+    'production' => ['.prod','.live'],
+    'cmt' => ['.cmt'],
+    'nlc' => ['.nlc']
 );
 // Get Server name
 $server_name = $_SERVER['SERVER_NAME'];
@@ -32,8 +34,20 @@ foreach ($environments AS $key => $env) {
 
 }
 
+
+
 // If no environment is set default to production
 if (!defined('ENVIRONMENT')) {
   define('ENVIRONMENT', 'production');
 }
+
+if (in_array(ENVIRONMENT, ['production','development','local']) ){
+    define('ACT_CONTENT', '/wp-content/' . ENVIRONMENT);
+    //define('ACT_CONTENT', '/wp-content');
+
+}else{
+    //define('ACT_CONTENT', '/wp-content');
+    define('ACT_CONTENT', '/wp-content/' . ENVIRONMENT);
+}
+
 

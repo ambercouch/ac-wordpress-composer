@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Set custom paths
  *
@@ -12,11 +13,11 @@ if (!defined('WP_HOME')) {
   define('WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] . '');
 }
 if (!defined('WP_CONTENT_DIR')) {
-  define('WP_CONTENT_DIR', dirname(__FILE__) . '/wp-content');
+  define('WP_CONTENT_DIR', dirname(__FILE__) . ACT_CONTENT);
 }
 if (!defined('WP_CONTENT_URL')) {
-  define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-content');
+  define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . ACT_CONTENT);
 }
 if (!defined('UPLOADS')) {
-  define('UPLOADS', '../wp-content/uploads');
+  define('UPLOADS', '..'.ACT_CONTENT.'/uploads');
 }
