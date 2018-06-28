@@ -29,7 +29,8 @@
     "wpackagist-plugin/widget-logic": ">=5.9.0",
     "wpackagist-plugin/duplicate-post": ">=3.2",
     "wpackagist-plugin/wp-nested-pages": ">=2.0.2",
-    "wpackagist-plugin/intuitive-custom-post-order": ">=3.1.0"
+    "wpackagist-plugin/intuitive-custom-post-order": ">=3.1.0",
+    "wpackagist-plugin/wp-mail-bank":">=3.0.64"
   },
   "extra": {
     "wordpress-install-dir": "cms"
