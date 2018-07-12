@@ -42,8 +42,8 @@ if (!defined('ENVIRONMENT')) {
 }
 
 if (in_array(ENVIRONMENT, ['production','development','local']) ){
-    define('ACT_CONTENT', '/wp-content/' . ENVIRONMENT);
-    //define('ACT_CONTENT', '/wp-content');
+    //define('ACT_CONTENT', '/wp-content/' . ENVIRONMENT);
+    define('ACT_CONTENT', '/wp-content');
 
 }else{
     //define('ACT_CONTENT', '/wp-content');
