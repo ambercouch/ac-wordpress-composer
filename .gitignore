@@ -43,4 +43,10 @@ content/wp-cache-config.php
 /dev-config.php
 /vendor/
 /cms/
-/wp-content/
+/.idea/
+
+ac-config-local\.php
+
+ac-config-development\.php
+
+ac-config-production\.php

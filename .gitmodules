@@ -1,1 +1,4 @@
 
+[submodule "wp-content/themes/ac_timber"]
+	path = wp-content/themes/ac_timber
+	url = git@github.com:ambercouch/ac_timber.git
