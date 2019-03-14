@@ -3,11 +3,11 @@
 // Define Environments
 $environments = array(
     'local' => '.local',
-    'development' => ['.test', '.dev','.sta'],
+    'development' => ['.test', '.dev','.sta', 'dev.', 'staging.'],
     'production' => ['.prod','.live'],
-    'cmt' => ['.cmt'],
-    'nlc' => ['.nlc']
+    //'another_env' = ['ano.','.ano']
 );
+
 // Get Server name
 $server_name = $_SERVER['SERVER_NAME'];
 
