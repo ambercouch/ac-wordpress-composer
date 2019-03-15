@@ -50,3 +50,5 @@ ac-config-local\.php
 ac-config-development\.php
 
 ac-config-production\.php
+
+wp-content/themes/twentynineteen/
