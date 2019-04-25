@@ -310,15 +310,15 @@
         },
         {
             "name": "wpackagist-plugin/all-in-one-wp-migration",
-            "version": "6.86",
+            "version": "6.92",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/all-in-one-wp-migration/",
-                "reference": "tags/6.86"
+                "reference": "tags/6.92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/all-in-one-wp-migration.6.86.zip"
+                "url": "https://downloads.wordpress.org/plugin/all-in-one-wp-migration.6.92.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -382,15 +382,15 @@
         },
         {
             "name": "wpackagist-plugin/custom-css-js",
-            "version": "3.22",
+            "version": "3.25",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/custom-css-js/",
-                "reference": "tags/3.22"
+                "reference": "tags/3.25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/custom-css-js.3.22.zip"
+                "url": "https://downloads.wordpress.org/plugin/custom-css-js.3.25.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -436,15 +436,15 @@
         },
         {
             "name": "wpackagist-plugin/google-analytics-for-wordpress",
-            "version": "7.4.2",
+            "version": "7.6.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/google-analytics-for-wordpress/",
-                "reference": "tags/7.4.2"
+                "reference": "tags/7.6.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/google-analytics-for-wordpress.7.4.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/google-analytics-for-wordpress.7.6.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -508,15 +508,15 @@
         },
         {
             "name": "wpackagist-plugin/redirection",
-            "version": "4.0.1",
+            "version": "4.2.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/redirection/",
-                "reference": "tags/4.0.1"
+                "reference": "tags/4.2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/redirection.4.0.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/redirection.4.2.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -534,7 +534,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/regenerate-thumbnails.zip?timestamp=1546642223"
+                "url": "https://downloads.wordpress.org/plugin/regenerate-thumbnails.zip?timestamp=1556098430"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -580,15 +580,15 @@
         },
         {
             "name": "wpackagist-plugin/timber-library",
-            "version": "1.9.2",
+            "version": "1.9.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/timber-library/",
-                "reference": "tags/1.9.2"
+                "reference": "tags/1.9.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/timber-library.1.9.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/timber-library.1.9.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -652,15 +652,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "10.0",
+            "version": "11.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/10.0"
+                "reference": "tags/11.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.10.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.11.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -688,15 +688,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-mail-smtp",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-mail-smtp/",
-                "reference": "tags/1.4.1"
+                "reference": "tags/1.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-mail-smtp.1.4.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-mail-smtp.1.4.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -706,15 +706,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-nested-pages",
-            "version": "3.0.7",
+            "version": "3.0.10",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-nested-pages/",
-                "reference": "tags/3.0.7"
+                "reference": "tags/3.0.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-nested-pages.3.0.7.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-nested-pages.3.0.10.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
