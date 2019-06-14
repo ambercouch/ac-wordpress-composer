@@ -52,3 +52,9 @@ ac-config-development\.php
 ac-config-production\.php
 
 wp-content/themes/twentynineteen/
+
+wp-content/ai1wm-backups/\.htaccess
+
+wp-content/ai1wm-backups/index\.php
+
+wp-content/ai1wm-backups/web\.config
