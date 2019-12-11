@@ -28,6 +28,6 @@ if (!defined('WP_CONTENT_DIR')) {
 if (!defined('WP_CONTENT_URL')) {
   define('WP_CONTENT_URL', $protocol . $server_name  . ACT_CONTENT);
 }
-if (!defined('UPLOADS')) {
-  define('UPLOADS', '..'.ACT_CONTENT.'/uploads');
-}
+//if (!defined('UPLOADS')) {
+//  define('UPLOADS', '..'.ACT_CONTENT.'/uploads');
+//}
