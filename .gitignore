@@ -58,3 +58,13 @@ wp-content/ai1wm-backups/\.htaccess
 wp-content/ai1wm-backups/index\.php
 
 wp-content/ai1wm-backups/web\.config
+
+wp-content/ai1wm-backups/
+
+wp-content/wphb-cache/
+
+wp-content/w3tc-config/
+
+wp-content/wp-cache-config.php
+
+wp-content/themes/twentytwentyone/
