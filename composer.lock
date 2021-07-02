@@ -522,15 +522,15 @@
         },
         {
             "name": "wpackagist-plugin/hummingbird-performance",
-            "version": "2.7.4",
+            "version": "3.0.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/hummingbird-performance/",
-                "reference": "tags/2.7.4"
+                "reference": "tags/3.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/hummingbird-performance.2.7.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/hummingbird-performance.3.0.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -720,15 +720,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "16.5",
+            "version": "16.6.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/16.5"
+                "reference": "tags/16.6.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.16.5.zip"
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.16.6.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -774,15 +774,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-nested-pages",
-            "version": "3.1.14",
+            "version": "3.1.15",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-nested-pages/",
-                "reference": "tags/3.1.14"
+                "reference": "tags/3.1.15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-nested-pages.3.1.14.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-nested-pages.3.1.15.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -792,15 +792,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-smushit",
-            "version": "3.8.5",
+            "version": "3.8.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-smushit/",
-                "reference": "tags/3.8.5"
+                "reference": "tags/3.8.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.8.5.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.8.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -855,5 +855,5 @@
         "php": ">=5.4"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
