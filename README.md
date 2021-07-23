@@ -14,7 +14,7 @@ Install WordPress using git and composer. Includes multiple environments
 
      $ composer install
 
-3 Copy wp-config-sample.php and rename it for your environment (See [Environment Config Files](#environment-config-files)).
+3 Copy ac-config-local-sample.php and rename it ac-config-local.php (See [Environment Config Files](#environment-config-files) for dev and production configs).
 
 4 Add your database info and your unique [salt](https://api.wordpress.org/secret-key/1.1/salt/)
 to your *new* config file.
@@ -25,16 +25,15 @@ nb. By default your admin dashboard will be at /cms/wp-admin
 
 ##Environment Config Files
 
-You can create, up to three environment config files with the database info for 
-that environment, by renaming wp-config-sample.php. 
+Wordpress will try to guess your environment. Just use the correct file that works for your domian
 
-- production : production-config.php (default)
-- development : development-config.php
-- local : local-config.php
+- production : ac-config-production-sample.php (Default eg Any domain/ip that is not local or development)
+- development : ac-config-development-sample.php (Any domain that starts dev.)
+- local : ac-config-local-sample.php (Any domain that ends .local )
 
 Which config file is used is decided by your url. By default production-config.php 
-is used. If your url contains *.local* eg. www.my-website.local then local-config.php
-is used. If your url contains *dev.* eg. dev.my-website.com then development-config.php 
+is used. If your url contains *.local* eg. www.my-website.local then ac-config-local.php
+is used. If your url contains *dev.* eg. dev.my-website.com then ac-config-development.php 
 is used.
 
 ##Why should I install WordPress like this?
