@@ -68,3 +68,36 @@ wp-content/w3tc-config/
 wp-content/wp-cache-config.php
 
 wp-content/themes/twentytwentyone/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+*.gz
+
+ebdb20231009.sql
+
+wp-content/wflogs/
+
+wp-content/uploads/
+
+wp-content/themes/twentytwentyfour/
+
+wp-content/wp-cloudflare-super-page-cache/
+
+*.zip
+
+wp-content/plugins.deactivated/
+
+wp-content/mc_data/
+
+wp-content/cache/
+
+wp-content/breeze-config/
+
+wp-content/advanced-cache.php
+
+*.sql
+
+malcare-waf.php
