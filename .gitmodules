@@ -1,4 +1,6 @@
-
-[submodule "wp-content/themes/ac_timber"]
-	path = wp-content/themes/ac_timber
-	url = https://github.com/ambercouch/ac_timber.git
+[submodule "wp-content/plugins/ac-sendinblue-on-register"]
+	url = https://github.com/ambercouch/ac-mail-list-on-register.git
+[submodule "wp-content/plugins/calculate-fbo-scores"]
+	url = https://github.com/ambercouch/calculate-fbo-scores.git
+[submodule "wp-content/themes/fantasybakeoff"]
+	url = git@github.com:ambercouch/fbo-theme.git
