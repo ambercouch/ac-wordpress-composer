@@ -1,0 +1,3 @@
+Link to FTP Extension user guide:
+
+https://help.servmask.com/knowledgebase/ftp-extension-user-guide/

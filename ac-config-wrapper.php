@@ -11,6 +11,12 @@ if (substr( $server_name, 0, 4) === "www."){
     $server_name = ltrim($server_name, 'www.');
 }
 
+$server_hostname = (isset($_SERVER['SERVER_HOSTNAME'])) ? $_SERVER['SERVER_HOSTNAME'] : "NO HOST NAME";
+if (!defined('WP_HOSTNAME')) {
+    define('WP_HOSTNAME', $server_hostname );
+}
+
+
 /**
  * Set custom paths
  *

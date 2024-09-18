@@ -1,0 +1,130 @@
+# Copyright (C) 2016 Date & Time Picker for Advanced Custom Fields
+# This file is distributed under the same license as the Date & Time Picker for Advanced Custom Fields package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Date & Time Picker for Advanced Custom Fields 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acf-date-time-"
+"picker\n"
+"POT-Creation-Date: 2016-04-10 12:21:37+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: fields/acf-date_time_picker-common.php:51
+msgid "Date & Time Picker"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:75
+msgid "Done"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:76
+msgid "Now"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:79
+msgid "Show a different month"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:84
+msgid "Choose Time"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:85
+msgid "Time"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:86
+msgid "Hour"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:87
+msgid "Minute"
+msgstr ""
+
+#: fields/acf-date_time_picker-common.php:88
+msgid "Second"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:82 fields/acf-date_time_picker-v5.php:53
+msgid "Field type"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:91 fields/acf-date_time_picker-v5.php:57
+msgid "date & time"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:92 fields/acf-date_time_picker-v5.php:58
+msgid "time only"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:100 fields/acf-date_time_picker-v5.php:62
+msgid "Date format"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:101 fields/acf-date_time_picker-v5.php:63
+msgid ""
+"Read more about <a href=\"http://api.jqueryui.com/datepicker/#utility-"
+"formatDate\" target=\"_blank\">date formats</a>"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:116 fields/acf-date_time_picker-v5.php:69
+msgid "Time format"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:117 fields/acf-date_time_picker-v5.php:70
+msgid ""
+"Read more about <a href=\"http://trentrichardson.com/examples/timepicker/#tp-"
+"formatting\" target=\"_blank\">time formats</a>"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:132 fields/acf-date_time_picker-v5.php:76
+msgid "Allow past dates?"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:141 fields/acf-date_time_picker-v5.php:80
+msgid "yes"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:142 fields/acf-date_time_picker-v5.php:81
+msgid "no"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:151 fields/acf-date_time_picker-v5.php:85
+msgid "Timepicker type"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:160 fields/acf-date_time_picker-v5.php:89
+msgid "slider"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:161 fields/acf-date_time_picker-v5.php:90
+msgid "dropdown list"
+msgstr ""
+
+#: fields/acf-date_time_picker-v4.php:174 fields/acf-date_time_picker-v5.php:96
+msgid "Week starts on"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Date & Time Picker for Advanced Custom Fields"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/toszcze/acf-date-time-picker"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Date & Time Picker field for Advanced Custom Fields 4 and 5 (Pro)"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Bartosz Romanowski"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://romanowski.im/"
+msgstr ""

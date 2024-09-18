@@ -1,4 +1,9 @@
 <?php
+/** Enable W3 Total Cache */
+define('WP_CACHE', true); // Added by W3 Total Cache
+//Begin Really Simple Security key
+define('RSSSL_KEY', '55v2M1Tieqa629nI9AsRvTkVFSpNLtyFS7UmZ7V68H4FNKppJmZ3t7POcqg58BXd');
+//END Really Simple Security key
 
 // Include ENVIRONMENT setup
 if (file_exists(dirname(__FILE__) . '/ac-config-environment.php')) {

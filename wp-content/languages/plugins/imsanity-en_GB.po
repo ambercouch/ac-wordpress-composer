@@ -1,0 +1,372 @@
+# Translation of Plugins - Imsanity - Stable (latest release) in English (UK)
+# This file is distributed under the same license as the Plugins - Imsanity - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2020-04-28 10:16:01+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: en_GB\n"
+"Project-Id-Version: Plugins - Imsanity - Stable (latest release)\n"
+
+#. translators: %s: the WP-CLI command to run
+#: settings.php:642
+msgid "You may also use WP-CLI to resize your images: %s"
+msgstr "You may also use WP-CLI to resize your images: %s"
+
+#: class-imsanity-cli.php:111
+msgid "Finished Resizing!"
+msgstr "Finished Resizing!"
+
+#: class-imsanity-cli.php:94
+msgid "Resize (Y/n)?"
+msgstr "Resize (Y/n)?"
+
+#: class-imsanity-cli.php:63
+msgid "Continue?"
+msgstr "Continue?"
+
+#. translators: %d: number of images
+#: class-imsanity-cli.php:62 class-imsanity-cli.php:67
+msgid "There are %d images to check."
+msgstr "There are %d images to check."
+
+#: class-imsanity-cli.php:57
+msgid "There are no images to resize."
+msgstr "There are no images to resize."
+
+#. translators: 1: width in pixels, 2: height in pixels
+#: class-imsanity-cli.php:50
+msgid "Resizing images to %1$d x %2$d"
+msgstr "Resizing images to %1$d x %2$d"
+
+#: class-imsanity-cli.php:45
+msgid "It is also recommended that you initially resize only 1 or 2 images and verify that everything is working properly before processing your entire library."
+msgstr "It is also recommended that you initially resize only 1 or 2 images and verify that everything is working properly before processing your entire library."
+
+#: class-imsanity-cli.php:44
+msgid "It is HIGHLY recommended that you backup your wp-content/uploads folder before proceeding. You will be prompted before resizing each image."
+msgstr "It is HIGHLY recommended that you backup your wp-content/uploads folder before proceeding. You will be prompted before resizing each image."
+
+#: class-imsanity-cli.php:43
+msgid "Bulk Resize will alter your original images and cannot be undone!"
+msgstr "Bulk Resize will alter your original images and cannot be undone!"
+
+#: settings.php:318 settings.php:720
+msgid "Only used when resizing images, does not affect thumbnails."
+msgstr "Only used when resizing images, does not affect thumbnails."
+
+#: settings.php:279 settings.php:696
+msgid "These dimensions are used for Bulk Resizing also."
+msgstr "These dimensions are used for Bulk Resizing also."
+
+#: settings.php:270
+msgid "If you allow per-site configuration, the settings below will be used as the defaults. Single-site defaults will be set the first time you visit the site admin after activating Imsanity."
+msgstr "If you allow per-site configuration, the settings below will be used as the defaults. Single-site defaults will be set the first time you visit the site admin after activating Imsanity."
+
+#: settings.php:254 settings.php:620
+msgid "WebP Conversion"
+msgstr "WebP Conversion"
+
+#: settings.php:253 settings.php:619
+msgid "Lazy Load"
+msgstr "Lazy Load"
+
+#: settings.php:252 settings.php:618
+msgid "Automatic Scaling"
+msgstr "Automatic Scaling"
+
+#: settings.php:251 settings.php:617
+msgid "Full Compression"
+msgstr "Full Compression"
+
+#. translators: %s: link to install EWWW Image Optimizer plugin
+#: settings.php:246 settings.php:612
+msgid "Get comprehensive image optimization with %s"
+msgstr "Get comprehensive image optimisation with %s"
+
+#. Author of the plugin
+msgid "Exactly WWW"
+msgstr "Exactly WWW"
+
+#: settings.php:323 settings.php:741
+msgid "If searching repeatedly returns the same images, deep scanning will check the actual image dimensions instead of relying on metadata from the database."
+msgstr "If searching repeatedly returns the same images, deep scanning will check the actual image dimensions instead of relying on metadata from the database."
+
+#: settings.php:322 settings.php:740
+msgid "Deep Scan"
+msgstr "Deep Scan"
+
+#. translators: %s: the image filename
+#: libs/imagecreatefrombmp.php:107
+msgid "imagecreatefrombmp: %s has not enough data!"
+msgstr "imagecreatefrombmp: %s has not enough data!"
+
+#. translators: 1: File-name of the image 2: the error message, translated
+#. elsewhere
+#: libs/utils.php:216
+msgid "wp_get_image_editor missing"
+msgstr "wp_get_image_editor missing"
+
+#. translators: 1: File-name of the image 2: the error message, translated
+#. elsewhere
+#: libs/utils.php:201 libs/utils.php:208 libs/utils.php:216 libs/utils.php:223
+msgid "ERROR: %1$s (%2$s)"
+msgstr "ERROR: %1$s (%2$s)"
+
+#: settings.php:659
+msgid "Scanning existing images. This may take a moment."
+msgstr "Scanning existing images. This may take a moment."
+
+#: settings.php:650
+msgid "It is also recommended that you initially select only 1 or 2 images and verify that everything is working properly before processing your entire library."
+msgstr "It is also recommended that you initially select only 1 or 2 images and verify that everything is working properly before processing your entire library."
+
+#: settings.php:649
+msgid "It is HIGHLY recommended that you backup your wp-content/uploads folder before proceeding. You will have a chance to preview and select the images to convert."
+msgstr "It is HIGHLY recommended that you backup your wp-content/uploads folder before proceeding. You will have a chance to preview and select the images to convert."
+
+#: settings.php:648
+msgid "WARNING: Bulk Resize will alter your original images and cannot be undone!"
+msgstr "WARNING: Bulk Resize will alter your original images and cannot be undone!"
+
+#. translators: %d: the number of images
+#: settings.php:644
+msgid "NOTE: To give you greater control over the resizing process, a maximum of %d images will be returned at one time. Bitmap images cannot be bulk resized and will not appear in the search results."
+msgstr "NOTE: To give you greater control over the resizing process, a maximum of %d images will be returned at one time. Bitmap images cannot be bulk resized and will not appear in the search results."
+
+#: settings.php:640
+msgid "If you have existing images that were uploaded prior to installing Imsanity, you may resize them all in bulk to recover disk space. To begin, click the \"Search Images\" button to search all existing attachments for images that are larger than the configured limit."
+msgstr "If you have existing images that were uploaded prior to installing Imsanity, you may resize them all in bulk to recover disk space. To begin, click the \"Search Images\" button to search all existing attachments for images that are larger than the configured limit."
+
+#: settings.php:278 settings.php:287 settings.php:295 settings.php:695
+#: settings.php:704 settings.php:712
+msgid "in pixels, enter 0 to disable"
+msgstr "in pixels, enter 0 to disable"
+
+#: settings.php:278 settings.php:287 settings.php:295 settings.php:695
+#: settings.php:704 settings.php:712
+msgid "Max Height"
+msgstr "Max Height"
+
+#: settings.php:277 settings.php:286 settings.php:294 settings.php:694
+#: settings.php:703 settings.php:711
+msgid "Max Width"
+msgstr "Max Width"
+
+#: settings.php:105
+msgid "There are no images that need to be resized."
+msgstr "There are no images that need to be resized."
+
+#: settings.php:104
+msgid "Received an invalid response, please check for errors in the Developer Tools console of your browser."
+msgstr "Received an invalid response, please check for errors in the Developer Tools console of your browser."
+
+#: settings.php:103
+msgid "Image"
+msgstr "Image"
+
+#: settings.php:102
+msgid "Resize Selected Images"
+msgstr "Resize Selected Images"
+
+#: settings.php:101
+msgid "Resizing Complete"
+msgstr "Resizing Complete"
+
+#: settings.php:76 settings.php:78
+msgid "Settings"
+msgstr "Settings"
+
+#. translators: %s: the image mime type
+#: imsanity.php:342
+msgid "Imsanity was unable to process the %s file. If you continue to see this error you may need to disable the conversion option in the Imsanity settings."
+msgstr "Imsanity was unable to process the %s file. If you continue to see this error you may need to disable the conversion option in the Imsanity settings."
+
+#: imsanity.php:318
+msgid "Unknown image type specified in imsanity_convert_to_jpg"
+msgstr "Unknown image type specified in imsanity_convert_to_jpg"
+
+#: imsanity.php:308
+msgid "Imsanity requires the GD library to convert PNG images to JPG"
+msgstr "Imsanity requires the GD library to convert PNG images to JPG"
+
+#. translators: 1: error message 2: link to support forums
+#: imsanity.php:275
+msgid "Imsanity was unable to resize this image for the following reason: %1$s. If you continue to see this error message, you may need to install missing server components. If you think you have discovered a bug, please report it on the Imsanity support forum: %2$s"
+msgstr "Imsanity was unable to resize this image for the following reason: %1$s. If you continue to see this error message, you may need to install missing server components. If you think you have discovered a bug, please report it on the Imsanity support forum: %2$s"
+
+#. translators: 1: File-name of the image 2: the error message, translated
+#. elsewhere
+#: libs/utils.php:208
+msgid "Unknown error, resizing function returned the same filename"
+msgstr "Unknown error, resizing function returned the same filename"
+
+#. translators: 1: File-name of the image 2: the error message, translated
+#. elsewhere
+#: libs/utils.php:201
+msgid "Resized image was larger than the original"
+msgstr "Resized image was larger than the original"
+
+#. translators: %s: File-name of the image
+#: libs/utils.php:143
+msgid "%s is not writable"
+msgstr "%s is not writable"
+
+#: ajax.php:31
+msgid "Access token has expired, please reload the page."
+msgstr "Access token has expired, please reload the page."
+
+#: ajax.php:21
+msgid "Administrator permission is required"
+msgstr "Administrator permission is required"
+
+#: settings.php:745
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: settings.php:303 settings.php:311 settings.php:727 settings.php:735
+msgid "No"
+msgstr "No"
+
+#: settings.php:302 settings.php:310 settings.php:726 settings.php:734
+msgid "Yes"
+msgstr "Yes"
+
+#: settings.php:328
+msgid "Update Settings"
+msgstr "Update Settings"
+
+#. Author URI of the plugin
+msgid "https://ewww.io/"
+msgstr "https://ewww.io/"
+
+#. Description of the plugin
+msgid "Imsanity stops insanely huge image uploads"
+msgstr "Imsanity stops insanely huge image uploads"
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/imsanity/"
+msgstr "https://en-gb.wordpress.org/plugins/imsanity/"
+
+#. Plugin Name of the plugin
+#: settings.php:37 settings.php:57
+msgid "Imsanity"
+msgstr "Imsanity"
+
+#: settings.php:732
+msgid "Convert PNG To JPG"
+msgstr "Convert PNG To JPG"
+
+#: settings.php:724
+msgid "Convert BMP To JPG"
+msgstr "Convert BMP To JPG"
+
+#: settings.php:676
+msgid "Imsanity settings have been configured by the server administrator. There are no site-specific settings available."
+msgstr "Imsanity settings have been configured by the server administrator. There are no site-specific settings available."
+
+#: settings.php:654
+msgid "Search Images..."
+msgstr "Search Images..."
+
+#: settings.php:637
+msgid "Bulk Resize Images"
+msgstr "Bulk Resize Images"
+
+#: settings.php:605
+msgid "Imsanity Settings"
+msgstr "Imsanity Settings"
+
+#: settings.php:317 settings.php:719
+msgid "Valid values are 1-100."
+msgstr "Valid values are 1-100."
+
+#: settings.php:316 settings.php:718
+msgid "JPG image quality"
+msgstr "JPG image quality"
+
+#: settings.php:308
+msgid "Convert PNG to JPG"
+msgstr "Convert PNG to JPG"
+
+#: settings.php:300
+msgid "Convert BMP to JPG"
+msgstr "Convert BMP to JPG"
+
+#: settings.php:292 settings.php:709
+msgid "Images uploaded elsewhere (Theme headers, backgrounds, logos, etc)"
+msgstr "Images uploaded elsewhere (Theme headers, backgrounds, logos, etc)"
+
+#: settings.php:284 settings.php:701
+msgid "Images uploaded directly to the Media Library"
+msgstr "Images uploaded directly to the Media Library"
+
+#: settings.php:275 settings.php:692
+msgid "Images uploaded within a Page/Post"
+msgstr "Images uploaded within a Page/Post"
+
+#: settings.php:268
+msgid "Use global Imsanity settings (below) for all sites"
+msgstr "Use global Imsanity settings (below) for all sites"
+
+#: settings.php:267
+msgid "Allow each site to configure Imsanity settings"
+msgstr "Allow each site to configure Imsanity settings"
+
+#: settings.php:264
+msgid "Global Settings Override"
+msgstr "Global Settings Override"
+
+#: settings.php:381
+msgid "Imsanity network settings saved."
+msgstr "Imsanity network settings saved."
+
+#: settings.php:56 settings.php:239
+msgid "Imsanity Network Settings"
+msgstr "Imsanity Network Settings"
+
+#: settings.php:36
+msgid "Imsanity Plugin Settings"
+msgstr "Imsanity Plugin Settings"
+
+#. translators: 1: the image filename 2: bitrate of image
+#: libs/imagecreatefrombmp.php:176
+msgid "imagecreatefrombmp: %1$s has %2$d bits and this is not supported!"
+msgstr "imagecreatefrombmp: %1$s has %2$d bits and this is not supported!"
+
+#. translators: %s: the image filename
+#: libs/imagecreatefrombmp.php:63
+msgid "imagecreatefrombmp: Cannot obtain filesize of %s !"
+msgstr "imagecreatefrombmp: Cannot obtain filesize of %s !"
+
+#. translators: %s: the image filename
+#: libs/imagecreatefrombmp.php:35
+msgid "imagecreatefrombmp: %s is not a bitmap!"
+msgstr "imagecreatefrombmp: %s is not a bitmap!"
+
+#. translators: %s: the image filename
+#: libs/imagecreatefrombmp.php:21 libs/imagecreatefrombmp.php:27
+msgid "imagecreatefrombmp: Can not open %s!"
+msgstr "imagecreatefrombmp: Can not open %s!"
+
+#. translators: %s: ID number of the image
+#: libs/utils.php:248
+msgid "ERROR: Attachment with ID of %d not found"
+msgstr "ERROR: Attachment with ID of %d not found"
+
+#. translators: %s: File-name of the image
+#: class-imsanity-cli.php:86 libs/utils.php:231
+msgid "SKIPPED: %s (Resize not required)"
+msgstr "SKIPPED: %s (Resize not required)"
+
+#. translators: %s: File-name of the image
+#: libs/utils.php:189
+msgid "OK: %s"
+msgstr "OK: %s"
+
+#: ajax.php:127
+msgid "Missing ID Parameter"
+msgstr "Missing ID Parameter"

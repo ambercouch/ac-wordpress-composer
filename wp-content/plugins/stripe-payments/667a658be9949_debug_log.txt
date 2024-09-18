@@ -1,0 +1,1030 @@
+[08/13/2024 09:17:09 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: , Txn Counter: 0, IP: 86.28.76.184
+[08/13/2024 09:17:09 AM] - Page load signature check done!
+[08/13/2024 09:17:09 AM] - Request usage count is valid for this IP addresss. IP: 86.28.76.184, Request Count: 1
+[08/13/2024 09:17:09 AM] - Pre-API Submission validation successful. Expected: 30, Submitted: 30
+[08/13/2024 09:17:12 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: , Txn Counter: 0, IP: 86.28.76.184
+[08/13/2024 09:17:12 AM] - Page load signature check done!
+[08/13/2024 09:17:12 AM] - Request usage count is valid for this IP addresss. IP: 86.28.76.184, Request Count: 2
+[08/13/2024 09:17:15 AM] - Payment processing started.
+[08/13/2024 09:17:15 AM] - Got product ID: 25852
+[08/13/2024 09:17:15 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[08/13/2024 09:17:15 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[08/13/2024 09:17:16 AM] - The transaction ID of this notification is: ch_3PnGqoBcbZtmVcgA0K5HEV9V
+[08/13/2024 09:17:16 AM] - Constructing checkout result and order data.
+[08/13/2024 09:17:16 AM] - Logged-in user's Username: rikk_kidd
+[08/13/2024 09:17:16 AM] - Firing asp_ng_payment_completed filter.
+[08/13/2024 09:17:16 AM] - Firing asp_ng_handle_metadata filter.
+[08/13/2024 09:17:16 AM] - Updating payment metadata.
+[08/13/2024 09:17:16 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[08/13/2024 09:17:16 AM] - Updating payment intent data.
+[08/13/2024 09:17:16 AM] - Firing asp_stripe_payment_completed action.
+[08/13/2024 09:17:16 AM] - Notification email sent to buyer: rikk_kidd@hotmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/13/2024 09:17:16 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/13/2024 09:17:16 AM] - Payment has been processed successfully.
+[08/13/2024 09:17:16 AM] - Redirecting to results page "https://dev.fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[08/13/2024 09:32:39 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: , Txn Counter: 1, IP: 86.28.76.184
+[08/13/2024 09:32:39 AM] - Page load signature check done!
+[08/13/2024 09:32:39 AM] - Request usage count is valid for this IP addresss. IP: 86.28.76.184, Request Count: 3
+[08/13/2024 09:32:39 AM] - Pre-API Submission validation successful. Expected: 30, Submitted: 30
+[08/13/2024 09:32:41 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: , Txn Counter: 1, IP: 86.28.76.184
+[08/13/2024 09:32:41 AM] - Page load signature check done!
+[08/13/2024 09:32:41 AM] - Request usage count is valid for this IP addresss. IP: 86.28.76.184, Request Count: 4
+[08/13/2024 09:32:44 AM] - Payment processing started.
+[08/13/2024 09:32:44 AM] - Got product ID: 25852
+[08/13/2024 09:32:44 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[08/13/2024 09:32:44 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[08/13/2024 09:32:44 AM] - The transaction ID of this notification is: ch_3PnH5nBcbZtmVcgA0BpGgolq
+[08/13/2024 09:32:44 AM] - Constructing checkout result and order data.
+[08/13/2024 09:32:44 AM] - Logged-in user's Username: rikk_kidd
+[08/13/2024 09:32:44 AM] - Firing asp_ng_payment_completed filter.
+[08/13/2024 09:32:44 AM] - Firing asp_ng_handle_metadata filter.
+[08/13/2024 09:32:44 AM] - Updating payment metadata.
+[08/13/2024 09:32:44 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[08/13/2024 09:32:44 AM] - Updating payment intent data.
+[08/13/2024 09:32:44 AM] - Firing asp_stripe_payment_completed action.
+[08/13/2024 09:32:44 AM] - Notification email sent to buyer: rikk_kidd@hotmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/13/2024 09:32:45 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/13/2024 09:32:45 AM] - Payment has been processed successfully.
+[08/13/2024 09:32:45 AM] - Redirecting to results page "https://dev.fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[08/13/2024 09:44:12 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: , Txn Counter: 2, IP: 86.28.76.184
+[08/13/2024 09:44:12 AM] - Page load signature check done!
+[08/13/2024 09:44:12 AM] - Request usage count is valid for this IP addresss. IP: 86.28.76.184, Request Count: 5
+[08/13/2024 09:44:12 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[08/13/2024 09:44:15 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: , Txn Counter: 2, IP: 86.28.76.184
+[08/13/2024 09:44:15 AM] - Page load signature check done!
+[08/13/2024 09:44:15 AM] - Request usage count is valid for this IP addresss. IP: 86.28.76.184, Request Count: 6
+[08/13/2024 09:44:17 AM] - Payment processing started.
+[08/13/2024 09:44:17 AM] - Got product ID: 25852
+[08/13/2024 09:44:17 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[08/13/2024 09:44:17 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[08/13/2024 09:44:17 AM] - The transaction ID of this notification is: ch_3PnHGzBcbZtmVcgA02RnXopD
+[08/13/2024 09:44:17 AM] - Constructing checkout result and order data.
+[08/13/2024 09:44:17 AM] - Logged-in user's Username: acadmin
+[08/13/2024 09:44:17 AM] - Firing asp_ng_payment_completed filter.
+[08/13/2024 09:44:17 AM] - Firing asp_ng_handle_metadata filter.
+[08/13/2024 09:44:17 AM] - Updating payment metadata.
+[08/13/2024 09:44:17 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[08/13/2024 09:44:17 AM] - Updating payment intent data.
+[08/13/2024 09:44:18 AM] - Firing asp_stripe_payment_completed action.
+[08/13/2024 09:44:18 AM] - Notification email sent to buyer: richard@ambercouch.co.uk, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/13/2024 09:44:18 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/13/2024 09:44:18 AM] - Payment has been processed successfully.
+[08/13/2024 09:44:18 AM] - Redirecting to results page "https://dev.fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[08/14/2024 03:08:07 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 80.3.193.105
+[08/14/2024 03:08:07 PM] - Page load signature check done!
+[08/14/2024 03:08:07 PM] - Request usage count is valid for this IP addresss. IP: 80.3.193.105, Request Count: 1
+[08/14/2024 03:08:07 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[08/14/2024 03:08:07 PM] - Additional captcha response check done.
+[08/14/2024 03:08:10 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 80.3.193.105
+[08/14/2024 03:08:10 PM] - Page load signature check done!
+[08/14/2024 03:08:10 PM] - Request usage count is valid for this IP addresss. IP: 80.3.193.105, Request Count: 2
+[08/14/2024 03:08:10 PM] - Additional captcha response check done.
+[08/14/2024 03:08:50 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 80.3.193.105
+[08/14/2024 03:08:50 PM] - Page load signature check done!
+[08/14/2024 03:08:50 PM] - Request usage count is valid for this IP addresss. IP: 80.3.193.105, Request Count: 3
+[08/14/2024 03:08:50 PM] - Additional captcha response check done.
+[08/14/2024 03:08:55 PM] - Payment processing started.
+[08/14/2024 03:08:55 PM] - Got product ID: 25852
+[08/14/2024 03:08:55 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[08/14/2024 03:08:55 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[08/14/2024 03:08:56 PM] - The transaction ID of this notification is: ch_3Pnio0BcbZtmVcgA0whuNaWc
+[08/14/2024 03:08:56 PM] - Constructing checkout result and order data.
+[08/14/2024 03:08:56 PM] - Logged-in user's Username: nikkishepherd
+[08/14/2024 03:08:56 PM] - Firing asp_ng_payment_completed filter.
+[08/14/2024 03:08:56 PM] - Firing asp_ng_handle_metadata filter.
+[08/14/2024 03:08:56 PM] - Updating payment metadata.
+[08/14/2024 03:08:56 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[08/14/2024 03:08:56 PM] - Updating payment intent data.
+[08/14/2024 03:08:56 PM] - Firing asp_stripe_payment_completed action.
+[08/14/2024 03:08:56 PM] - Notification email sent to buyer: nikkishepherd@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/14/2024 03:08:56 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[08/14/2024 03:08:56 PM] - Payment has been processed successfully.
+[08/14/2024 03:08:56 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/10/2024 09:30:13 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 82.69.19.6
+[09/10/2024 09:30:13 PM] - Page load signature check done!
+[09/10/2024 09:30:13 PM] - Request usage count is valid for this IP addresss. IP: 82.69.19.6, Request Count: 1
+[09/10/2024 09:30:13 PM] - Pre-API Submission validation successful. Expected: 9, Submitted: 9
+[09/10/2024 09:30:13 PM] - Additional captcha response check done.
+[09/10/2024 09:30:15 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 82.69.19.6
+[09/10/2024 09:30:15 PM] - Page load signature check done!
+[09/10/2024 09:30:15 PM] - Request usage count is valid for this IP addresss. IP: 82.69.19.6, Request Count: 2
+[09/10/2024 09:30:15 PM] - Additional captcha response check done.
+[09/10/2024 09:30:22 PM] - Payment processing started.
+[09/10/2024 09:30:22 PM] - Got product ID: 25852
+[09/10/2024 09:30:22 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/10/2024 09:30:22 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/10/2024 09:30:22 PM] - The transaction ID of this notification is: ch_3PxbdaBcbZtmVcgA1l4M0p4c
+[09/10/2024 09:30:22 PM] - Constructing checkout result and order data.
+[09/10/2024 09:30:22 PM] - Logged-in user's Username: Katieflemming
+[09/10/2024 09:30:22 PM] - Firing asp_ng_payment_completed filter.
+[09/10/2024 09:30:22 PM] - Firing asp_ng_handle_metadata filter.
+[09/10/2024 09:30:22 PM] - Updating payment metadata.
+[09/10/2024 09:30:22 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/10/2024 09:30:22 PM] - Updating payment intent data.
+[09/10/2024 09:30:23 PM] - Firing asp_stripe_payment_completed action.
+[09/10/2024 09:30:23 PM] - Notification email sent to buyer: Katieflemming@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/10/2024 09:30:23 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/10/2024 09:30:23 PM] - Payment has been processed successfully.
+[09/10/2024 09:30:23 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/11/2024 06:30:42 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2a00:23c6:3705:1401:4d84:59ef:85e7:d8a6
+[09/11/2024 06:30:42 AM] - Page load signature check done!
+[09/11/2024 06:30:42 AM] - Request usage count is valid for this IP addresss. IP: 2a00:23c6:3705:1401:4d84:59ef:85e7:d8a6, Request Count: 1
+[09/11/2024 06:30:42 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/11/2024 06:30:42 AM] - Additional captcha response check done.
+[09/11/2024 06:30:45 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2a00:23c6:3705:1401:4d84:59ef:85e7:d8a6
+[09/11/2024 06:30:45 AM] - Page load signature check done!
+[09/11/2024 06:30:45 AM] - Request usage count is valid for this IP addresss. IP: 2a00:23c6:3705:1401:4d84:59ef:85e7:d8a6, Request Count: 2
+[09/11/2024 06:30:45 AM] - Additional captcha response check done.
+[09/11/2024 06:30:49 AM] - Payment processing started.
+[09/11/2024 06:30:49 AM] - Got product ID: 25852
+[09/11/2024 06:30:49 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/11/2024 06:30:49 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/11/2024 06:30:49 AM] - The transaction ID of this notification is: ch_3Pxk4dBcbZtmVcgA18UFfcV9
+[09/11/2024 06:30:49 AM] - Constructing checkout result and order data.
+[09/11/2024 06:30:49 AM] - Logged-in user's Username: rachel_aucott
+[09/11/2024 06:30:49 AM] - Firing asp_ng_payment_completed filter.
+[09/11/2024 06:30:49 AM] - Firing asp_ng_handle_metadata filter.
+[09/11/2024 06:30:49 AM] - Updating payment metadata.
+[09/11/2024 06:30:49 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/11/2024 06:30:49 AM] - Updating payment intent data.
+[09/11/2024 06:30:50 AM] - Firing asp_stripe_payment_completed action.
+[09/11/2024 06:30:50 AM] - Notification email sent to buyer: rachelaucott360@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/11/2024 06:30:50 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/11/2024 06:30:50 AM] - Payment has been processed successfully.
+[09/11/2024 06:30:50 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 03:19:06 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 82.19.245.149
+[09/13/2024 03:19:06 PM] - Page load signature check done!
+[09/13/2024 03:19:06 PM] - Request usage count is valid for this IP addresss. IP: 82.19.245.149, Request Count: 1
+[09/13/2024 03:19:06 PM] - Pre-API Submission validation successful. Expected: 18, Submitted: 18
+[09/13/2024 03:19:06 PM] - Additional captcha response check done.
+[09/13/2024 03:19:08 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 82.19.245.149
+[09/13/2024 03:19:08 PM] - Page load signature check done!
+[09/13/2024 03:19:08 PM] - Request usage count is valid for this IP addresss. IP: 82.19.245.149, Request Count: 2
+[09/13/2024 03:19:08 PM] - Additional captcha response check done.
+[09/13/2024 03:19:13 PM] - Payment processing started.
+[09/13/2024 03:19:13 PM] - Got product ID: 25852
+[09/13/2024 03:19:13 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 03:19:13 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 03:19:14 PM] - The transaction ID of this notification is: ch_3PybH5BcbZtmVcgA1oeEe2eR
+[09/13/2024 03:19:14 PM] - Constructing checkout result and order data.
+[09/13/2024 03:19:14 PM] - Logged-in user's Username: dquinney
+[09/13/2024 03:19:14 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 03:19:14 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 03:19:14 PM] - Updating payment metadata.
+[09/13/2024 03:19:14 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 03:19:14 PM] - Updating payment intent data.
+[09/13/2024 03:19:14 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 03:19:14 PM] - Notification email sent to buyer: dquinney@icloud.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 03:19:14 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 03:19:14 PM] - Payment has been processed successfully.
+[09/13/2024 03:19:14 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 03:53:35 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 78.18.57.204
+[09/13/2024 03:53:35 PM] - Page load signature check done!
+[09/13/2024 03:53:35 PM] - Request usage count is valid for this IP addresss. IP: 78.18.57.204, Request Count: 1
+[09/13/2024 03:53:35 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/13/2024 03:53:35 PM] - Additional captcha response check done.
+[09/13/2024 03:53:37 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 78.18.57.204
+[09/13/2024 03:53:37 PM] - Page load signature check done!
+[09/13/2024 03:53:37 PM] - Request usage count is valid for this IP addresss. IP: 78.18.57.204, Request Count: 2
+[09/13/2024 03:53:37 PM] - Additional captcha response check done.
+[09/13/2024 03:53:39 PM] - Payment processing started.
+[09/13/2024 03:53:39 PM] - Got product ID: 25852
+[09/13/2024 03:53:39 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 03:53:39 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 03:53:39 PM] - The transaction ID of this notification is: ch_3PyboRBcbZtmVcgA0U5xgnDE
+[09/13/2024 03:53:39 PM] - Constructing checkout result and order data.
+[09/13/2024 03:53:39 PM] - Logged-in user's Username: esmeengland
+[09/13/2024 03:53:39 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 03:53:39 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 03:53:39 PM] - Updating payment metadata.
+[09/13/2024 03:53:39 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 03:53:39 PM] - Updating payment intent data.
+[09/13/2024 03:53:40 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 03:53:40 PM] - Notification email sent to buyer: esmeengland@hotmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 03:53:40 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 03:53:40 PM] - Payment has been processed successfully.
+[09/13/2024 03:53:40 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 04:19:29 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 2a02:c7c:dfcf:1100:e99a:8633:8dfd:aa35
+[09/13/2024 04:19:29 PM] - Page load signature check done!
+[09/13/2024 04:19:29 PM] - Request usage count is valid for this IP addresss. IP: 2a02:c7c:dfcf:1100:e99a:8633:8dfd:aa35, Request Count: 1
+[09/13/2024 04:19:29 PM] - Pre-API Submission validation successful. Expected: 21, Submitted: 21
+[09/13/2024 04:19:29 PM] - Additional captcha response check done.
+[09/13/2024 04:19:31 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 2a02:c7c:dfcf:1100:e99a:8633:8dfd:aa35
+[09/13/2024 04:19:31 PM] - Page load signature check done!
+[09/13/2024 04:19:31 PM] - Request usage count is valid for this IP addresss. IP: 2a02:c7c:dfcf:1100:e99a:8633:8dfd:aa35, Request Count: 2
+[09/13/2024 04:19:31 PM] - Additional captcha response check done.
+[09/13/2024 04:19:36 PM] - Payment processing started.
+[09/13/2024 04:19:36 PM] - Got product ID: 25852
+[09/13/2024 04:19:36 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 04:19:36 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 04:19:36 PM] - The transaction ID of this notification is: ch_3PycDWBcbZtmVcgA1b0xCWpw
+[09/13/2024 04:19:36 PM] - Constructing checkout result and order data.
+[09/13/2024 04:19:36 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 04:19:36 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 04:19:36 PM] - Updating payment metadata.
+[09/13/2024 04:19:36 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 04:19:36 PM] - Updating payment intent data.
+[09/13/2024 04:19:36 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 04:19:37 PM] - Notification email sent to buyer: sandrasmith1509@hotmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:19:37 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:19:37 PM] - Payment has been processed successfully.
+[09/13/2024 04:19:37 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 04:27:33 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 2607:fb91:1c19:8c30:c8bd:cba6:fbd8:230b
+[09/13/2024 04:27:33 PM] - Page load signature check done!
+[09/13/2024 04:27:33 PM] - Request usage count is valid for this IP addresss. IP: 2607:fb91:1c19:8c30:c8bd:cba6:fbd8:230b, Request Count: 1
+[09/13/2024 04:27:33 PM] - Pre-API Submission validation successful. Expected: 15, Submitted: 15
+[09/13/2024 04:27:33 PM] - Additional captcha response check done.
+[09/13/2024 04:27:35 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 2607:fb91:1c19:8c30:c8bd:cba6:fbd8:230b
+[09/13/2024 04:27:35 PM] - Page load signature check done!
+[09/13/2024 04:27:35 PM] - Request usage count is valid for this IP addresss. IP: 2607:fb91:1c19:8c30:c8bd:cba6:fbd8:230b, Request Count: 2
+[09/13/2024 04:27:35 PM] - Additional captcha response check done.
+[09/13/2024 04:27:40 PM] - Payment processing started.
+[09/13/2024 04:27:40 PM] - Got product ID: 25852
+[09/13/2024 04:27:40 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 04:27:40 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 04:27:40 PM] - The transaction ID of this notification is: ch_3PycLKBcbZtmVcgA1edmRxLR
+[09/13/2024 04:27:40 PM] - Constructing checkout result and order data.
+[09/13/2024 04:27:40 PM] - Logged-in user's Username: ameade819
+[09/13/2024 04:27:40 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 04:27:40 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 04:27:40 PM] - Updating payment metadata.
+[09/13/2024 04:27:40 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 04:27:40 PM] - Updating payment intent data.
+[09/13/2024 04:27:41 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 04:27:41 PM] - Notification email sent to buyer: ameade819@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:27:41 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:27:41 PM] - Payment has been processed successfully.
+[09/13/2024 04:27:41 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 04:36:10 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 149.142.112.18
+[09/13/2024 04:36:10 PM] - Page load signature check done!
+[09/13/2024 04:36:10 PM] - Request usage count is valid for this IP addresss. IP: 149.142.112.18, Request Count: 1
+[09/13/2024 04:36:10 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/13/2024 04:36:10 PM] - Additional captcha response check done.
+[09/13/2024 04:36:12 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 149.142.112.18
+[09/13/2024 04:36:12 PM] - Page load signature check done!
+[09/13/2024 04:36:12 PM] - Request usage count is valid for this IP addresss. IP: 149.142.112.18, Request Count: 2
+[09/13/2024 04:36:12 PM] - Additional captcha response check done.
+[09/13/2024 04:36:16 PM] - Payment processing started.
+[09/13/2024 04:36:16 PM] - Got product ID: 25852
+[09/13/2024 04:36:16 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 04:36:16 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 04:36:16 PM] - The transaction ID of this notification is: ch_3PycTeBcbZtmVcgA1IxIAuE9
+[09/13/2024 04:36:16 PM] - Constructing checkout result and order data.
+[09/13/2024 04:36:16 PM] - Logged-in user's Username: keller
+[09/13/2024 04:36:16 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 04:36:16 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 04:36:16 PM] - Updating payment metadata.
+[09/13/2024 04:36:16 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 04:36:16 PM] - Updating payment intent data.
+[09/13/2024 04:36:16 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 04:36:17 PM] - Notification email sent to buyer: keller@law.ucla.edu, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:36:17 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:36:17 PM] - Payment has been processed successfully.
+[09/13/2024 04:36:17 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 04:57:14 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 5, IP: 2603:6010:e103:2501:b18a:cc3a:31ee:4f7b
+[09/13/2024 04:57:14 PM] - Page load signature check done!
+[09/13/2024 04:57:14 PM] - Request usage count is valid for this IP addresss. IP: 2603:6010:e103:2501:b18a:cc3a:31ee:4f7b, Request Count: 1
+[09/13/2024 04:57:14 PM] - Pre-API Submission validation successful. Expected: 12, Submitted: 12
+[09/13/2024 04:57:14 PM] - Additional captcha response check done.
+[09/13/2024 04:57:17 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 5, IP: 2603:6010:e103:2501:b18a:cc3a:31ee:4f7b
+[09/13/2024 04:57:17 PM] - Page load signature check done!
+[09/13/2024 04:57:17 PM] - Request usage count is valid for this IP addresss. IP: 2603:6010:e103:2501:b18a:cc3a:31ee:4f7b, Request Count: 2
+[09/13/2024 04:57:17 PM] - Additional captcha response check done.
+[09/13/2024 04:57:18 PM] - FAILURE: Following error occurred during payment processing: Stripe API error occurred: Your card was declined.
+[09/13/2024 04:57:19 PM] - Error email sent to richard@ambercouch.co.uk, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:58:08 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 5, IP: 2603:6010:e103:2501:b18a:cc3a:31ee:4f7b
+[09/13/2024 04:58:08 PM] - Page load signature check done!
+[09/13/2024 04:58:08 PM] - Request usage count is valid for this IP addresss. IP: 2603:6010:e103:2501:b18a:cc3a:31ee:4f7b, Request Count: 3
+[09/13/2024 04:58:08 PM] - Additional captcha response check done.
+[09/13/2024 04:58:12 PM] - Payment processing started.
+[09/13/2024 04:58:12 PM] - Got product ID: 25852
+[09/13/2024 04:58:12 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 04:58:12 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 04:58:13 PM] - The transaction ID of this notification is: ch_3Pyco3BcbZtmVcgA0NWjeW4Q
+[09/13/2024 04:58:13 PM] - Constructing checkout result and order data.
+[09/13/2024 04:58:13 PM] - Logged-in user's Username: amandabuchert
+[09/13/2024 04:58:13 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 04:58:13 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 04:58:13 PM] - Updating payment metadata.
+[09/13/2024 04:58:13 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 04:58:13 PM] - Updating payment intent data.
+[09/13/2024 04:58:14 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 04:58:14 PM] - Notification email sent to buyer: amandabuchert@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:58:14 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 04:58:14 PM] - Payment has been processed successfully.
+[09/13/2024 04:58:14 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/13/2024 07:52:07 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 6, IP: 2600:4041:7979:1300:bca2:6d4e:3e8a:c1b8
+[09/13/2024 07:52:07 PM] - Page load signature check done!
+[09/13/2024 07:52:07 PM] - Request usage count is valid for this IP addresss. IP: 2600:4041:7979:1300:bca2:6d4e:3e8a:c1b8, Request Count: 1
+[09/13/2024 07:52:07 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/13/2024 07:52:07 PM] - Additional captcha response check done.
+[09/13/2024 07:52:09 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 6, IP: 2600:4041:7979:1300:bca2:6d4e:3e8a:c1b8
+[09/13/2024 07:52:09 PM] - Page load signature check done!
+[09/13/2024 07:52:09 PM] - Request usage count is valid for this IP addresss. IP: 2600:4041:7979:1300:bca2:6d4e:3e8a:c1b8, Request Count: 2
+[09/13/2024 07:52:09 PM] - Additional captcha response check done.
+[09/13/2024 07:52:12 PM] - Payment processing started.
+[09/13/2024 07:52:12 PM] - Got product ID: 25852
+[09/13/2024 07:52:12 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/13/2024 07:52:12 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/13/2024 07:52:12 PM] - The transaction ID of this notification is: ch_3PyfXIBcbZtmVcgA0jrj2G0z
+[09/13/2024 07:52:12 PM] - Constructing checkout result and order data.
+[09/13/2024 07:52:12 PM] - Logged-in user's Username: daniellestefania
+[09/13/2024 07:52:12 PM] - Firing asp_ng_payment_completed filter.
+[09/13/2024 07:52:12 PM] - Firing asp_ng_handle_metadata filter.
+[09/13/2024 07:52:12 PM] - Updating payment metadata.
+[09/13/2024 07:52:12 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/13/2024 07:52:12 PM] - Updating payment intent data.
+[09/13/2024 07:52:13 PM] - Firing asp_stripe_payment_completed action.
+[09/13/2024 07:52:13 PM] - Notification email sent to buyer: daniellestefania@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 07:52:13 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/13/2024 07:52:13 PM] - Payment has been processed successfully.
+[09/13/2024 07:52:13 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/14/2024 09:36:17 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2a09:bac2:37ea:23cd::391:23
+[09/14/2024 09:36:17 AM] - Page load signature check done!
+[09/14/2024 09:36:17 AM] - Request usage count is valid for this IP addresss. IP: 2a09:bac2:37ea:23cd::391:23, Request Count: 1
+[09/14/2024 09:36:17 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/14/2024 09:36:17 AM] - Additional captcha response check done.
+[09/14/2024 09:36:19 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2a09:bac2:37ea:23cd::391:23
+[09/14/2024 09:36:19 AM] - Page load signature check done!
+[09/14/2024 09:36:19 AM] - Request usage count is valid for this IP addresss. IP: 2a09:bac2:37ea:23cd::391:23, Request Count: 2
+[09/14/2024 09:36:19 AM] - Additional captcha response check done.
+[09/14/2024 09:36:52 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2a09:bac2:37ea:23cd::391:23
+[09/14/2024 09:36:52 AM] - Page load signature check done!
+[09/14/2024 09:36:52 AM] - Request usage count is valid for this IP addresss. IP: 2a09:bac2:37ea:23cd::391:23, Request Count: 3
+[09/14/2024 09:36:52 AM] - Additional captcha response check done.
+[09/14/2024 09:36:57 AM] - Payment processing started.
+[09/14/2024 09:36:57 AM] - Got product ID: 25852
+[09/14/2024 09:36:57 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/14/2024 09:36:57 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/14/2024 09:36:57 AM] - The transaction ID of this notification is: ch_3PysOrBcbZtmVcgA1R0gjaCJ
+[09/14/2024 09:36:57 AM] - Constructing checkout result and order data.
+[09/14/2024 09:36:57 AM] - Logged-in user's Username: janepelle1
+[09/14/2024 09:36:57 AM] - Firing asp_ng_payment_completed filter.
+[09/14/2024 09:36:57 AM] - Firing asp_ng_handle_metadata filter.
+[09/14/2024 09:36:57 AM] - Updating payment metadata.
+[09/14/2024 09:36:57 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/14/2024 09:36:57 AM] - Updating payment intent data.
+[09/14/2024 09:36:58 AM] - Firing asp_stripe_payment_completed action.
+[09/14/2024 09:36:58 AM] - Notification email sent to buyer: janepelle1@icloud.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 09:36:58 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 09:36:58 AM] - Payment has been processed successfully.
+[09/14/2024 09:36:58 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/14/2024 12:40:15 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 72.73.73.176
+[09/14/2024 12:40:15 PM] - Page load signature check done!
+[09/14/2024 12:40:15 PM] - Request usage count is valid for this IP addresss. IP: 72.73.73.176, Request Count: 1
+[09/14/2024 12:40:15 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/14/2024 12:40:15 PM] - Additional captcha response check done.
+[09/14/2024 12:40:17 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 72.73.73.176
+[09/14/2024 12:40:17 PM] - Page load signature check done!
+[09/14/2024 12:40:17 PM] - Request usage count is valid for this IP addresss. IP: 72.73.73.176, Request Count: 2
+[09/14/2024 12:40:17 PM] - Additional captcha response check done.
+[09/14/2024 12:40:20 PM] - Payment processing started.
+[09/14/2024 12:40:20 PM] - Got product ID: 25852
+[09/14/2024 12:40:20 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/14/2024 12:40:20 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/14/2024 12:40:20 PM] - The transaction ID of this notification is: ch_3PyvGuBcbZtmVcgA08EGGK2p
+[09/14/2024 12:40:20 PM] - Constructing checkout result and order data.
+[09/14/2024 12:40:20 PM] - Logged-in user's Username: kspj44
+[09/14/2024 12:40:20 PM] - Firing asp_ng_payment_completed filter.
+[09/14/2024 12:40:20 PM] - Firing asp_ng_handle_metadata filter.
+[09/14/2024 12:40:20 PM] - Updating payment metadata.
+[09/14/2024 12:40:20 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/14/2024 12:40:20 PM] - Updating payment intent data.
+[09/14/2024 12:40:21 PM] - Firing asp_stripe_payment_completed action.
+[09/14/2024 12:40:21 PM] - Notification email sent to buyer: kspj44@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 12:40:21 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 12:40:21 PM] - Payment has been processed successfully.
+[09/14/2024 12:40:21 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/14/2024 12:59:05 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 100.15.65.253
+[09/14/2024 12:59:05 PM] - Page load signature check done!
+[09/14/2024 12:59:05 PM] - Request usage count is valid for this IP addresss. IP: 100.15.65.253, Request Count: 1
+[09/14/2024 12:59:05 PM] - Pre-API Submission validation successful. Expected: 6, Submitted: 6
+[09/14/2024 12:59:05 PM] - Additional captcha response check done.
+[09/14/2024 12:59:08 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 100.15.65.253
+[09/14/2024 12:59:08 PM] - Page load signature check done!
+[09/14/2024 12:59:08 PM] - Request usage count is valid for this IP addresss. IP: 100.15.65.253, Request Count: 2
+[09/14/2024 12:59:08 PM] - Additional captcha response check done.
+[09/14/2024 12:59:12 PM] - Payment processing started.
+[09/14/2024 12:59:12 PM] - Got product ID: 25852
+[09/14/2024 12:59:12 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/14/2024 12:59:12 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/14/2024 12:59:12 PM] - The transaction ID of this notification is: ch_3PyvZ8BcbZtmVcgA06nMUkYJ
+[09/14/2024 12:59:12 PM] - Constructing checkout result and order data.
+[09/14/2024 12:59:12 PM] - Logged-in user's Username: kristen115
+[09/14/2024 12:59:12 PM] - Firing asp_ng_payment_completed filter.
+[09/14/2024 12:59:12 PM] - Firing asp_ng_handle_metadata filter.
+[09/14/2024 12:59:12 PM] - Updating payment metadata.
+[09/14/2024 12:59:12 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/14/2024 12:59:12 PM] - Updating payment intent data.
+[09/14/2024 12:59:13 PM] - Firing asp_stripe_payment_completed action.
+[09/14/2024 12:59:13 PM] - Notification email sent to buyer: kristen115@earthlink.net, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 12:59:13 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 12:59:13 PM] - Payment has been processed successfully.
+[09/14/2024 12:59:13 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/14/2024 04:01:08 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 195.252.198.248
+[09/14/2024 04:01:08 PM] - Page load signature check done!
+[09/14/2024 04:01:08 PM] - Request usage count is valid for this IP addresss. IP: 195.252.198.248, Request Count: 1
+[09/14/2024 04:01:08 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/14/2024 04:01:08 PM] - Additional captcha response check done.
+[09/14/2024 04:01:10 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 195.252.198.248
+[09/14/2024 04:01:10 PM] - Page load signature check done!
+[09/14/2024 04:01:10 PM] - Request usage count is valid for this IP addresss. IP: 195.252.198.248, Request Count: 2
+[09/14/2024 04:01:10 PM] - Additional captcha response check done.
+[09/14/2024 04:01:13 PM] - Payment processing started.
+[09/14/2024 04:01:13 PM] - Got product ID: 25852
+[09/14/2024 04:01:13 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/14/2024 04:01:13 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/14/2024 04:01:13 PM] - The transaction ID of this notification is: ch_3PyyPJBcbZtmVcgA047oyclu
+[09/14/2024 04:01:13 PM] - Constructing checkout result and order data.
+[09/14/2024 04:01:13 PM] - Logged-in user's Username: jtennenhouse
+[09/14/2024 04:01:13 PM] - Firing asp_ng_payment_completed filter.
+[09/14/2024 04:01:13 PM] - Firing asp_ng_handle_metadata filter.
+[09/14/2024 04:01:13 PM] - Updating payment metadata.
+[09/14/2024 04:01:13 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/14/2024 04:01:13 PM] - Updating payment intent data.
+[09/14/2024 04:01:14 PM] - Firing asp_stripe_payment_completed action.
+[09/14/2024 04:01:14 PM] - Notification email sent to buyer: jtennenhouse@mac.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 04:01:14 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 04:01:14 PM] - Payment has been processed successfully.
+[09/14/2024 04:01:14 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/14/2024 05:21:55 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 2601:204:ca02:f870:bdb6:913c:93fa:78e7
+[09/14/2024 05:21:55 PM] - Page load signature check done!
+[09/14/2024 05:21:55 PM] - Request usage count is valid for this IP addresss. IP: 2601:204:ca02:f870:bdb6:913c:93fa:78e7, Request Count: 1
+[09/14/2024 05:21:55 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/14/2024 05:21:55 PM] - Additional captcha response check done.
+[09/14/2024 05:21:57 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 2601:204:ca02:f870:bdb6:913c:93fa:78e7
+[09/14/2024 05:21:57 PM] - Page load signature check done!
+[09/14/2024 05:21:57 PM] - Request usage count is valid for this IP addresss. IP: 2601:204:ca02:f870:bdb6:913c:93fa:78e7, Request Count: 2
+[09/14/2024 05:21:57 PM] - Additional captcha response check done.
+[09/14/2024 05:21:59 PM] - FAILURE: Following error occurred during payment processing: Stripe API error occurred: Your card's security code is incorrect.
+[09/14/2024 05:21:59 PM] - Error email sent to richard@ambercouch.co.uk, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 05:22:38 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 2601:204:ca02:f870:bdb6:913c:93fa:78e7
+[09/14/2024 05:22:38 PM] - Page load signature check done!
+[09/14/2024 05:22:38 PM] - Request usage count is valid for this IP addresss. IP: 2601:204:ca02:f870:bdb6:913c:93fa:78e7, Request Count: 3
+[09/14/2024 05:22:38 PM] - Additional captcha response check done.
+[09/14/2024 05:22:43 PM] - Payment processing started.
+[09/14/2024 05:22:43 PM] - Got product ID: 25852
+[09/14/2024 05:22:43 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/14/2024 05:22:43 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/14/2024 05:22:43 PM] - The transaction ID of this notification is: ch_3PyzfUBcbZtmVcgA0Xn2rN42
+[09/14/2024 05:22:43 PM] - Constructing checkout result and order data.
+[09/14/2024 05:22:43 PM] - Logged-in user's Username: elision.gaseous.0m
+[09/14/2024 05:22:43 PM] - Firing asp_ng_payment_completed filter.
+[09/14/2024 05:22:43 PM] - Firing asp_ng_handle_metadata filter.
+[09/14/2024 05:22:43 PM] - Updating payment metadata.
+[09/14/2024 05:22:43 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/14/2024 05:22:43 PM] - Updating payment intent data.
+[09/14/2024 05:22:44 PM] - Firing asp_stripe_payment_completed action.
+[09/14/2024 05:22:44 PM] - Notification email sent to buyer: elision.gaseous.0m@icloud.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 05:22:44 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/14/2024 05:22:44 PM] - Payment has been processed successfully.
+[09/14/2024 05:22:44 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/15/2024 04:11:38 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2600:1700:85e0:1b90:85cd:d932:c508:e8c8
+[09/15/2024 04:11:38 PM] - Page load signature check done!
+[09/15/2024 04:11:38 PM] - Request usage count is valid for this IP addresss. IP: 2600:1700:85e0:1b90:85cd:d932:c508:e8c8, Request Count: 1
+[09/15/2024 04:11:38 PM] - Pre-API Submission validation successful. Expected: 18, Submitted: 18
+[09/15/2024 04:11:38 PM] - Additional captcha response check done.
+[09/15/2024 04:11:41 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2600:1700:85e0:1b90:85cd:d932:c508:e8c8
+[09/15/2024 04:11:41 PM] - Page load signature check done!
+[09/15/2024 04:11:41 PM] - Request usage count is valid for this IP addresss. IP: 2600:1700:85e0:1b90:85cd:d932:c508:e8c8, Request Count: 2
+[09/15/2024 04:11:41 PM] - Additional captcha response check done.
+[09/15/2024 04:11:44 PM] - Payment processing started.
+[09/15/2024 04:11:44 PM] - Got product ID: 25852
+[09/15/2024 04:11:44 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/15/2024 04:11:44 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/15/2024 04:11:45 PM] - The transaction ID of this notification is: ch_3PzL31BcbZtmVcgA1TYs4MOt
+[09/15/2024 04:11:45 PM] - Constructing checkout result and order data.
+[09/15/2024 04:11:45 PM] - Logged-in user's Username: lauragross121
+[09/15/2024 04:11:45 PM] - Firing asp_ng_payment_completed filter.
+[09/15/2024 04:11:45 PM] - Firing asp_ng_handle_metadata filter.
+[09/15/2024 04:11:45 PM] - Updating payment metadata.
+[09/15/2024 04:11:45 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/15/2024 04:11:45 PM] - Updating payment intent data.
+[09/15/2024 04:11:45 PM] - Firing asp_stripe_payment_completed action.
+[09/15/2024 04:11:46 PM] - Notification email sent to buyer: lauragross121@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 04:11:46 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 04:11:46 PM] - Payment has been processed successfully.
+[09/15/2024 04:11:46 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/15/2024 09:53:58 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 76.65.44.7
+[09/15/2024 09:53:58 PM] - Page load signature check done!
+[09/15/2024 09:53:58 PM] - Request usage count is valid for this IP addresss. IP: 76.65.44.7, Request Count: 1
+[09/15/2024 09:53:58 PM] - Pre-API Submission validation successful. Expected: 21, Submitted: 21
+[09/15/2024 09:53:58 PM] - Additional captcha response check done.
+[09/15/2024 09:54:00 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 76.65.44.7
+[09/15/2024 09:54:00 PM] - Page load signature check done!
+[09/15/2024 09:54:00 PM] - Request usage count is valid for this IP addresss. IP: 76.65.44.7, Request Count: 2
+[09/15/2024 09:54:00 PM] - Additional captcha response check done.
+[09/15/2024 09:55:21 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 76.65.44.7
+[09/15/2024 09:55:21 PM] - Page load signature check done!
+[09/15/2024 09:55:21 PM] - Request usage count is valid for this IP addresss. IP: 76.65.44.7, Request Count: 3
+[09/15/2024 09:55:21 PM] - Additional captcha response check done.
+[09/15/2024 09:55:25 PM] - Payment processing started.
+[09/15/2024 09:55:25 PM] - Got product ID: 25852
+[09/15/2024 09:55:25 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/15/2024 09:55:25 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/15/2024 09:55:26 PM] - The transaction ID of this notification is: ch_3PzQOIBcbZtmVcgA0omNfwaP
+[09/15/2024 09:55:26 PM] - Constructing checkout result and order data.
+[09/15/2024 09:55:26 PM] - Firing asp_ng_payment_completed filter.
+[09/15/2024 09:55:26 PM] - Firing asp_ng_handle_metadata filter.
+[09/15/2024 09:55:26 PM] - Updating payment metadata.
+[09/15/2024 09:55:26 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/15/2024 09:55:26 PM] - Updating payment intent data.
+[09/15/2024 09:55:26 PM] - Firing asp_stripe_payment_completed action.
+[09/15/2024 09:55:26 PM] - Notification email sent to buyer: kerrisant@btinternet.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 09:55:26 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 09:55:26 PM] - Payment has been processed successfully.
+[09/15/2024 09:55:26 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/15/2024 11:32:40 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 173.77.65.25
+[09/15/2024 11:32:40 PM] - Page load signature check done!
+[09/15/2024 11:32:40 PM] - Request usage count is valid for this IP addresss. IP: 173.77.65.25, Request Count: 1
+[09/15/2024 11:32:40 PM] - Pre-API Submission validation successful. Expected: 39, Submitted: 39
+[09/15/2024 11:32:40 PM] - Additional captcha response check done.
+[09/15/2024 11:32:43 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 173.77.65.25
+[09/15/2024 11:32:43 PM] - Page load signature check done!
+[09/15/2024 11:32:43 PM] - Request usage count is valid for this IP addresss. IP: 173.77.65.25, Request Count: 2
+[09/15/2024 11:32:43 PM] - Additional captcha response check done.
+[09/15/2024 11:32:45 PM] - Payment processing started.
+[09/15/2024 11:32:45 PM] - Got product ID: 25852
+[09/15/2024 11:32:45 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/15/2024 11:32:45 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/15/2024 11:32:45 PM] - The transaction ID of this notification is: ch_3PzRvpBcbZtmVcgA0a6x2g4e
+[09/15/2024 11:32:45 PM] - Constructing checkout result and order data.
+[09/15/2024 11:32:45 PM] - Logged-in user's Username: amandanicholas9
+[09/15/2024 11:32:45 PM] - Firing asp_ng_payment_completed filter.
+[09/15/2024 11:32:45 PM] - Firing asp_ng_handle_metadata filter.
+[09/15/2024 11:32:45 PM] - Updating payment metadata.
+[09/15/2024 11:32:45 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/15/2024 11:32:45 PM] - Updating payment intent data.
+[09/15/2024 11:32:45 PM] - Firing asp_stripe_payment_completed action.
+[09/15/2024 11:32:46 PM] - Notification email sent to buyer: amandanicholas9@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 11:32:46 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 11:32:46 PM] - Payment has been processed successfully.
+[09/15/2024 11:32:46 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/15/2024 11:36:04 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 173.77.65.25
+[09/15/2024 11:36:04 PM] - Page load signature check done!
+[09/15/2024 11:36:04 PM] - Request usage count is valid for this IP addresss. IP: 173.77.65.25, Request Count: 3
+[09/15/2024 11:36:04 PM] - Pre-API Submission validation successful. Expected: 6, Submitted: 6
+[09/15/2024 11:36:04 PM] - Additional captcha response check done.
+[09/15/2024 11:36:06 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 173.77.65.25
+[09/15/2024 11:36:06 PM] - Page load signature check done!
+[09/15/2024 11:36:06 PM] - Request usage count is valid for this IP addresss. IP: 173.77.65.25, Request Count: 4
+[09/15/2024 11:36:06 PM] - Additional captcha response check done.
+[09/15/2024 11:36:09 PM] - Payment processing started.
+[09/15/2024 11:36:09 PM] - Got product ID: 25852
+[09/15/2024 11:36:09 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/15/2024 11:36:09 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/15/2024 11:36:09 PM] - The transaction ID of this notification is: ch_3PzRz7BcbZtmVcgA0MghlsHq
+[09/15/2024 11:36:09 PM] - Constructing checkout result and order data.
+[09/15/2024 11:36:09 PM] - Logged-in user's Username: amandanicholas9
+[09/15/2024 11:36:09 PM] - Firing asp_ng_payment_completed filter.
+[09/15/2024 11:36:09 PM] - Firing asp_ng_handle_metadata filter.
+[09/15/2024 11:36:09 PM] - Updating payment metadata.
+[09/15/2024 11:36:09 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/15/2024 11:36:09 PM] - Updating payment intent data.
+[09/15/2024 11:36:10 PM] - Firing asp_stripe_payment_completed action.
+[09/15/2024 11:36:10 PM] - Notification email sent to buyer: amandanicholas9@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 11:36:10 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/15/2024 11:36:10 PM] - Payment has been processed successfully.
+[09/15/2024 11:36:10 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 02:49:20 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c
+[09/16/2024 02:49:20 AM] - Page load signature check done!
+[09/16/2024 02:49:20 AM] - Request usage count is valid for this IP addresss. IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c, Request Count: 1
+[09/16/2024 02:49:20 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 02:49:20 AM] - Additional captcha response check done.
+[09/16/2024 02:49:22 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c
+[09/16/2024 02:49:22 AM] - Page load signature check done!
+[09/16/2024 02:49:22 AM] - Request usage count is valid for this IP addresss. IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c, Request Count: 2
+[09/16/2024 02:49:22 AM] - Additional captcha response check done.
+[09/16/2024 02:49:26 AM] - Payment processing started.
+[09/16/2024 02:49:26 AM] - Got product ID: 25852
+[09/16/2024 02:49:26 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 02:49:26 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 02:49:27 AM] - The transaction ID of this notification is: ch_3PzV09BcbZtmVcgA0xjS22QH
+[09/16/2024 02:49:27 AM] - Constructing checkout result and order data.
+[09/16/2024 02:49:27 AM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 02:49:27 AM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 02:49:27 AM] - Updating payment metadata.
+[09/16/2024 02:49:27 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 02:49:27 AM] - Updating payment intent data.
+[09/16/2024 02:49:27 AM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 02:49:27 AM] - Notification email sent to buyer: Elarson@ammr.net, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 02:49:27 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 02:49:27 AM] - Payment has been processed successfully.
+[09/16/2024 02:49:27 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 02:52:09 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c
+[09/16/2024 02:52:09 AM] - Page load signature check done!
+[09/16/2024 02:52:09 AM] - Request usage count is valid for this IP addresss. IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c, Request Count: 3
+[09/16/2024 02:52:09 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 02:52:09 AM] - Additional captcha response check done.
+[09/16/2024 02:52:11 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c
+[09/16/2024 02:52:11 AM] - Page load signature check done!
+[09/16/2024 02:52:11 AM] - Request usage count is valid for this IP addresss. IP: 2607:fb90:d30b:4cd5:4977:4375:c013:185c, Request Count: 4
+[09/16/2024 02:52:11 AM] - Additional captcha response check done.
+[09/16/2024 02:52:15 AM] - Payment processing started.
+[09/16/2024 02:52:15 AM] - Got product ID: 25852
+[09/16/2024 02:52:15 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 02:52:15 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 02:52:16 AM] - The transaction ID of this notification is: ch_3PzV2sBcbZtmVcgA0HLpw6SB
+[09/16/2024 02:52:16 AM] - Constructing checkout result and order data.
+[09/16/2024 02:52:16 AM] - Logged-in user's Username: elarson
+[09/16/2024 02:52:16 AM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 02:52:16 AM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 02:52:16 AM] - Updating payment metadata.
+[09/16/2024 02:52:16 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 02:52:16 AM] - Updating payment intent data.
+[09/16/2024 02:52:16 AM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 02:52:16 AM] - Notification email sent to buyer: elarson@ammr.net, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 02:52:16 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 02:52:16 AM] - Payment has been processed successfully.
+[09/16/2024 02:52:16 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 09:02:48 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 86.28.224.29
+[09/16/2024 09:02:48 AM] - Page load signature check done!
+[09/16/2024 09:02:48 AM] - Request usage count is valid for this IP addresss. IP: 86.28.224.29, Request Count: 1
+[09/16/2024 09:02:48 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 09:02:48 AM] - Additional captcha response check done.
+[09/16/2024 09:02:56 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 86.28.224.29
+[09/16/2024 09:02:56 AM] - Page load signature check done!
+[09/16/2024 09:02:56 AM] - Request usage count is valid for this IP addresss. IP: 86.28.224.29, Request Count: 2
+[09/16/2024 09:02:56 AM] - Additional captcha response check done.
+[09/16/2024 09:03:17 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 86.28.224.29
+[09/16/2024 09:03:17 AM] - Page load signature check done!
+[09/16/2024 09:03:18 AM] - Request usage count is valid for this IP addresss. IP: 86.28.224.29, Request Count: 3
+[09/16/2024 09:03:18 AM] - Additional captcha response check done.
+[09/16/2024 09:03:21 AM] - Payment processing started.
+[09/16/2024 09:03:21 AM] - Got product ID: 25852
+[09/16/2024 09:03:21 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 09:03:21 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 09:03:21 AM] - The transaction ID of this notification is: ch_3PzapZBcbZtmVcgA0KEHK2ep
+[09/16/2024 09:03:21 AM] - Constructing checkout result and order data.
+[09/16/2024 09:03:21 AM] - Logged-in user's Username: smueller
+[09/16/2024 09:03:21 AM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 09:03:21 AM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 09:03:21 AM] - Updating payment metadata.
+[09/16/2024 09:03:21 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 09:03:21 AM] - Updating payment intent data.
+[09/16/2024 09:03:21 AM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 09:03:21 AM] - Notification email sent to buyer: smueller@sdl.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 09:03:22 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 09:03:22 AM] - Payment has been processed successfully.
+[09/16/2024 09:03:22 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 09:25:48 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 82.19.245.149
+[09/16/2024 09:25:48 AM] - Page load signature check done!
+[09/16/2024 09:25:48 AM] - Request usage count is valid for this IP addresss. IP: 82.19.245.149, Request Count: 1
+[09/16/2024 09:25:48 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 09:25:48 AM] - Additional captcha response check done.
+[09/16/2024 09:25:50 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 3, IP: 82.19.245.149
+[09/16/2024 09:25:50 AM] - Page load signature check done!
+[09/16/2024 09:25:50 AM] - Request usage count is valid for this IP addresss. IP: 82.19.245.149, Request Count: 2
+[09/16/2024 09:25:50 AM] - Additional captcha response check done.
+[09/16/2024 09:25:57 AM] - Payment processing started.
+[09/16/2024 09:25:57 AM] - Got product ID: 25852
+[09/16/2024 09:25:57 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 09:25:57 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 09:25:58 AM] - The transaction ID of this notification is: ch_3PzbBpBcbZtmVcgA1ZLH6bsk
+[09/16/2024 09:25:58 AM] - Constructing checkout result and order data.
+[09/16/2024 09:25:58 AM] - Logged-in user's Username: dquinney
+[09/16/2024 09:25:58 AM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 09:25:58 AM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 09:25:58 AM] - Updating payment metadata.
+[09/16/2024 09:25:58 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 09:25:58 AM] - Updating payment intent data.
+[09/16/2024 09:25:58 AM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 09:25:58 AM] - Notification email sent to buyer: dquinney@icloud.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 09:25:59 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 09:25:59 AM] - Payment has been processed successfully.
+[09/16/2024 09:25:59 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 01:27:09 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 24.193.113.62
+[09/16/2024 01:27:09 PM] - Page load signature check done!
+[09/16/2024 01:27:09 PM] - Request usage count is valid for this IP addresss. IP: 24.193.113.62, Request Count: 1
+[09/16/2024 01:27:09 PM] - Pre-API Submission validation successful. Expected: 18, Submitted: 18
+[09/16/2024 01:27:09 PM] - Additional captcha response check done.
+[09/16/2024 01:27:11 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 4, IP: 24.193.113.62
+[09/16/2024 01:27:11 PM] - Page load signature check done!
+[09/16/2024 01:27:11 PM] - Request usage count is valid for this IP addresss. IP: 24.193.113.62, Request Count: 2
+[09/16/2024 01:27:11 PM] - Additional captcha response check done.
+[09/16/2024 01:27:16 PM] - Payment processing started.
+[09/16/2024 01:27:16 PM] - Got product ID: 25852
+[09/16/2024 01:27:16 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 01:27:16 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 01:27:16 PM] - The transaction ID of this notification is: ch_3PzexOBcbZtmVcgA0wYlCCrD
+[09/16/2024 01:27:16 PM] - Constructing checkout result and order data.
+[09/16/2024 01:27:16 PM] - Logged-in user's Username: Mazur.rachelm
+[09/16/2024 01:27:16 PM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 01:27:16 PM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 01:27:16 PM] - Updating payment metadata.
+[09/16/2024 01:27:16 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 01:27:16 PM] - Updating payment intent data.
+[09/16/2024 01:27:17 PM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 01:27:17 PM] - Notification email sent to buyer: Mazur.rachelm@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 01:27:17 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 01:27:17 PM] - Payment has been processed successfully.
+[09/16/2024 01:27:17 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 02:03:19 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 5, IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0
+[09/16/2024 02:03:19 PM] - Page load signature check done!
+[09/16/2024 02:03:19 PM] - Request usage count is valid for this IP addresss. IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0, Request Count: 1
+[09/16/2024 02:03:19 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 02:03:19 PM] - Additional captcha response check done.
+[09/16/2024 02:03:22 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 5, IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0
+[09/16/2024 02:03:22 PM] - Page load signature check done!
+[09/16/2024 02:03:22 PM] - Request usage count is valid for this IP addresss. IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0, Request Count: 2
+[09/16/2024 02:03:22 PM] - Additional captcha response check done.
+[09/16/2024 02:03:26 PM] - Payment processing started.
+[09/16/2024 02:03:26 PM] - Got product ID: 25852
+[09/16/2024 02:03:26 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 02:03:26 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 02:03:26 PM] - The transaction ID of this notification is: ch_3PzfWOBcbZtmVcgA0AMnDu8V
+[09/16/2024 02:03:26 PM] - Constructing checkout result and order data.
+[09/16/2024 02:03:26 PM] - Logged-in user's Username: kellieparenda
+[09/16/2024 02:03:26 PM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 02:03:26 PM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 02:03:26 PM] - Updating payment metadata.
+[09/16/2024 02:03:26 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 02:03:26 PM] - Updating payment intent data.
+[09/16/2024 02:03:27 PM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 02:03:27 PM] - Notification email sent to buyer: kellieparenda@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 02:03:27 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 02:03:27 PM] - Payment has been processed successfully.
+[09/16/2024 02:03:27 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 05:11:05 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 6, IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0
+[09/16/2024 05:11:05 PM] - Page load signature check done!
+[09/16/2024 05:11:05 PM] - Request usage count is valid for this IP addresss. IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0, Request Count: 3
+[09/16/2024 05:11:05 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 05:11:05 PM] - Additional captcha response check done.
+[09/16/2024 05:11:07 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 6, IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0
+[09/16/2024 05:11:07 PM] - Page load signature check done!
+[09/16/2024 05:11:07 PM] - Request usage count is valid for this IP addresss. IP: 2603:9001:76f0:93a0:851c:fa44:c94b:66c0, Request Count: 4
+[09/16/2024 05:11:07 PM] - Additional captcha response check done.
+[09/16/2024 05:11:11 PM] - Payment processing started.
+[09/16/2024 05:11:11 PM] - Got product ID: 25852
+[09/16/2024 05:11:11 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 05:11:12 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 05:11:12 PM] - The transaction ID of this notification is: ch_3PziS6BcbZtmVcgA1sHRh6vY
+[09/16/2024 05:11:12 PM] - Constructing checkout result and order data.
+[09/16/2024 05:11:12 PM] - Logged-in user's Username: kellieparenda
+[09/16/2024 05:11:12 PM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 05:11:12 PM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 05:11:12 PM] - Updating payment metadata.
+[09/16/2024 05:11:12 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 05:11:12 PM] - Updating payment intent data.
+[09/16/2024 05:11:12 PM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 05:11:12 PM] - Notification email sent to buyer: kellieparenda@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 05:11:13 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 05:11:13 PM] - Payment has been processed successfully.
+[09/16/2024 05:11:13 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 08:06:30 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 7, IP: 2603:300b:330:c380:9df5:ea32:f3a0:4602
+[09/16/2024 08:06:30 PM] - Page load signature check done!
+[09/16/2024 08:06:30 PM] - Request usage count is valid for this IP addresss. IP: 2603:300b:330:c380:9df5:ea32:f3a0:4602, Request Count: 1
+[09/16/2024 08:06:30 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 08:06:30 PM] - Additional captcha response check done.
+[09/16/2024 08:06:32 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 7, IP: 2603:300b:330:c380:9df5:ea32:f3a0:4602
+[09/16/2024 08:06:32 PM] - Page load signature check done!
+[09/16/2024 08:06:32 PM] - Request usage count is valid for this IP addresss. IP: 2603:300b:330:c380:9df5:ea32:f3a0:4602, Request Count: 2
+[09/16/2024 08:06:32 PM] - Additional captcha response check done.
+[09/16/2024 08:06:35 PM] - Payment processing started.
+[09/16/2024 08:06:35 PM] - Got product ID: 25852
+[09/16/2024 08:06:35 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 08:06:35 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 08:06:35 PM] - The transaction ID of this notification is: ch_3PzlBrBcbZtmVcgA0xXTlPzs
+[09/16/2024 08:06:35 PM] - Constructing checkout result and order data.
+[09/16/2024 08:06:35 PM] - Logged-in user's Username: makenzie
+[09/16/2024 08:06:35 PM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 08:06:35 PM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 08:06:35 PM] - Updating payment metadata.
+[09/16/2024 08:06:35 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 08:06:35 PM] - Updating payment intent data.
+[09/16/2024 08:06:35 PM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 08:06:36 PM] - Notification email sent to buyer: makenzie@remonov.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 08:06:36 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 08:06:36 PM] - Payment has been processed successfully.
+[09/16/2024 08:06:36 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 08:55:21 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 8, IP: 2a00:23c7:a30f:ca01:e81e:93ea:c4d5:6b0b
+[09/16/2024 08:55:21 PM] - Page load signature check done!
+[09/16/2024 08:55:21 PM] - Request usage count is valid for this IP addresss. IP: 2a00:23c7:a30f:ca01:e81e:93ea:c4d5:6b0b, Request Count: 1
+[09/16/2024 08:55:21 PM] - Pre-API Submission validation successful. Expected: 6, Submitted: 6
+[09/16/2024 08:55:21 PM] - Additional captcha response check done.
+[09/16/2024 08:55:23 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 8, IP: 2a00:23c7:a30f:ca01:e81e:93ea:c4d5:6b0b
+[09/16/2024 08:55:23 PM] - Page load signature check done!
+[09/16/2024 08:55:23 PM] - Request usage count is valid for this IP addresss. IP: 2a00:23c7:a30f:ca01:e81e:93ea:c4d5:6b0b, Request Count: 2
+[09/16/2024 08:55:23 PM] - Additional captcha response check done.
+[09/16/2024 08:55:51 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 8, IP: 2a00:23c7:a30f:ca01:e81e:93ea:c4d5:6b0b
+[09/16/2024 08:55:51 PM] - Page load signature check done!
+[09/16/2024 08:55:51 PM] - Request usage count is valid for this IP addresss. IP: 2a00:23c7:a30f:ca01:e81e:93ea:c4d5:6b0b, Request Count: 3
+[09/16/2024 08:55:51 PM] - Additional captcha response check done.
+[09/16/2024 08:55:53 PM] - Payment processing started.
+[09/16/2024 08:55:53 PM] - Got product ID: 25852
+[09/16/2024 08:55:53 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 08:55:53 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 08:55:54 PM] - The transaction ID of this notification is: ch_3Pzlx8BcbZtmVcgA1tc8OcTS
+[09/16/2024 08:55:54 PM] - Constructing checkout result and order data.
+[09/16/2024 08:55:54 PM] - Logged-in user's Username: Lydiareed
+[09/16/2024 08:55:54 PM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 08:55:54 PM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 08:55:54 PM] - Updating payment metadata.
+[09/16/2024 08:55:54 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 08:55:54 PM] - Updating payment intent data.
+[09/16/2024 08:55:54 PM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 08:55:54 PM] - Notification email sent to buyer: Lydiareed@hotmail.co.uk, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 08:55:54 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 08:55:54 PM] - Payment has been processed successfully.
+[09/16/2024 08:55:54 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/16/2024 11:47:16 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 9, IP: 159.118.196.217
+[09/16/2024 11:47:16 PM] - Page load signature check done!
+[09/16/2024 11:47:16 PM] - Request usage count is valid for this IP addresss. IP: 159.118.196.217, Request Count: 1
+[09/16/2024 11:47:16 PM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/16/2024 11:47:16 PM] - Additional captcha response check done.
+[09/16/2024 11:47:18 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 9, IP: 159.118.196.217
+[09/16/2024 11:47:18 PM] - Page load signature check done!
+[09/16/2024 11:47:18 PM] - Request usage count is valid for this IP addresss. IP: 159.118.196.217, Request Count: 2
+[09/16/2024 11:47:18 PM] - Additional captcha response check done.
+[09/16/2024 11:47:21 PM] - Payment processing started.
+[09/16/2024 11:47:21 PM] - Got product ID: 25852
+[09/16/2024 11:47:21 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/16/2024 11:47:21 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/16/2024 11:47:22 PM] - The transaction ID of this notification is: ch_3PzodVBcbZtmVcgA1f8wQjkf
+[09/16/2024 11:47:22 PM] - Constructing checkout result and order data.
+[09/16/2024 11:47:22 PM] - Logged-in user's Username: kristine.grube
+[09/16/2024 11:47:22 PM] - Firing asp_ng_payment_completed filter.
+[09/16/2024 11:47:22 PM] - Firing asp_ng_handle_metadata filter.
+[09/16/2024 11:47:22 PM] - Updating payment metadata.
+[09/16/2024 11:47:22 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/16/2024 11:47:22 PM] - Updating payment intent data.
+[09/16/2024 11:47:22 PM] - Firing asp_stripe_payment_completed action.
+[09/16/2024 11:47:22 PM] - Notification email sent to buyer: kristine.grube@idahoartscharter.org, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 11:47:22 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/16/2024 11:47:22 PM] - Payment has been processed successfully.
+[09/16/2024 11:47:22 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/17/2024 12:29:58 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 72.49.25.160
+[09/17/2024 12:29:58 AM] - Page load signature check done!
+[09/17/2024 12:29:58 AM] - Request usage count is valid for this IP addresss. IP: 72.49.25.160, Request Count: 1
+[09/17/2024 12:29:58 AM] - Pre-API Submission validation successful. Expected: 12, Submitted: 12
+[09/17/2024 12:29:58 AM] - Additional captcha response check done.
+[09/17/2024 12:30:01 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 72.49.25.160
+[09/17/2024 12:30:01 AM] - Page load signature check done!
+[09/17/2024 12:30:01 AM] - Request usage count is valid for this IP addresss. IP: 72.49.25.160, Request Count: 2
+[09/17/2024 12:30:01 AM] - Additional captcha response check done.
+[09/17/2024 12:30:03 AM] - Payment processing started.
+[09/17/2024 12:30:03 AM] - Got product ID: 25852
+[09/17/2024 12:30:03 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/17/2024 12:30:03 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/17/2024 12:30:03 AM] - The transaction ID of this notification is: ch_3PzpIpBcbZtmVcgA1IT4UnHY
+[09/17/2024 12:30:03 AM] - Constructing checkout result and order data.
+[09/17/2024 12:30:03 AM] - Logged-in user's Username: katherineawaddell
+[09/17/2024 12:30:03 AM] - Firing asp_ng_payment_completed filter.
+[09/17/2024 12:30:03 AM] - Firing asp_ng_handle_metadata filter.
+[09/17/2024 12:30:03 AM] - Updating payment metadata.
+[09/17/2024 12:30:03 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/17/2024 12:30:03 AM] - Updating payment intent data.
+[09/17/2024 12:30:04 AM] - Firing asp_stripe_payment_completed action.
+[09/17/2024 12:30:04 AM] - Notification email sent to buyer: katherineawaddell@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/17/2024 12:30:04 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/17/2024 12:30:04 AM] - Payment has been processed successfully.
+[09/17/2024 12:30:04 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/17/2024 08:40:50 PM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 173.77.65.25
+[09/17/2024 08:40:50 PM] - Page load signature check done!
+[09/17/2024 08:40:50 PM] - Request usage count is valid for this IP addresss. IP: 173.77.65.25, Request Count: 1
+[09/17/2024 08:40:50 PM] - Pre-API Submission validation successful. Expected: 6, Submitted: 6
+[09/17/2024 08:40:50 PM] - Additional captcha response check done.
+[09/17/2024 08:40:52 PM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 173.77.65.25
+[09/17/2024 08:40:52 PM] - Page load signature check done!
+[09/17/2024 08:40:52 PM] - Request usage count is valid for this IP addresss. IP: 173.77.65.25, Request Count: 2
+[09/17/2024 08:40:52 PM] - Additional captcha response check done.
+[09/17/2024 08:40:54 PM] - Payment processing started.
+[09/17/2024 08:40:54 PM] - Got product ID: 25852
+[09/17/2024 08:40:54 PM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/17/2024 08:40:54 PM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/17/2024 08:40:54 PM] - The transaction ID of this notification is: ch_3Q08CdBcbZtmVcgA1nP8tCCZ
+[09/17/2024 08:40:54 PM] - Constructing checkout result and order data.
+[09/17/2024 08:40:54 PM] - Logged-in user's Username: amandanicholas9
+[09/17/2024 08:40:54 PM] - Firing asp_ng_payment_completed filter.
+[09/17/2024 08:40:54 PM] - Firing asp_ng_handle_metadata filter.
+[09/17/2024 08:40:54 PM] - Updating payment metadata.
+[09/17/2024 08:40:54 PM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/17/2024 08:40:54 PM] - Updating payment intent data.
+[09/17/2024 08:40:54 PM] - Firing asp_stripe_payment_completed action.
+[09/17/2024 08:40:54 PM] - Notification email sent to buyer: amandanicholas9@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/17/2024 08:40:55 PM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/17/2024 08:40:55 PM] - Payment has been processed successfully.
+[09/17/2024 08:40:55 PM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/18/2024 01:28:33 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2601:680:ce82:94e0:a1a9:adaf:7437:234f
+[09/18/2024 01:28:33 AM] - Page load signature check done!
+[09/18/2024 01:28:33 AM] - Request usage count is valid for this IP addresss. IP: 2601:680:ce82:94e0:a1a9:adaf:7437:234f, Request Count: 1
+[09/18/2024 01:28:33 AM] - Pre-API Submission validation successful. Expected: 18, Submitted: 18
+[09/18/2024 01:28:33 AM] - Additional captcha response check done.
+[09/18/2024 01:28:36 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 0, IP: 2601:680:ce82:94e0:a1a9:adaf:7437:234f
+[09/18/2024 01:28:36 AM] - Page load signature check done!
+[09/18/2024 01:28:36 AM] - Request usage count is valid for this IP addresss. IP: 2601:680:ce82:94e0:a1a9:adaf:7437:234f, Request Count: 2
+[09/18/2024 01:28:36 AM] - Additional captcha response check done.
+[09/18/2024 01:28:42 AM] - Payment processing started.
+[09/18/2024 01:28:42 AM] - Got product ID: 25852
+[09/18/2024 01:28:42 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/18/2024 01:28:42 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/18/2024 01:28:42 AM] - The transaction ID of this notification is: ch_3Q0Ch3BcbZtmVcgA174t0L9Y
+[09/18/2024 01:28:42 AM] - Constructing checkout result and order data.
+[09/18/2024 01:28:42 AM] - Logged-in user's Username: Jermzzm
+[09/18/2024 01:28:42 AM] - Firing asp_ng_payment_completed filter.
+[09/18/2024 01:28:42 AM] - Firing asp_ng_handle_metadata filter.
+[09/18/2024 01:28:42 AM] - Updating payment metadata.
+[09/18/2024 01:28:42 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/18/2024 01:28:42 AM] - Updating payment intent data.
+[09/18/2024 01:28:43 AM] - Firing asp_stripe_payment_completed action.
+[09/18/2024 01:28:43 AM] - Notification email sent to buyer: Jermzzm@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/18/2024 01:28:43 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/18/2024 01:28:43 AM] - Payment has been processed successfully.
+[09/18/2024 01:28:43 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/18/2024 02:04:56 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2a09:bac2:a279:1246::1d2:12
+[09/18/2024 02:04:56 AM] - FAILURE: Page load signature check - cannot find this Product ID and IP address index (25852_2a09:bac2:a279:1246::1d2:12) in the saved data.
+[09/18/2024 02:05:04 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2a09:bac2:a279:1246::1d2:12
+[09/18/2024 02:05:04 AM] - FAILURE: Page load signature check - cannot find this Product ID and IP address index (25852_2a09:bac2:a279:1246::1d2:12) in the saved data.
+[09/18/2024 02:05:18 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2a09:bac2:a279:1246::1d2:12
+[09/18/2024 02:05:18 AM] - FAILURE: Page load signature check - cannot find this Product ID and IP address index (25852_2a09:bac2:a279:1246::1d2:12) in the saved data.
+[09/18/2024 02:05:25 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2a09:bac2:a279:1246::1d2:12
+[09/18/2024 02:05:25 AM] - FAILURE: Page load signature check - cannot find this Product ID and IP address index (25852_2a09:bac2:a279:1246::1d2:12) in the saved data.
+[09/18/2024 02:06:29 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2601:680:ce82:94e0:51d4:a09e:5ddf:d60a
+[09/18/2024 02:06:29 AM] - Page load signature check done!
+[09/18/2024 02:06:29 AM] - Request usage count is valid for this IP addresss. IP: 2601:680:ce82:94e0:51d4:a09e:5ddf:d60a, Request Count: 1
+[09/18/2024 02:06:29 AM] - Pre-API Submission validation successful. Expected: 3, Submitted: 3
+[09/18/2024 02:06:29 AM] - Additional captcha response check done.
+[09/18/2024 02:06:31 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 1, IP: 2601:680:ce82:94e0:51d4:a09e:5ddf:d60a
+[09/18/2024 02:06:31 AM] - Page load signature check done!
+[09/18/2024 02:06:31 AM] - Request usage count is valid for this IP addresss. IP: 2601:680:ce82:94e0:51d4:a09e:5ddf:d60a, Request Count: 2
+[09/18/2024 02:06:31 AM] - Additional captcha response check done.
+[09/18/2024 02:06:36 AM] - Payment processing started.
+[09/18/2024 02:06:36 AM] - Got product ID: 25852
+[09/18/2024 02:06:36 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/18/2024 02:06:36 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/18/2024 02:06:36 AM] - The transaction ID of this notification is: ch_3Q0DHmBcbZtmVcgA0iVTdOqU
+[09/18/2024 02:06:36 AM] - Constructing checkout result and order data.
+[09/18/2024 02:06:36 AM] - Logged-in user's Username: Jermzzm
+[09/18/2024 02:06:36 AM] - Firing asp_ng_payment_completed filter.
+[09/18/2024 02:06:36 AM] - Firing asp_ng_handle_metadata filter.
+[09/18/2024 02:06:36 AM] - Updating payment metadata.
+[09/18/2024 02:06:36 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/18/2024 02:06:36 AM] - Updating payment intent data.
+[09/18/2024 02:06:36 AM] - Firing asp_stripe_payment_completed action.
+[09/18/2024 02:06:36 AM] - Notification email sent to buyer: Jermzzm@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/18/2024 02:06:37 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/18/2024 02:06:37 AM] - Payment has been processed successfully.
+[09/18/2024 02:06:37 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
+[09/18/2024 07:38:56 AM] - handle_create_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 176.200.175.161
+[09/18/2024 07:38:56 AM] - Page load signature check done!
+[09/18/2024 07:38:56 AM] - Request usage count is valid for this IP addresss. IP: 176.200.175.161, Request Count: 1
+[09/18/2024 07:38:56 AM] - Pre-API Submission validation successful. Expected: 6, Submitted: 6
+[09/18/2024 07:38:56 AM] - Additional captcha response check done.
+[09/18/2024 07:38:58 AM] - handle_confirm_pi() -  Product ID: 25852, Captcha Type: recaptcha, Txn Counter: 2, IP: 176.200.175.161
+[09/18/2024 07:38:58 AM] - Page load signature check done!
+[09/18/2024 07:38:58 AM] - Request usage count is valid for this IP addresss. IP: 176.200.175.161, Request Count: 2
+[09/18/2024 07:38:58 AM] - Additional captcha response check done.
+[09/18/2024 07:39:00 AM] - Payment processing started.
+[09/18/2024 07:39:00 AM] - Got product ID: 25852
+[09/18/2024 07:39:00 AM] - Firing asp_ng_process_ipn_product_item_override filter.
+[09/18/2024 07:39:00 AM] - Firing asp_ng_process_ipn_payment_data_item_override filter.
+[09/18/2024 07:39:01 AM] - The transaction ID of this notification is: ch_3Q0ITVBcbZtmVcgA0oS7ZDLn
+[09/18/2024 07:39:01 AM] - Constructing checkout result and order data.
+[09/18/2024 07:39:01 AM] - Logged-in user's Username: Kpwanders
+[09/18/2024 07:39:01 AM] - Firing asp_ng_payment_completed filter.
+[09/18/2024 07:39:01 AM] - Firing asp_ng_handle_metadata filter.
+[09/18/2024 07:39:01 AM] - Updating payment metadata.
+[09/18/2024 07:39:01 AM] - Firing asp_ng_payment_completed_update_pi filter.
+[09/18/2024 07:39:01 AM] - Updating payment intent data.
+[09/18/2024 07:39:01 AM] - Firing asp_stripe_payment_completed action.
+[09/18/2024 07:39:01 AM] - Notification email sent to buyer: Kpwanders@gmail.com, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/18/2024 07:39:01 AM] - Notification email sent to seller: admin@fantasybakeoff.co.uk, fbo.forms@ambercouch.co.uk,, from email address used: Fantasy Bake Off <admin@fantasybakeoff.co.uk
+[09/18/2024 07:39:01 AM] - Payment has been processed successfully.
+[09/18/2024 07:39:01 AM] - Redirecting to results page "https://fantasybakeoff.co.uk/stripe-checkout-result/"
+
