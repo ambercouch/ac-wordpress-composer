@@ -101,3 +101,5 @@ wp-content/advanced-cache.php
 *.sql
 
 malcare-waf.php
+
+.user.ini
