@@ -39,10 +39,9 @@ content/uploads/
 content/upgrade/
 content/wp-cache-config.php
 
-/production-config.php
+production-config.php
 /dev-config.php
 /vendor/
-/cms/
 /.idea/
 
 ac-config-local\.php
