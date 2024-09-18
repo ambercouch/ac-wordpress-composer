@@ -1,4 +1,9 @@
 [submodule "wp-content/plugins/calculate-fbo-scores"]
+path = wp-content/plugins/calculate-fbo-scores
 url = https://github.com/ambercouch/calculate-fbo-scores.git
 [submodule "wp-content/themes/fantasybakeoff"]
+	path = wp-content/themes/fantasybakeoff
 url = https://github.com/ambercouch/fbo-theme.git
+[submodule "wp-content/plugins/ac-sendinblue-on-register"]
+	path = wp-content/plugins/ac-sendinblue-on-register
+	url = https://github.com/ambercouch/ac-mail-list-on-register.git
