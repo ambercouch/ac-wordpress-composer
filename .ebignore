@@ -1,7 +1,102 @@
-# Ignore node_modules in theme
-wp-content/themes/fantasybakeoff/node_modules/
+# As Yeoman assumes the usage of Bower and Grunt, ignore the below:
+bower_components
+node_modules
 
-# Optional: ignore other dev files
+# Ignore automatically generated cruft
 *.log
-*.env
+.sass-cache
+
+# Ignore config
+local-config.php
+development-config.php
+production-config.php
+
+
+# Operating system files
+.Spotlight-V100
+.Trashes
 .DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+
+# Vagrant
+.vagrant
+
+# WordPress + popular plugin generated — adapted from:
+# https://github.com/github/gitignore/blob/master/WordPress.gitignore
+sitemap.xml
+sitemap.xml.gz
+content/advanced-cache.php
+content/backup-db/
+content/backups/
+content/blogs.dir/
+content/cache/
+content/index.php
+content/plugins/index.php
+content/themes/index.php
+content/uploads/
+content/upgrade/
+content/wp-cache-config.php
+
+
+/dev-config.php
+/vendor/
+/.idea/
+
+ac-config-local\.php
+
+ac-config-development\.php
+
+wp-content/themes/twentynineteen/
+
+wp-content/ai1wm-backups/\.htaccess
+
+wp-content/ai1wm-backups/index\.php
+
+wp-content/ai1wm-backups/web\.config
+
+wp-content/ai1wm-backups/
+
+wp-content/wphb-cache/
+
+wp-content/w3tc-config/
+
+wp-content/wp-cache-config.php
+
+wp-content/themes/twentytwentyone/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+*.gz
+
+ebdb20231009.sql
+
+wp-content/wflogs/
+
+wp-content/uploads/
+
+wp-content/themes/twentytwentyfour/
+
+wp-content/wp-cloudflare-super-page-cache/
+
+*.zip
+
+wp-content/plugins.deactivated/
+
+wp-content/mc_data/
+
+wp-content/cache/
+
+wp-content/breeze-config/
+
+wp-content/advanced-cache.php
+
+*.sql
+
+malcare-waf.php
+
+.user.ini
