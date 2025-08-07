@@ -363,8 +363,6 @@ class MonsterInsights_WP_Emails {
 		$message = $message ? nl2br( $message ) : '';
 		$message = str_replace( '{email}', $message, $body );
 
-		//$message = make_clickable( $message );
-
 		return apply_filters( 'monsterinsights_email_message', $message, $this );
 	}
 
@@ -418,11 +416,13 @@ class MonsterInsights_WP_Emails {
 			$this
 		);
 
+		$build = $this->build_email( $data['message'] );
+
 		// Let's do this.
 		$sent = wp_mail(
 			$data['to'],
 			monsterinsights_decode_string( $this->process_tag( $data['subject'] ) ),
-			$this->build_email( $data['message'] ),
+			$build,
 			$data['headers'],
 			$data['attachments']
 		);
@@ -606,7 +606,7 @@ class MonsterInsights_WP_Emails {
 			}
 		}
 
-		require $located;
+		require $located; // phpcs:ignore
 	}
 
 	/**
@@ -655,6 +655,8 @@ class MonsterInsights_WP_Emails {
 			1   => trailingslashit( get_stylesheet_directory() ) . $template_dir,
 			10  => trailingslashit( get_template_directory() ) . $template_dir,
 			100 => trailingslashit( MONSTERINSIGHTS_PLUGIN_DIR ) . 'includes/emails/templates',
+			200 => trailingslashit( MONSTERINSIGHTS_PLUGIN_DIR ) . 'pro/includes/emails/templates',
+			300 => trailingslashit( MONSTERINSIGHTS_PLUGIN_DIR ) . 'lite/includes/emails/templates',
 		);
 
 		$file_paths = apply_filters( 'monsterinsights_email_template_paths', $file_paths );

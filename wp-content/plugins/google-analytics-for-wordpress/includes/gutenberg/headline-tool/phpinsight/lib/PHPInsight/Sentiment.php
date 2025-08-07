@@ -229,7 +229,7 @@ class Sentiment {
 			$temp  = file_get_contents( $fn );
 			$words = unserialize( trim( $temp ) );
 		} else {
-			echo 'File does not exist: ' . $fn;
+			echo 'File does not exist: ' . $fn; // phpcs:ignore
 			$words = array();
 		}
 
@@ -275,7 +275,7 @@ class Sentiment {
 			if ( file_exists( $dataFolder ) ) {
 				$this->dataFolder = $dataFolder;
 			} else {
-				echo 'Error: could not find the directory - ' . $dataFolder;
+				echo 'Error: could not find the directory - ' . $dataFolder; // phpcs:ignore
 			}
 		}
 
@@ -292,7 +292,7 @@ class Sentiment {
 		// Load and cache dictionaries
 		foreach ( $this->classes as $class ) {
 			if ( ! $this->setDictionary( $class ) ) {
-				echo "Error: Dictionary for class '$class' could not be loaded";
+				echo "Error: Dictionary for class '$class' could not be loaded"; // phpcs:ignore
 			}
 		}
 
@@ -446,4 +446,4 @@ class Sentiment {
 
 }
 
-?>
+

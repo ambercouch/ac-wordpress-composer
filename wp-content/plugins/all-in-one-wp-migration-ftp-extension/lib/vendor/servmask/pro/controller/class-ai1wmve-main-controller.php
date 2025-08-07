@@ -235,6 +235,11 @@ if ( ! class_exists( 'Ai1wmve_Main_Controller' ) ) {
 					add_action( 'ai1wm_export_exclude_db_tables', 'Ai1wmve_Export_Controller::exclude_db_tables' );
 				}
 
+				// Add export include db tables
+				if ( ! has_action( 'ai1wm_export_include_db_tables' ) ) {
+					add_action( 'ai1wm_export_include_db_tables', 'Ai1wmve_Export_Controller::include_db_tables' );
+				}
+
 				// Schedule event save
 				if ( ! has_action( 'admin_post_ai1wm_schedule_event_save' ) ) {
 					add_action( 'admin_post_ai1wm_schedule_event_save', 'Ai1wmve_Schedules_Controller::save' );
@@ -258,6 +263,9 @@ if ( ! class_exists( 'Ai1wmve_Main_Controller' ) ) {
 
 				// Add import unlimited
 				add_filter( 'ai1wm_max_file_size', array( $this, 'ai1wmve_max_file_size' ) );
+
+				// Add support for incremental backups
+				add_filter( 'ai1wmve_incremental_storages', array( $this, 'ai1wmve_incremental_storages' ) );
 
 				$this->ai1wm_loaded();
 			}
@@ -341,6 +349,7 @@ if ( ! class_exists( 'Ai1wmve_Main_Controller' ) ) {
 					'selected_no_tables'                 => __( 'No tables selected', $this->plugin_name ),
 					'selected_one_table'                 => __( '{x} table selected', $this->plugin_name ),
 					'selected_multiple_tables'           => __( '{x} tables selected', $this->plugin_name ),
+					'empty_table_list_message'           => __( 'No tables found.', $this->plugin_name ),
 					'database_name'                      => DB_NAME,
 				)
 			);
@@ -495,17 +504,17 @@ if ( ! class_exists( 'Ai1wmve_Main_Controller' ) ) {
 				'ai1wmve_schedules_options_locale',
 				array(
 					Ai1wmve_Schedule_Event::TYPE_EXPORT => array(
-						'no_spam_comments'    => __( 'Do <strong>not</strong> export spam comments', AI1WM_PLUGIN_NAME ),
-						'no_post_revisions'   => __( 'Do <strong>not</strong> export post revisions', AI1WM_PLUGIN_NAME ),
-						'no_media'            => __( 'Do <strong>not</strong> export media library (files)', AI1WM_PLUGIN_NAME ),
-						'no_inactive_themes'  => __( 'Do <strong>not</strong> export inactive themes (files)', AI1WM_PLUGIN_NAME ),
-						'no_themes'           => __( 'Do <strong>not</strong> export themes (files)', AI1WM_PLUGIN_NAME ),
-						'no_muplugins'        => __( 'Do <strong>not</strong> export must-use plugins (files)', AI1WM_PLUGIN_NAME ),
-						'no_plugins'          => __( 'Do <strong>not</strong> export plugins (files)', AI1WM_PLUGIN_NAME ),
-						'no_inactive_plugins' => __( 'Do <strong>not</strong> export inactive plugins (files)', AI1WM_PLUGIN_NAME ),
-						'no_cache'            => __( 'Do <strong>not</strong> export cache (files)', AI1WM_PLUGIN_NAME ),
-						'no_database'         => __( 'Do <strong>not</strong> export database (sql)', AI1WM_PLUGIN_NAME ),
+						'no_spam_comments'    => __( 'Exclude spam comments', AI1WM_PLUGIN_NAME ),
+						'no_post_revisions'   => __( 'Exclude post revisions', AI1WM_PLUGIN_NAME ),
+						'no_database'         => __( 'Exclude database (sql)', AI1WM_PLUGIN_NAME ),
 						'no_email_replace'    => __( 'Do <strong>not</strong> replace email domain (sql)', AI1WM_PLUGIN_NAME ),
+						'no_media'            => __( 'Exclude media library (files)', AI1WM_PLUGIN_NAME ),
+						'no_inactive_themes'  => __( 'Exclude inactive themes (files)', AI1WM_PLUGIN_NAME ),
+						'no_themes'           => __( 'Exclude themes (files)', AI1WM_PLUGIN_NAME ),
+						'no_muplugins'        => __( 'Exclude must-use plugins (files)', AI1WM_PLUGIN_NAME ),
+						'no_plugins'          => __( 'Exclude plugins (files)', AI1WM_PLUGIN_NAME ),
+						'no_inactive_plugins' => __( 'Exclude inactive plugins (files)', AI1WM_PLUGIN_NAME ),
+						'no_cache'            => __( 'Exclude cache (files)', AI1WM_PLUGIN_NAME ),
 					),
 					Ai1wmve_Schedule_Event::TYPE_IMPORT => array(),
 				)
@@ -546,6 +555,7 @@ if ( ! class_exists( 'Ai1wmve_Main_Controller' ) ) {
 					'selected_no_tables'                  => __( 'No tables selected', $this->plugin_name ),
 					'selected_one_table'                  => __( '{x} table selected', $this->plugin_name ),
 					'selected_multiple_tables'            => __( '{x} tables selected', $this->plugin_name ),
+					'empty_table_list_message'            => __( 'No tables found.', $this->plugin_name ),
 					'database_name'                       => DB_NAME,
 				)
 			);
@@ -1167,6 +1177,14 @@ if ( ! class_exists( 'Ai1wmve_Main_Controller' ) ) {
 				} catch ( Ai1wm_Backups_Exception $e ) {
 				}
 			}
+		}
+
+		public function ai1wmve_incremental_storages( $incremental_storages ) {
+			if ( defined( $this->plugin_prefix . '_PRO_INCREMENTAL' ) ) {
+				$incremental_storages[] = $this->plugin_params_key;
+			}
+
+			return $incremental_storages;
 		}
 	}
 }

@@ -1,6 +1,10 @@
 <?php
 /**
- * Email Footer.
+ * Email Footer Template
+ *
+ * Uses modern HTML/CSS while maintaining email client compatibility.
+ * CSS classes are prefixed with 'mset-' (MonsterInsights Summary Email Template)
+ * to avoid conflicts with email client styles.
  *
  * @since 8.19.0
  */
@@ -8,60 +12,50 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-?>
-<tr>
-	<td valign="top" id="templateFooter"
-		style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #F6F7F8;border-top: 0;border-bottom: 0;padding-top: 0;padding-bottom: 0;">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock"
-			   style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-			<tbody class="mcnTextBlockOuter">
-			<tr>
-				<td valign="top" class="mcnTextBlockInner"
-					style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-					<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"
-						   style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"
-						   class="mcnTextContentContainer">
-						<tbody>
-						<tr>
-							<td valign="top" class="mcnTextContent"
-								style="padding-top: 30px;padding-right: 40px;padding-bottom: 0;padding-left: 40px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #828282;font-family: Helvetica;font-size: 12px;line-height: 20px;text-align: left;">
-								<!-- Footer content -->
-								<?php
-								$footer = sprintf(
-									/* translators: Placeholders add links to form addresses and settings page. */
-									esc_html__( 'To make sure you keep getting these emails, please add %1$s to your address book or whitelist us. Want out of the loop? %2$sUnsubscribe%3$s.', 'google-analytics-for-wordpress' ),
-									'<a href="mailto:' . $from_address . '" style="color:#4B9BF0;text-decoration:none;">' . $from_address . '</a>',
-									'<a href="' . $settings_tab_url . '" target="_blank" style="color:#4B9BF0;text-decoration:none;">',
-									'</a>'
-								);
-								echo apply_filters( 'mi_email_summaries_footer_text', $footer ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								?>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-	</td>
-</tr>
+} ?>
+			</div><!-- .mset-content -->
+			<div class="mset-footer">
+				<div class="mset-footer-content">
+					<?php if ( isset( $logo_image ) && $logo_image ) : ?>
+						<a href="<?php echo esc_url( $logo_link ); ?>">
+							<img src="<?php echo esc_url( $logo_image ); ?>" alt="MonsterInsights" class="mset-footer-logo-image">
+						</a>
+					<?php endif;
 
-</tbody>
-</table>
-</td>
-</tr>
-</table>
-<!--[if gte mso 9]>
-</td>
-</tr>
-</table>
-<![endif]-->
-<!-- // END TEMPLATE -->
-</td>
-</tr>
-</table>
-</center>
+					if ( isset( $settings_tab_url ) && $settings_tab_url ) :
+						$footer = sprintf(
+							/* translators: Placeholders adds wrapping span tags and links to settings page. */
+							esc_html__('%1$sThis email was auto-genetrated and sent from MonsterInsights.%2$s Learn how to %3$s disable it%4$s.', 'google-analytics-for-wordpress' ),
+						'<span>',
+						'</span><span>',
+						'<a href="' . $settings_tab_url . '" target="_blank" class="mset-footer-link">',
+						'</a></span>'
+						);
+
+						echo apply_filters( 'mi_email_summaries_footer_text', $footer ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the sprintf.
+					endif; ?>
+				</div>
+				<div class="mset-footer-bar">
+					<?php if ( isset( $left_image ) && $left_image ) : ?>
+						<a class="mset-footer-left-image" href="<?php echo esc_url( $logo_link ); ?>">
+							<img src="<?php echo esc_url( $left_image ); ?>" alt="MonsterInsights" class="mset-footer-left-image">
+						</a>
+					<?php endif;
+
+					if ( isset( $facebook_url ) && $facebook_url ) : ?>
+						<a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" class="mset-footer-link">
+							<span class="mset-icon mset-icon-facebook"></span>
+						</a>
+					<?php endif;
+
+					if ( isset( $linkedin_url ) && $linkedin_url ) : ?>
+						<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" class="mset-footer-link">
+							<span class="mset-icon mset-icon-linkedin"></span>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div><!-- .mset-container -->
+	</div><!-- .mset-wrapper -->
 </body>
 </html>

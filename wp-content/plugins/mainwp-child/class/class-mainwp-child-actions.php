@@ -51,12 +51,6 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      */
     protected static $connected_admin = null;
 
-    /**
-     * Public static variable.
-     *
-     * @var mixed Default null.
-     */
-    protected static $enable_actions_notification = null;
 
     /**
      * Old plugins.
@@ -72,6 +66,13 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      * */
     public $current_themes_info = array();
 
+
+        /**
+         * Private variable to hold time start.
+         *
+         * @var int
+         */
+    private static $exec_start = null;
 
     /**
      * Method get_class_name()
@@ -90,9 +91,8 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      * Run any time class is called.
      */
     public function __construct() {
-        static::$connected_admin             = get_option( 'mainwp_child_connected_admin', '' );
-        static::$enable_actions_notification = (int) get_option( 'mainwp_child_actions_notification_enable', 0 );
-        $this->init_actions                  = array(
+        static::$connected_admin = get_option( 'mainwp_child_connected_admin', '' );
+        $this->init_actions      = array(
             'upgrader_pre_install',
             'upgrader_process_complete',
             'activate_plugin',
@@ -115,7 +115,6 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
     public static function get_instance() {
         if ( null === static::$instance ) {
             static::$instance = new self();
-            static::get_actions_data();
         }
         return static::$instance;
     }
@@ -145,9 +144,8 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
         foreach ( $this->init_actions as $action ) {
             add_action( $action, array( $this, 'callback' ), 10, 99 );
         }
-        if ( 1 === static::$enable_actions_notification ) {
-            static::$enable_actions_notification = 0; // to do.
-        }
+
+        $this->init_exec_time();
     }
 
     /**
@@ -226,7 +224,6 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
             } elseif ( '' !== $username && $username !== static::$actions_data['connected_admin'] ) {
                 static::$actions_data = array( 'connected_admin' => $username ); // if it is not same the connected user then clear the actions data.
                 update_option( 'mainwp_child_actions_saved_data', static::$actions_data );
-                delete_option( 'mainwp_child_send_action_notification_next_time' );
             }
             static::check_actions_data();
         }
@@ -243,6 +240,7 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      * @return bool Return TRUE.
      */
     private function update_actions_data( $index, $data ) {
+        static::get_actions_data();
         $index                          = strval( $index );
         static::$actions_data[ $index ] = $data;
         update_option( 'mainwp_child_actions_saved_data', static::$actions_data );
@@ -561,7 +559,7 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
         $_plugins                     = $this->get_plugins();
         $plugins_to_delete            = array();
         $plugins_to_delete[ $plugin ] = isset( $_plugins[ $plugin ] ) ? $_plugins[ $plugin ] : array();
-        update_option( 'wp_mainwp_stream_plugins_to_delete', $plugins_to_delete );
+        update_option( 'wp_mainwp_child_actions_plugins_to_delete', $plugins_to_delete );
         return false;
     }
 
@@ -577,7 +575,7 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
             if ( ! isset( $_POST['action'] ) || 'delete-plugin' !== $_POST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification
                 return;
             }
-            $plugins_to_delete = get_option( 'wp_mainwp_stream_plugins_to_delete' );
+            $plugins_to_delete = get_option( 'wp_mainwp_child_actions_plugins_to_delete' );
             if ( ! $plugins_to_delete ) {
                 return;
             }
@@ -594,7 +592,7 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
                     );
                 }
             }
-            delete_option( 'wp_mainwp_stream_plugins_to_delete' );
+            delete_option( 'wp_mainwp_child_actions_plugins_to_delete' );
         }
     }
 
@@ -607,7 +605,7 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      * @return mixed bool|null.
      */
     public function callback_automatic_updates_complete( $update_results ) {
-        global $pagenow, $wp_version;
+        global $pagenow;
 
         if ( ! is_array( $update_results ) || ! isset( $update_results['core'] ) ) {
             return false;
@@ -615,11 +613,11 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
 
         $info = $update_results['core'][0];
 
-        $old_version  = $wp_version;
+        $old_version  = MainWP_Child_Server_Information_Base::get_wordpress_version();
         $new_version  = $info->item->version;
         $auto_updated = true;
 
-        $message = esc_html__( 'WordPress auto-updated to %s', 'stream' );
+        $message = esc_html__( 'WordPress auto-updated to %s', 'mainwp-child' );
 
         $this->save_actions(
             $message,
@@ -638,11 +636,10 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
          * Global variables.
          *
          * @global string $pagenow Current page.
-         * @global string $wp_version WordPress version.
          */
-        global $pagenow, $wp_version;
+        global $pagenow;
 
-        $old_version  = $wp_version;
+        $old_version  = MainWP_Child_Server_Information_Base::get_wordpress_version();
         $auto_updated = ( 'update-core.php' !== $pagenow );
 
         if ( $auto_updated ) {
@@ -766,6 +763,8 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
             return false;
         }
 
+        $userlogin = (string) ( ! empty( $user->user_login ) ? $user->user_login : '' );
+
         $user_role_label = '';
         $role            = '';
         $roles           = MainWP_Utility::instance()->get_roles();
@@ -775,28 +774,39 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
             $user_role_label = isset( $roles[ $role ] ) ? $roles[ $role ] : $role;
         }
 
-        $userlogin = (string) ( ! empty( $user->user_login ) ? $user->user_login : '' );
-
         $agent     = $this->get_current_agent();
         $meta_data = array(
-            'user_id'         => (int) $user_id,
+            'wp_user_id'      => (int) $user_id,
             'display_name'    => (string) $this->get_display_name( $user ),
-            'action_user'     => (string) $userlogin,
             'role'            => (string) $role,
             'user_role_label' => (string) $user_role_label,
             'agent'           => (string) $agent,
         );
 
-        if ( 'wp_cli' === $agent && function_exists( 'posix_getuid' ) ) {
-            $uid       = posix_getuid();
-            $user_info = posix_getpwuid( $uid );
-
-            $meta_data['system_user_id']   = (int) $uid;
-            $meta_data['system_user_name'] = (string) $user_info['name'];
+        $system_user = '';
+        if ( 'wp_cli' === $agent ) {
+            $system_user = 'wp_cli';
+            if ( is_callable( 'posix_getuid' ) && is_callable( 'posix_getpwuid' ) ) {
+                $uid                           = posix_getuid();
+                $user_info                     = posix_getpwuid( $uid );
+                $meta_data['system_user_id']   = (int) $uid;
+                $meta_data['system_user_name'] = (string) $user_info['name'];
+                if ( ! empty( $meta_data['system_user_name'] ) ) {
+                    $system_user = $meta_data['system_user_name'];
+                }
+            }
+        } elseif ( 'wp_cron' === $agent ) {
+            $system_user = 'wp_cron';
         }
 
+        if ( empty( $userlogin ) && ! empty( $system_user ) ) {
+            $userlogin = $system_user;
+        }
+
+        $meta_data['action_user'] = (string) $userlogin;
+
         // Prevent any meta with null values from being logged.
-        $other_meta = array_filter(
+        $extra_info = array_filter(
             $args,
             function ( $val ) {
                 return ! is_null( $val );
@@ -804,16 +814,14 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
         );
 
         // Add user meta to Stream meta.
-        $other_meta['meta_data'] = $meta_data;
+        $other_meta = array(
+            'user_meta'  => $meta_data,
+            'extra_info' => $extra_info,
+        );
 
-        $created = MainWP_Helper::get_timestamp();
+        $created = time();
 
         $action = (string) $action;
-
-        $new_action = 0;
-        if ( 1 === static::$enable_actions_notification ) {
-            $new_action = 1; // new to notification.
-        }
 
         $recordarr = array(
             'context'     => $context,
@@ -822,14 +830,35 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
             'created'     => $created,
             'summary'     => (string) vsprintf( $message, $args ),
             'meta_data'   => $other_meta,
-            'new'         => $new_action,
+            'duration'    => $this->get_exec_time(),
         );
         $index     = time() . rand( 1000, 9999 ); // phpcs:ignore -- ok for index.
         $this->update_actions_data( $index, $recordarr );
+    }
 
-        if ( 1 === $new_action ) {
-            update_option( 'mainwp_child_send_action_notification_next_time', time() + 5 * MINUTE_IN_SECONDS );
+    /**
+     * Method init_exec_time().
+     *
+     * Init execution time start value.
+     */
+    public function init_exec_time() {
+        if ( null === static::$exec_start ) {
+            static::$exec_start = microtime( true );
         }
+        return static::$exec_start;
+    }
+
+    /**
+     * Method get_exec_time().
+     *
+     * Get execution time start value.
+     */
+    public function get_exec_time() {
+        if ( null === static::$exec_start ) {
+            static::$exec_start = microtime( true );
+        }
+
+        return microtime( true ) - static::$exec_start; // seconds.
     }
 
 
@@ -838,7 +867,6 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      */
     public function delete_actions() {
         delete_option( 'mainwp_child_actions_saved_data' );
-        delete_option( 'mainwp_child_send_action_notification_next_time' );
         MainWP_Helper::write( array( 'success' => 'ok' ) );
     }
 
@@ -930,55 +958,5 @@ class MainWP_Child_Actions { //phpcs:ignore -- NOSONAR - multi method.
      */
     public function is_cron_enabled() {
         return ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) ? false : true;
-    }
-
-    /**
-     * Method send_installer_notification()
-     *
-     * To send email notification for plugins/themes/core change.
-     *
-     * @param array $data  Action Data.
-     */
-    public function send_actions_notification( $data ) {
-
-        if ( 1 !== static::$enable_actions_notification ) {
-            return;
-        }
-
-        $username = get_option( 'mainwp_child_connected_admin', '' );
-        $user     = get_user_by( 'login', $username );
-        $email    = ! empty( $user->user_email ) ? $user->user_email : '';
-
-        if ( empty( $email ) ) {
-            return;
-        }
-
-        $actions = static::get_actions_data();
-
-        ksort( $actions );
-        // site info.
-        $blog = get_bloginfo( 'name' );
-
-        $content = '<div>Actions notification</div><div></div><br>';
-
-        foreach ( $actions as $index => $data ) {
-            if ( 'connected_admin' === strval( $index ) ) {
-                continue;
-            }
-            if ( is_array( $data ) && ! empty( $data['action_user'] ) && isset( $data['new'] ) && 1 === (int) $data['new'] ) {
-                $content    .= $data['action_user'] . ' - ' . $data['summray'] . ' - ' . MainWP_Helper::format_timestamp( ( $data['created'] ) ) . '<br>';
-                $data['new'] = 0;
-                $this->update_actions_data( $index, $data );
-            }
-        }
-
-        MainWP_Utility::instance()->send_wp_mail(
-            $email,
-            'MainWP - Actions notification: ' . $blog,
-            MainWP_Child_Format::format_email( $content ),
-            array(
-                'content-type: text/html',
-            )
-        );
     }
 }

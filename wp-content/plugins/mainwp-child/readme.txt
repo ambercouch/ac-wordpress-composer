@@ -5,9 +5,9 @@ Author: mainwp
 Author URI: https://mainwp.com
 Plugin URI: https://mainwp.com
 Requires at least: 6.2
-Tested up to: 6.6.1
+Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 5.2
+Stable tag: 5.4.0.11
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,25 +21,25 @@ The MainWP Child plugin creates a secure connection between your WordPress sites
 
 With MainWP Child and the MainWP Dashboard, you can update themes, plugins, and WordPress core across all connected sites, perform backups and security scans, manage posts, pages, users, and comments in bulk, and integrate with popular plugins like WooCommerce, Yoast SEO, and Wordfence.
 
-The [MainWP Dashboard](https://wordpress.org/plugins/mainwp/) also offers features for cost tracking and client management, making it an all-in-one solution for agencies and freelancers looking to manage WP sites efficiently. The functionality can be further extended with a growing library of [MainWP extensions](https://mainwp.com/mainwp-extensions/).
+The [MainWP Dashboard](https://wordpress.org/plugins/mainwp/) also offers features for cost tracking and client management, making it an all-in-one solution for agencies and freelancers looking to manage WP sites efficiently. The functionality can be further extended with a growing library of [MainWP Add-ons](https://mainwp.com/mainwp-add-ons/).
 
 [MainWP](https://mainwp.com/) is the ideal solution for freelancers and agencies managing client sites, developers and designers working on multiple projects, marketers and content managers overseeing various websites, and anyone responsible for maintaining multiple WordPress sites.
 
 = Why Choose MainWP for WordPress Management? =
 MainWP is 100% free and open-source, with no monthly fees, even for unlimited sites.
 
-As a self-hosted solution, it offers maximum control and privacy. MainWP provides comprehensive site management features and is highly customizable with extensions and developer hooks.  The MainWP Child plugin even comes with its own privacy policy to guarantee your [privacy while using MainWP](https://mainwp.com/mainwp-plugin-privacy-policy/).
+As a self-hosted solution, it offers maximum control and privacy. MainWP provides comprehensive site management features and is highly customizable with add-ons and developer hooks.  The MainWP Child plugin even comes with its own privacy policy to guarantee your [privacy while using MainWP](https://mainwp.com/mainwp-plugin-privacy-policy/).
 
 All of this makes MainWP the best non-SaaS alternative to ManageWP, InfiniteWP, WPRemote, and WP Umbrella.
 
 = Key Features =
-MainWP Child, combined with the MainWP Dashboard, offers secure management of unlimited WordPress sites, one-click updates for plugins, themes, and WordPress core, automated backups and security monitoring, bulk management of posts, pages, users, and comments, white-labeling and custom branding options, and [powerful extensions](https://mainwp.com/mainwp-extensions/) for WooCommerce, Yoast SEO, Wordfence, and more.
+MainWP Child, combined with the MainWP Dashboard, offers secure management of unlimited WordPress sites, one-click updates for plugins, themes, and WordPress core, automated backups and security monitoring, bulk management of posts, pages, users, and comments, white-labeling and custom branding options, and [powerful add-ons](https://mainwp.com/mainwp-add-ons/) for WooCommerce, Yoast SEO, Wordfence, and more.
 
-= Expand Your MainWP Dashboard with Extensions =
-MainWP offers a growing library of extensions that add advanced functionality to your Dashboard. From client reporting to SEO management, MainWP extensions provide the tools you need to deliver top-notch service to your clients.
+= Expand Your MainWP Dashboard with Add-ons =
+MainWP offers a growing library of add-ons that add advanced functionality to your Dashboard. From client reporting to SEO management, MainWP add-ons provide the tools you need to deliver top-notch service to your clients.
 
 = Join the MainWP Community =
-MainWP is more than just a plugin; it's a thriving community of WordPress professionals. Join our [MainWP Users Facebook Group](https://www.facebook.com/groups/MainWPUsers/) to connect with other users, share advice, and stay updated on the latest features and extensions.
+MainWP is more than just a plugin; it's a thriving community of WordPress professionals. Join our [MainWP Users Facebook Group](https://www.facebook.com/groups/MainWPUsers/) to connect with other users, share advice, and stay updated on the latest features and add-ons.
 
 = Developer-Friendly =
 MainWP is built with developers in mind. We provide extensive documentation, hooks, and an API to help you create custom extensions and integrations for the MainWP platform.  We have a site at [MainWP.dev](https://mainwp.dev) dedicated to MainWP developers.
@@ -49,8 +49,8 @@ Take control of your WordPress site management with MainWP and the MainWP Child 
 
 = Learn More About MainWP =
 - [MainWP Website](https://mainwp.com)
-- [MainWP Documentation](https://kb.mainwp.com)
-- [MainWP Support](https://managers.mainwp.com/c/support/mainwp-support/)
+- [MainWP Documentation](https://mainwp.com/kb/)
+- [MainWP Support](https://community.mainwp.com/c/support/mainwp-support/)
 - [MainWP Blog](https://mainwp.com/blog/)
 - [MainWP on GitHub](https://github.com/mainwp/)
 
@@ -111,14 +111,114 @@ We have an extensive FAQ with more questions and answers [here](https://mainwp.c
 
 == Changelog ==
 
-= 5.2 - 8-28-2024 =
 
-* Fixed: Issue with inserting multiple galleries in a post.
-* Fixed: Problem with cloning sites on specific hosting environments.
-* Fixed: Issue causing the post featured image to be removed after editing.
-* Updated: System requirements checks to ensure they are current and relevant.
-* Removed: Irrelevant system requirements checks for a streamlined setup process.
+= 5.4.0.11 - Maintenance Release - 7-8-2025 =
 
-[See Video Changelog](https://www.youtube.com/watch?v=GrA_faZKcfQ)
+* Fixed: Corrected the upload filesize limit display message on the "Upload/Clone" page to show the accurate maximum file size.
+
+
+= 5.4.0.10 - Maintenance Release - 6-3-2025 =
+
+* Fixed: Restored cache and minified file clearing in Cache Control add-on when using WP Fastest Cache plugin.
+
+= 5.4.0.9 - Maintenance Release - 5-27-2025 =
+
+* Fixed: Resolved an issue where sites would lose connection after being cloned and require manual reconnection. [(#792)](https://github.com/mainwp/mainwp/issues/792)
+* Fixed: Corrected the Solid Security plugin hiding feature to ensure complete concealment across all admin areas.
+
+= 5.4.0.8 - Maintenance Release - 5-20-2025 =
+
+* Fixed: Resolved a critical error occurring when updating or installing BackWPup plugin version 5.2.2. The issue was caused by undocumented changes in the plugin. [(#789)](https://github.com/mainwp/mainwp/issues/789)
+
+= 5.4.0.7 - Maintenance Release - 5-13-2025 =
+
+* Fixed: Resolved caching issue in the `mainwp_security` option to ensure reliable option retrieval. [(#785)](https://github.com/mainwp/mainwp/issues/785)
+* Added: Introduced batching for plugin vulnerability checks to improve efficiency.
+* Added: Implemented scheduled background tasks to continue vulnerability scanning in batches.
+* Added: Enabled external customization of client report data via new filter hooks.
+* Updated: Enhanced WooCommerce Status data retrieval with compatibility for newer versions. [(#780)](https://github.com/mainwp/mainwp/issues/780)
+* Updated: Improved plugin vulnerability checks by updating the NVD NIST API query to better match plugins, increasing the accuracy of vulnerability detection.
+
+= 5.4.0.6 - Maintenance Release - 4-22-2025 =
+
+* Updated: Implemented the `time()` function to capture Sites Changes event timestamps instead of a custom method, resolving display issues caused by timezone differences.
+* Updated: Implemented `wp_get_wp_version()` method to retrieve WordPress version instead of using the global `$wp_version` variable for improved code reliability. (#762)[https://github.com/mainwp/mainwp/issues/762]
+
+= 5.4.0.5 - Maintenance Release - 4-15-2025 =
+
+* Fixed: Site Changes filter "Users" filter showing only some users.
+* Fixed: When adding a child site that has never had Wordfence plugin installed, applying settings causes an error [(#755)](https://github.com/mainwp/mainwp/issues/755).
+
+= 5.4.0.4 - Maintenance Release - 4-3-2025 =
+
+* Fixed: PHP error caused by the disabled posix_getpwuid() function.
+* Fixed: Issue with the %site% token not working correctly in UpdraftPlus extension settings.
+* Updated: Enhanced WP Core vulnerability checks for better compatibility with the NIST NVD API.
+
+= 5.4.0.3 - 3-24-2025 =
+
+* Fixed: Conflict with the Git Updater plugin
+* Fixed: Issue with querying extra data in Non-MainWP Changes logs
+
+= 5.4.0.2 - 3-12-2025 =
+
+* Updated: Site Hardening Inactive themes check now allows one default WordPress theme before raising an alert.
+
+= 5.4.0.1 - 3-6-2025 =
+
+* Fixed: Detection of inactive themes in the Site Hardening process
+
+= 5.4 - 3-5-2025 =
+
+* Added: Support for the new column displaying the child site language as a matching flag.
+* Added: Support for the new column warning if a child site is not indexable by search engines.
+* Added: Support for the option to select which data to include in the sync process.
+* Added: Improved WP Debug Mode status check logic.
+* Added: Support for the new Regression Testing extension
+* Updated: Site Hardening checks, removing outdated ones and introducing new ones.
+
+= 5.3.5 - 2-6-2025 =
+
+* Added: [Pull Request #441](https://github.com/mainwp/mainwp-child/pull/441) by [aamplugin](https://github.com/aamplugin) for future AAM integration.
+* Added: Support of the "Delay JavaScript Execution" WP Rocket option.
+* Updated: Improved the Security Hardening check to better detect if WP_DEBUG is enabled.
+
+= 5.3.4 - 1-27-2025 =
+
+* Security Fix: Improved authentication security to ensure password verification cannot be bypassed on sites where the MainWP Child plugin is active but not connected to a Dashboard and not set to require Unique Security ID verification.
+
+= 5.3.3 - 12-27-2024 =
+
+* Fixed: Incorrect feedback message displayed when running updates.
+* Fixed: Issue causing WP Cron scheduled events to fail.
+
+= 5.3.2 - 12-26-2024 =
+
+* Updated: Compatibility with the latest WP Rocket plugin settings.
+
+= 5.3.1 - 12-12-2024 =
+
+* Fixed: Typo in the MainWP Child plugin settings page ([#426](https://github.com/mainwp/mainwp-child/pull/426)) - thanks to [Isaac Russell](https://github.com/sisaacrussell)
+* Added: Support for the new Vulnerability Checker service ([#419](https://github.com/mainwp/mainwp-child/pull/419)) - thanks to [Asif Zaman](https://github.com/bytepattern)
+* Updated: WPvivid Backups extension support with new feature improvements ([#422](https://github.com/mainwp/mainwp-child/pull/422)) - thanks to [LiuGeng399](https://github.com/LiuGeng399)
+* Updated: Redirection to the MainWP Child settings page now occurs only when the plugin is activated manually from the Plugins page.
+
+= 5.3 - 11-26-2024 =
+
+* Security Enhancement: Enhanced the pre-connection process with additional security features to address recommendations from a security company. [Read more](https://mainwp.com/addressing-misguided-security-reports-why-mainwp-is-updating-its-connection-process/)
+* Added: Password authorization requirement when connecting a site to enhance security.
+* Added: "Clear Connection Data" button to unlock a site for a new connection.
+* Added: Automatic deactivation of the MainWP Child plugin after a preset period if the site is not connected to a dashboard.
+* Added: Translations for French (fr_FR), Spanish (es_ES), German (de_DE), and Portuguese (pt_BR).
+* Updated: Plugin settings page design for improved consistency with the MainWP Dashboard plugin.
+* Updated: Resetting of the `pubkey` value to ensure it remains intact when the plugin is deactivated.
+* Updated: Compatibility with the latest WP Rocket plugin settings.
+
+[See Video Changelog](https://youtu.be/DF0vC1RiCVI)
 
 [See changelog for all versions.](https://mainwp.com/mainwp-child-changelog.txt)
+
+= 5.2.1 - 11-20-2024 =
+
+* Added: After activating the MainWP plugin, users are now redirected to the MainWP Settings page for a smoother onboarding experience.
+* Updated: The Unique Security ID option is now enabled by default to enhance security for all MainWP installations.

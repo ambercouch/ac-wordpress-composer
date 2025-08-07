@@ -18,16 +18,18 @@ class Yoast_Form {
 	/**
 	 * Instance of this class
 	 *
-	 * @var Yoast_Form
 	 * @since 2.0
+	 *
+	 * @var Yoast_Form
 	 */
 	public static $instance;
 
 	/**
 	 * The short name of the option to use for the current page.
 	 *
-	 * @var string
 	 * @since 2.0
+	 *
+	 * @var string
 	 */
 	public $option_name;
 
@@ -591,7 +593,7 @@ class Yoast_Form {
 	 * @return void
 	 */
 	public function hidden( $variable, $id = '', $val = null ) {
-		if ( is_null( $val ) ) {
+		if ( $val === null ) {
 			$val = $this->get_field_value( $variable, '' );
 		}
 
@@ -721,6 +723,8 @@ class Yoast_Form {
 	 * Media input.
 	 *
 	 * @since 2.0
+	 * @deprecated 23.5
+	 * @codeCoverageIgnore
 	 *
 	 * @param string $variable Option name.
 	 * @param string $label    Label message.
@@ -729,6 +733,9 @@ class Yoast_Form {
 	 * @return void
 	 */
 	public function media_input( $variable, $label, $attr = [] ) {
+
+		_deprecated_function( __METHOD__, 'Yoast SEO 23.5' );
+
 		$val      = $this->get_field_value( $variable, '' );
 		$id_value = $this->get_field_value( $variable . '_id', '' );
 
@@ -749,8 +756,6 @@ class Yoast_Form {
 
 		$id_field_id = 'wpseo_' . $var_esc . '_id';
 
-		$disabled_attribute = $this->get_disabled_attribute( $variable, $attr );
-
 		echo '<span>';
 			echo '<input',
 				' class="textinput"',
@@ -760,22 +765,6 @@ class Yoast_Form {
 				' value="', esc_attr( $val ), '"',
 				' readonly="readonly"',
 				' /> ';
-			echo '<input',
-				' id="wpseo_', $var_esc, '_button"', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output escaped before.
-				' class="wpseo_image_upload_button button"',
-				' type="button"',
-				' value="', esc_attr__( 'Upload Image', 'wordpress-seo' ), '"',
-				' data-target-id="', esc_attr( $id_field_id ), '"',
-				// phpcs:ignore WordPress.Security.EscapeOutput -- Reason: $disabled_attribute output is hardcoded.
-				$disabled_attribute,
-				' /> ';
-			echo '<input',
-				' class="wpseo_image_remove_button button"',
-				' type="button"',
-				' value="', esc_attr__( 'Clear Image', 'wordpress-seo' ), '"',
-				// phpcs:ignore WordPress.Security.EscapeOutput -- Reason: $disabled_attribute output is hardcoded.
-				$disabled_attribute,
-				' />';
 			echo '<input',
 				' type="hidden"',
 				' id="', esc_attr( $id_field_id ), '"',

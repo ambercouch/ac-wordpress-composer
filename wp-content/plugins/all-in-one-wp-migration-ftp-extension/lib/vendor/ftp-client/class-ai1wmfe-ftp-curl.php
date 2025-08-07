@@ -466,6 +466,41 @@ class Ai1wmfe_FTP_Curl implements Ai1wmfe_FTP_Interface {
 	}
 
 	/**
+	 * Get file content
+	 *
+	 * @param  string  $remote_file_path Remote file path
+	 *
+	 * @return string
+	 */
+	public function get_file_content( $remote_file_path ) {
+		$remote_file_path = $this->sanitize_path( $remote_file_path );
+
+		try {
+			$this->remote_file_path = $remote_file_path;
+
+			$options = array();
+
+			/**
+			 * The $handler parameter was added in PHP version 5.5.0 breaking backwards compatibility.
+			 * If we are using PHP version lower than 5.5.0, we need to shift the arguments.
+			 *
+			 * @see http://php.net/manual/en/function.curl-setopt.php#refsect1-function.curl-setopt-changelog
+			 */
+			if ( version_compare( PHP_VERSION, '5.5.0', '>=' ) ) {
+				$options[ CURLOPT_NOPROGRESS ]       = false;
+				$options[ CURLOPT_PROGRESSFUNCTION ] = array( $this, 'download_file_progress_callback_php55' );
+			} elseif ( version_compare( PHP_VERSION, '5.3.0', '>=' ) ) {
+				$options[ CURLOPT_NOPROGRESS ]       = false;
+				$options[ CURLOPT_PROGRESSFUNCTION ] = array( $this, 'download_file_progress_callback_php53' );
+			}
+
+			return $this->make_request( sprintf( '/%s/%s', $this->directory, $remote_file_path ), $options );
+		} catch ( Ai1wmfe_Error_Exception $e ) {
+			throw $e;
+		}
+	}
+
+	/**
 	 * Download file progress callback (PHP >= 5.5.0)
 	 *
 	 * @param  resource $handler              cURL handler

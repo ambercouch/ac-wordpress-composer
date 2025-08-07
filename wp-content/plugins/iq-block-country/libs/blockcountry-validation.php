@@ -140,6 +140,67 @@ function iqblockcountry_check_geoapikey($iqbc_input)
 /*
  * Check if GeoIP API key is correct.
  */
+function iqblockcountry_check_geoapilicense($iqbc_input)
+{
+    // Check first if API key is empty....
+    if (!empty($iqbc_input)) {    
+    
+        //$iqbc_license = filter_var($iqbc_input, FILTER_SANITIZE_STRING);
+        $iqbc_license = "hashed-" . hash_hmac('sha256', $iqbc_input, GEOIPHASH);
+
+        $iqbc_url = GEOIPAPILICENSEURL . $iqbc_license . "?label=" . home_url();
+        $iqbc_args = array(
+            'headers'     => array(
+                'Authorization' => 'Basic ' . GEOIPAPITOKEN,
+            ),
+        ); 
+        
+        $iqbc_result = wp_remote_get( $iqbc_url, $iqbc_args );
+        $res_body = wp_remote_retrieve_body($iqbc_result);
+        $iqbc_json = json_decode($res_body, true);
+        
+        $iqbc_message = "";
+        $iqbc_type = "updated";
+        if (is_wp_error($iqbc_result) ) {
+
+            return false;
+        }
+        elseif ($iqbc_json['data']['status'] == 404 || $iqbc_json['data']['status'] == 405 || $iqbc_json['data']['status'] == 401 || $iqbc_json['data']['status'] == 403 ) {
+            echo "Error";
+            $iqbc_message = esc_html($iqbc_json['message']);
+            $iqbc_type = "error";
+            $iqbc_input = false;
+            $iqbc_license = "";
+         }
+         elseif ($iqbc_json['success'] == 1)
+        {
+                iqblockcountry_find_geoip_location();   
+                $iqbc_url2 = GEOIPAPILICENSECHECKURL;
+                $iqbc_result2 = wp_remote_post(
+                    $iqbc_url2,
+                    array(
+                        'body' => array(
+                            'api-key' => $iqbc_license,
+                            'label' => home_url()
+                       )
+                    )
+                );    
+
+                $iqbc_message =  esc_html('Setting saved.', 'iq-block-country');
+                $iqbc_type = "updated";
+        }
+       
+            add_settings_error('iqblockcountry_geoipapi_error', esc_attr('settings_updated'), $iqbc_message, $iqbc_type);
+ 
+        return $iqbc_input;
+    }
+    return "";
+}
+
+
+/*
+ * Check if GeoIP API key is correct.
+ */
 function iqblockcountry_check_adminapikey($iqbc_input)
 {
     
@@ -186,6 +247,8 @@ function iqblockcountry_check_adminapikey($iqbc_input)
     }
     return "";
 }
+
+
 
 
 /*

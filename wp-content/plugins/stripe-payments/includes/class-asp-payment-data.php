@@ -166,6 +166,13 @@ class ASP_Payment_Data {
 		return $shipping_address;
 	}
 
+	public function get_customer_details() {
+		if ( false === $this->customer_obj ) {
+			$this->customer_obj = $this->obj->customer;
+		}
+		return $this->customer_obj;
+	}
+
 	protected function load_from_obj() {
 		try {
 			if ( ASP_Utils::use_internal_api() ) {
@@ -190,6 +197,26 @@ class ASP_Payment_Data {
 			$this->last_error_obj = $e;
 			return false;
 		}
+
+		// Check if associated charges aren't set for this payment intent object.
+		if( !isset ( $obj->charges )  ){
+			//Using the new Stripe API version 2022-11-15 or later
+			ASP_Debug_Logger::log( 'Using the Stripe API version 2022-11-15 or later for Payment Intents object. Need to retrieve the charge object separately.' );
+			//For Stripe API version 2022-11-15 or later, the charge object is not included in the payment intents object. It needs to be retrieved using the charge ID.
+			try {
+				//Retrieve the charges related to this payment intent as Stripe\Collection object.
+				$charges = \Stripe\Charge::all([
+					'payment_intent' => $this->obj_id,
+				]);;
+
+				// Add the charges to the payment intent object.
+				$obj->charges = $charges;
+			} catch (\Stripe\Exception\ApiErrorException $e) {
+				// Handle the error
+				ASP_Debug_Logger::log( 'Stripe error occurred trying to retrieve the associated charges for the payment intent. ' . $e->getMessage(), false );
+			}
+		}
+
 		$this->obj = $obj;
 	}
 

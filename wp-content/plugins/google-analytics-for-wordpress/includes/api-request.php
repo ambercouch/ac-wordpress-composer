@@ -161,7 +161,7 @@ final class MonsterInsights_API_Request {
 	 *
 	 * @var string
 	 */
-	protected $site_url;
+	public $site_url;
 
 	/**
 	 * Additional data to add to request body
@@ -295,7 +295,7 @@ final class MonsterInsights_API_Request {
 
 		$body['wp_timezone'] = wp_timezone_string(); // Timezone from WP Settings.
 
-		$body['timezone'] = date( 'e' );
+		$body['timezone'] = date( 'e' ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- We need this to depend on the runtime timezone.
 
 		$body['network'] = $this->network ? 'network' : 'site';
 
@@ -304,7 +304,7 @@ final class MonsterInsights_API_Request {
 		// This filter will be removed in the future.
 		$body = apply_filters( 'monsterinsights_api_request_body', $body );
 
-        $body = array_merge($body, $extra_params);
+		$body = array_merge($body, $extra_params);
 
 		$string = http_build_query( $body, '', '&' );
 
@@ -318,23 +318,17 @@ final class MonsterInsights_API_Request {
 			'MIAPI-Sender'  => 'WordPress',
 		);
 
-		// if ( $this->apikey ) {
-		// $headers['X-MonsterInsights-ApiKey'] = $this->apikey;
-		// }
-
 		// Setup data to be sent to the API.
 		$data = array(
 			'headers'    => $headers,
 			'body'       => $body,
-			'timeout'    => 3000,
+			'timeout'    => 3000, // phpcs:ignore
 			'user-agent' => 'MI/' . MONSTERINSIGHTS_VERSION . '; ' . $this->site_url,
 			'sslverify'  => false,
 		);
 
 		// Perform the query and retrieve the response.
 		$response = 'GET' == $this->method ? wp_remote_get( esc_url_raw( $this->url ) . '?' . $string, $data ) : wp_remote_post( esc_url_raw( $this->url ), $data );
-
-		// return new WP_Error( 'debug', '<pre>' . var_export( $response, true ) . '</pre>' );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;

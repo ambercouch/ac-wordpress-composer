@@ -83,6 +83,14 @@ interface Ai1wmfe_FTP_Interface {
 	public function download_file( $local_file_path, $remote_file_path );
 
 	/**
+	 * Get file content
+	 *
+	 * @param  string  $remote_file_path Remote file path
+	 * @return string
+	 */
+	public function get_file_content( $remote_file_path );
+
+	/**
 	 * Download file chunk
 	 *
 	 * @param  resource $file_stream      File stream

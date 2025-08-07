@@ -161,6 +161,15 @@ class RDA_Remove_Access {
 		 *         ),
 		 *     ),
 		 *  );
+		 *
+		 * You can also allow relative paths to be defined as either the key or value.
+		 *
+		 * Example: To allow the Wordfence Login Security 2FA page, with a URL of admin.php?page=WFLS, the array would be:
+		 *
+		 * array(
+		 *    'admin.php?page=WFLS' => array(),
+		 * );
+		 *
 		 * @param array $allowlist The allowlist of admin pages.
 		 */
 		$allowlist = apply_filters( 'rda_allowlist', $allowlist );
@@ -176,13 +185,31 @@ class RDA_Remove_Access {
 	 * @return bool True if the current page is in the allowlist, false otherwise.
 	 */
 	private function is_allowed_page() {
+
+		$allowlist = $this->get_allowlist();
+
+		// Allow full URLs to be defined as either the key or value.
+		foreach ( $allowlist as $allowed_url_key => $allowed_url_value ) {
+
+			if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+				continue;
+			}
+
+			if ( $allowed_url_key === $_SERVER['REQUEST_URI'] ) {
+				return true;
+			}
+
+			if ( $allowed_url_value === $_SERVER['REQUEST_URI'] ) {
+				return true;
+			}
+		}
+
+		/** @global string $pagenow */
 		global $pagenow;
 
 		if ( empty( $pagenow ) ) {
 			return false;
 		}
-
-		$allowlist = $this->get_allowlist();
 
 		if ( ! array_key_exists( $pagenow, $allowlist ) ) {
 			return false;

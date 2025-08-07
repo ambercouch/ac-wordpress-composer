@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 namespace MonsterInsightsHeadlineToolPlugin;
 
 // setup defines

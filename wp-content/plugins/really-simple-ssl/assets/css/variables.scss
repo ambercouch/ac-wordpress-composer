@@ -49,6 +49,7 @@ $rsp-break-xxl: 1599px;
   --rsp-red-faded: #fbebed;
   --rsp-pink-faded: #fceff5;
   --rsp-wp-blue-faded: #c6e0ef;
+  --rsp-simplybook-blue: #06ADEF;
 
   --rsp-background-block-color: var(--rsp-white);
   --rsp-background-color: #f0f0f1; //#f0f0f1 is the default wordpress bg color
@@ -101,14 +102,10 @@ $rsp-break-xxl: 1599px;
 @mixin rsssl-block-padding {
   padding: var(--rsp-spacing-m) var(--rsp-spacing-l);
   @media screen and (max-width: $rsp-break-m) {
-    & {
-      padding: var(--rsp-spacing-xs) var(--rsp-spacing-s);
-    }
+    padding: var(--rsp-spacing-xs) var(--rsp-spacing-s);
   }
   @media screen and (max-width: $rsp-break-s) {
-    & {
-      padding: var(--rsp-spacing-xs) var(--rsp-spacing-s);
-    }
+    padding: var(--rsp-spacing-xs) var(--rsp-spacing-s);
   }
 
   //@media screen and (max-width: $rsp-break-xs) {
@@ -120,28 +117,20 @@ $rsp-break-xxl: 1599px;
   padding-block: var(--rsp-spacing-m);
 
   @media screen and (max-width: $rsp-break-m) {
-    & {
-      padding-block: var(--rsp-spacing-xs);
-    }
+    padding-block: var(--rsp-spacing-xs);
   }
   @media screen and (max-width: $rsp-break-s) {
-    & {
-      padding-block: var(--rsp-spacing-xxs);
-    }
+    padding-block: var(--rsp-spacing-xxs);
   }
 }
 
 @mixin rsssl-inline-block-padding {
   padding-inline: var(--rsp-spacing-l);
   @media screen and (max-width: $rsp-break-m) {
-    &{
-      padding-inline: var(--rsp-spacing-m);
-    }
+    padding-inline: var(--rsp-spacing-m);
   }
   @media screen and (max-width: $rsp-break-s) {
-    & {
-      padding-inline: var(--rsp-spacing-s);
-    }
+    padding-inline: var(--rsp-spacing-s);
   }
 }
 

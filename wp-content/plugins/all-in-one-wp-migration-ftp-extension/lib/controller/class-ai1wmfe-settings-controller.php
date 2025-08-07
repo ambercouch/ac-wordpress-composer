@@ -63,6 +63,7 @@ class Ai1wmfe_Settings_Controller {
 				'backups'              => get_option( 'ai1wmfe_ftp_backups', false ),
 				'total'                => get_option( 'ai1wmfe_ftp_total', false ),
 				'days'                 => get_option( 'ai1wmfe_ftp_days', false ),
+				'incremental'          => $model->get_incremental(),
 				'file_chunk_size'      => get_option( 'ai1wmfe_ftp_file_chunk_size', AI1WMFE_DEFAULT_FILE_CHUNK_SIZE ),
 			),
 			AI1WMFE_TEMPLATES_PATH
@@ -222,6 +223,13 @@ class Ai1wmfe_Settings_Controller {
 				$model->set_days( (int) $params['ai1wmfe_ftp_days'] );
 			} else {
 				$model->set_days( 0 );
+			}
+
+			// Set incremental
+			if ( ! empty( $params['ai1wmfe_ftp_incremental'] ) ) {
+				$model->set_incremental( 1 );
+			} else {
+				$model->set_incremental( 0 );
 			}
 
 			// Set file chunk size

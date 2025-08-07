@@ -35,6 +35,7 @@ class Ai1wmve_Reset_Themes {
 	 * Order matters - values (versions) must go from newest to oldest version
 	 */
 	protected static $default_themes = array(
+		'twentytwentyfive'  => '6.7',
 		'twentytwentyfour'  => '6.4',
 		'twentytwentythree' => '6.1',
 		'twentytwentytwo'   => '5.9',

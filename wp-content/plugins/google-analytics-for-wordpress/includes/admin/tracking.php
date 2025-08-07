@@ -72,10 +72,10 @@ class MonsterInsights_Tracking {
 			$usesauth = 'Network';
 		}
 
-        //  Get auth connection type
-        $auth = MonsterInsights()->auth;
+		//  Get auth connection type
+		$auth = MonsterInsights()->auth;
 
-        $auth_mode = 'v4';
+		$auth_mode = 'v4';
 
 		$data['php_version']    = phpversion();
 		$data['mi_version']     = MONSTERINSIGHTS_VERSION;
@@ -98,8 +98,8 @@ class MonsterInsights_Tracking {
 		$data['usagetracking']  = get_option( 'monsterinsights_usage_tracking_config', false );
 		$data['usercount']      = function_exists( 'get_user_count' ) ? get_user_count() : 'Not Set';
 		$data['usesauth']       = $usesauth;
-		$data['timezoneoffset'] = date( 'P' );
-        $data['ga_auth_mode']   = $auth_mode;
+		$data['timezoneoffset'] = date( 'P' ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- We need this to depend on the runtime timezone.
+		$data['ga_auth_mode']   = $auth_mode;
 
 		// Retrieve current plugin information
 		if ( ! function_exists( 'get_plugins' ) ) {
@@ -142,7 +142,7 @@ class MonsterInsights_Tracking {
 
 		$request = wp_remote_post( 'https://miusage.com/v1/checkin/', array(
 			'method'      => 'POST',
-			'timeout'     => 5,
+			'timeout'     => 5, // phpcs:ignore
 			'redirection' => 5,
 			'httpversion' => '1.1',
 			'blocking'    => false,
@@ -168,9 +168,9 @@ class MonsterInsights_Tracking {
 			$tracking['minute']   = rand( 0, 59 );
 			$tracking['second']   = rand( 0, 59 );
 			$tracking['offset']   = ( $tracking['day'] * DAY_IN_SECONDS ) +
-			                        ( $tracking['hour'] * HOUR_IN_SECONDS ) +
-			                        ( $tracking['minute'] * MINUTE_IN_SECONDS ) +
-			                        $tracking['second'];
+									( $tracking['hour'] * HOUR_IN_SECONDS ) +
+									( $tracking['minute'] * MINUTE_IN_SECONDS ) +
+									$tracking['second'];
 			$tracking['initsend'] = strtotime( "next sunday" ) + $tracking['offset'];
 
 			wp_schedule_event( $tracking['initsend'], 'weekly', 'monsterinsights_usage_tracking_cron' );
@@ -188,7 +188,7 @@ class MonsterInsights_Tracking {
 		}
 
 		// Send an intial check in on settings save
-		$anonymous_data = isset( $_POST['anonymous_data'] ) ? 1 : 0;
+		$anonymous_data = isset( $_POST['anonymous_data'] ) ? 1 : 0; // phpcs:ignore
 		if ( $anonymous_data ) {
 			$this->send_checkin( true, true );
 		}

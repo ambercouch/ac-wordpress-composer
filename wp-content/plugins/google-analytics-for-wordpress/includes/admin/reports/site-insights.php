@@ -29,7 +29,7 @@ final class MonsterInsights_Report_Site_Insights extends MonsterInsights_Report 
 	 * @since 7.11.0
 	 */
 	public function __construct() {
-		$this->title = __( 'Site Insights', 'ga-premium' );
+		$this->title = __( 'Site Insights', 'google-analytics-premium' );
 
 		add_filter( 'monsterinsights_report_use_cache', array( $this, 'use_cache' ), 10, 2 );
 		add_filter( 'monsterinsights_report_transient_expiration', array( $this, 'set_cache_expiration' ), 10, 2 );

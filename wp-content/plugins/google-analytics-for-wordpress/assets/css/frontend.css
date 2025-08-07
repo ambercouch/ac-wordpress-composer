@@ -1,6 +1,9 @@
 /*!***************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/assets/scss/monsterinsights/frontend-Lite.scss ***!
   \***************************************************************************************************************************************************************************************************************************************************************************/
+.monsterinsights-inline-popular-posts.monsterinsights-popular-posts-styled img {
+  max-width: 100%;
+}
 .monsterinsights-inline-popular-posts.monsterinsights-popular-posts-styled a.monsterinsights-inline-popular-posts-title {
   text-decoration: none;
   box-shadow: none;
@@ -91,6 +94,9 @@
 .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled {
   margin-bottom: 24px;
 }
+.monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled img {
+  max-width: 100%;
+}
 .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled .monsterinsights-widget-popular-posts-title,
 .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled .monsterinsights-widget-popular-posts-list a {
   text-decoration: none;
@@ -167,11 +173,28 @@
   margin-left: 0;
   margin-right: 0;
 }
+.monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled.monsterinsights-widget-popular-posts-columns-2 .monsterinsights-widget-popular-posts-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 12px;
+}
+.monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled.monsterinsights-widget-popular-posts-columns-2 .monsterinsights-widget-popular-posts-list li {
+  margin: 0 !important;
+  box-sizing: border-box;
+  width: 100%;
+  list-style: none;
+}
 .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled.monsterinsights-widget-popular-posts-columns-3 .monsterinsights-widget-popular-posts-list {
   margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 12px;
 }
 .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled.monsterinsights-widget-popular-posts-columns-3 .monsterinsights-widget-popular-posts-list li {
-  width: calc(33.333333% - 12px);
+  margin: 0 !important;
+  box-sizing: border-box;
+  width: 100%;
+  list-style: none;
 }
 @media (max-width: 767px) {
   .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled.monsterinsights-widget-popular-posts-columns-3 .monsterinsights-widget-popular-posts-list, .monsterinsights-widget-popular-posts.monsterinsights-popular-posts-styled.monsterinsights-widget-popular-posts-columns-2 .monsterinsights-widget-popular-posts-list {

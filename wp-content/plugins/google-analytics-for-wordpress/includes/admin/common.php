@@ -282,12 +282,12 @@ function monsterinsights_remove_conflicting_asset_files() {
 	// Loop through all registered styles.
 	foreach ( $wp_styles->queue as $handle ) {
 		// If the source file is is not from wp-content directory.
-		if ( strpos( $wp_styles->registered[ $handle ]->src, 'wp-content' ) === false ) {
+		if ( isset( $wp_styles->registered[ $handle ] ) && strpos( $wp_styles->registered[ $handle ]->src, 'wp-content' ) === false ) {
 			continue;
 		}
 
 		// If the handle contains monsterinsights in his name.
-		if ( strpos( $wp_styles->registered[ $handle ]->handle, 'monsterinsights' ) !== false ) {
+		if ( isset( $wp_styles->registered[ $handle ] ) && strpos( $wp_styles->registered[ $handle ]->handle, 'monsterinsights' ) !== false ) {
 			continue;
 		}
 
@@ -681,7 +681,7 @@ function monsterinsights_maybe_add_wp_php_version_notification() {
 add_action( 'admin_init', 'monsterinsights_maybe_add_wp_php_version_notification' );
 
 /**
- * Add notification for Year In Review report for year 2023.
+ * Add notification for Year In Review report.
  *
  * @return void
  * @since 7.13.2
@@ -689,14 +689,14 @@ add_action( 'admin_init', 'monsterinsights_maybe_add_wp_php_version_notification
  */
 function monsterinsights_year_in_review_notification() {
 
-	// Check if dates are between Jan 1st 2023 & 14th Jan 2023.
-	if ( monsterinsights_date_is_between( '2023-01-01', '2023-01-14' ) ) {
+	// Check if dates are between Jan 1st 2024 & 14th Jan 2024.
+	if ( monsterinsights_date_is_between( '2024-01-01', '2024-01-14' ) ) {
 
 		$notification['id']      = 'monsterinsights_notification_year_in_review';
 		$notification['type']    = array( 'basic', 'lite', 'master', 'plus', 'pro' );
-		$notification['start']   = '2023-01-01';
-		$notification['end']     = '2023-01-14';
-		$notification['title']   = esc_html__( 'View 2023 Year in Review report!', 'google-analytics-for-wordpress' );
+		$notification['start']   = '2024-01-01';
+		$notification['end']     = '2024-01-14';
+		$notification['title']   = esc_html__( 'View 2024 Year in Review report!', 'google-analytics-for-wordpress' );
 		$notification['content'] = esc_html__( 'See how your website performed this year and find tips along the way to help grow even more in 2024!', 'google-analytics-for-wordpress' );
 		$notification['btns']    = array(
 			'learn_more' => array(
@@ -739,8 +739,8 @@ function monsterinsights_yearinreview_dates() {
 	$current_date = wp_date( 'Y-m-d' );
 	$current_year = wp_date( 'Y' );
 	$report_year = $current_year - 1;
-	$report_year = 2023;
-	$next_year = 2024;
+	$report_year = 2024;
+	$next_year = 2025;
 	$show_report = false;
 
 	$next_year = (string) $report_year + 1;

@@ -57,7 +57,7 @@ class MonsterInsights_WooCommerce_Marketing {
 	 * @return void
 	 */
 	public function output_analytics_card_template() {
-		echo $this->get_card_style();
+		echo $this->get_card_style(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		?>
 		<div id="monsterinsights-wcm-components-card" class="monsterinsights-wcm-components-card" style="display: none">
 			<div class="monsterinsights-wcm-components-card-header">
@@ -66,7 +66,7 @@ class MonsterInsights_WooCommerce_Marketing {
 			</div>
 			<div class="monsterinsights-wcm-components-card-body woocommerce_marketing_plugin_card_body">
 				<div class="woocommerce_marketing_plugin_card_body__icon">
-					<img src="<?php echo plugins_url( 'assets/images/mascot.png', MONSTERINSIGHTS_PLUGIN_FILE ); ?>"
+					<img src="<?php echo esc_url( plugins_url( 'assets/images/mascot.png', MONSTERINSIGHTS_PLUGIN_FILE ) ); ?>"
 						 alt="MonsterInsights Icon">
 				</div>
 				<div class="woocommerce_marketing_plugin_card_body__details">

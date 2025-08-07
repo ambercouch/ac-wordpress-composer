@@ -29,6 +29,36 @@ if ( ! defined( 'W3TC' ) ) {
 	?>
 </p>
 
+<p>
+	<?php
+	$alwayscached_enabled = Extension_AlwaysCached_Plugin::is_enabled();
+	$status_class         = $alwayscached_enabled ? 'w3tc-enabled' : 'w3tc-disabled';
+	$status_label         = $alwayscached_enabled ? __( 'enabled', 'w3-total-cache' ) : __( 'disabled', 'w3-total-cache' );
+	$manage_label         = $alwayscached_enabled ? __( 'Manage the queue and settings', 'w3-total-cache' ) : __( 'To enable the extension click', 'w3-total-cache' );
+	$manage_link          = $alwayscached_enabled ? Util_Ui::admin_url( 'admin.php?page=w3tc_extensions&extension=alwayscached&action=view' ) : Util_Ui::admin_url( 'admin.php?page=w3tc_extensions' );
+	echo wp_kses(
+		// translators: 1 HTML span tag for feature status, 2 manage queue label, 3 HTML a tag to enable feature or manage settings.
+		sprintf(
+			__(
+				'Always Cached extension is currently %1$s. %2$s %3$s.',
+				'w3-total-cache'
+			),
+			'<span class="' . $status_class . '">' . $status_label . '</span>',
+			$manage_label,
+			'<a href="' . esc_url( $manage_link ) . '">' . esc_html__( 'here', 'w3-total-cache' ) . '</a>'
+		),
+		array(
+			'span' => array(
+				'class' => array(),
+			),
+			'a'    => array(
+				'href' => array(),
+			),
+		)
+	);
+	?>
+<p>
+
 <form action="admin.php?page=<?php echo esc_attr( $this->_page ); ?>" method="post">
 	<?php Util_UI::print_control_bar( 'pagecache_form_control' ); ?>
 	<div class="metabox-holder">
@@ -432,11 +462,11 @@ if ( ! defined( 'W3TC' ) ) {
 					'radiogroup_values'    => array(
 						''        => __( 'Don\'t cache', 'w3-total-cache' ),
 						'cache'   => array(
-							'label'           => __( 'Cache', 'w3-total-cache' ),
-							'disabled'        => ! Util_Environment::is_w3tc_pro( $this->_config ),
-							'pro_feature'     => true,
-							'pro_excerpt'     => esc_html__( 'If you\'re using the WordPress API make sure to use caching to scale performance.', 'w3-total-cache' ),
-							'pro_description' => array(
+							'label'             => __( 'Cache', 'w3-total-cache' ),
+							'disabled'          => ! Util_Environment::is_w3tc_pro( $this->_config ),
+							'pro_feature'       => true,
+							'pro_excerpt'       => esc_html__( 'If you\'re using the WordPress API make sure to use caching to scale performance.', 'w3-total-cache' ),
+							'pro_description'   => array(
 								esc_html__( 'If you use WordPress as a backend for integrations, API caching may be for you. Similar to page caching, repeat requests will benefit by having significantly lower response times and consume fewer resources to deliver. If WordPress is not used as a backend, for additional security, the API can be disabled completely.', 'w3-total-cache' ),
 							),
 							'show_learn_more'   => false,
@@ -760,27 +790,9 @@ if ( ! defined( 'W3TC' ) ) {
 						cols="40" rows="5"><?php echo esc_textarea( implode( "\r\n", $this->_config->get_array( 'pgcache.accept.files' ) ) ); ?></textarea>
 					<p class="description">
 						<?php
-						echo wp_kses(
-							sprintf(
-								// translators: 1 opening HTML a tag to W3TC FAQ admin page, 2 opening HTML acronym tag,
-								// translators: 3 closing HTML acronym tag, 4 closing HTML acronym tag.
-								__(
-									'Cache the specified pages / directories even if listed in the "never cache the following pages" field. Supports regular expression (See %1$s%2$sFAQ%3$s%4$s)',
-									'w3-total-cache'
-								),
-								'<a href="' . esc_url( network_admin_url( 'admin.php?page=w3tc_faq' ) ) . '">',
-								'<acronym title="' . esc_attr__( 'Frequently Asked Questions', 'w3-total-cache' ) . '">',
-								'</acronym>',
-								'</a>'
-							),
-							array(
-								'a'       => array(
-									'href' => array(),
-								),
-								'acronym' => array(
-									'title' => array(),
-								),
-							)
+						esc_html_e(
+							'Cache the specified pages / directories even if listed in the "never cache the following pages" field. Supports regular expression.',
+							'w3-total-cache'
 						);
 						?>
 					</p>
@@ -811,6 +823,107 @@ if ( ! defined( 'W3TC' ) ) {
 
 		<?php Util_Ui::postbox_footer(); ?>
 
+		<?php Util_Ui::postbox_header( esc_html__( 'Purge via WP Cron', 'w3-total-cache' ), '', 'pgcache_wp_cron' ); ?>
+		<table class="form-table">
+			<p>
+				<?php
+				echo wp_kses(
+					sprintf(
+						// Translators: 1 opening HTML a tag, 2 closing HTML a tag.
+						__(
+							'Enabling this will schedule a WP-Cron event that will flush the Page Cache. If you prefer to use a system cron job instead of WP-Cron, you can schedule the following command to run at your desired interval: "wp w3tc flush posts". If the Always Cached extension is active and enabled, page cache entries will instead be added to the queue instead of being purged from the cache. Visit %1$shere%2$s for more information.',
+							'w3-total-cache'
+						),
+						'<a href="' . esc_url( 'https://www.boldgrid.com/support/w3-total-cache/schedule-cache-purges/' ) . '" target="_blank">',
+						'</a>'
+					),
+					array(
+						'a' => array(
+							'href'   => array(),
+							'target' => array(),
+						),
+					)
+				);
+				?>
+			</p>
+			<?php
+			$c           = Dispatcher::config();
+			$disabled    = ! $c->get_boolean( 'pgcache.enabled' );
+			$wp_disabled = ! $c->get_boolean( 'pgcache.wp_cron' );
+
+			if ( $disabled ) {
+				echo wp_kses(
+					sprintf(
+						// Translators: 1 opening HTML div tag followed by opening HTML p tag, 2 opening HTML a tag,
+						// Translators: 3 closing HTML a tag, 4 closing HTML p tag followed by closing HTML div tag.
+						__( '%1$sPage Cache is disabled! Enable it %2$shere%3$s to enable this feature.%4$s', 'w3-total-cache' ),
+						'<div class="notice notice-error inline"><p>',
+						'<a href="' . esc_url( admin_url( 'admin.php?page=w3tc_general#page_cache' ) ) . '">',
+						'</a>',
+						'</p></div>'
+					),
+					array(
+						'div' => array(
+							'class' => array(),
+						),
+						'p'   => array(),
+						'a'   => array(
+							'href' => array(),
+						),
+					)
+				);
+			}
+
+			Util_Ui::config_item(
+				array(
+					'key'            => 'pgcache.wp_cron',
+					'label'          => esc_html__( 'Enable WP-Cron Event', 'w3-total-cache' ),
+					'checkbox_label' => esc_html__( 'Enable', 'w3-total-cache' ),
+					'control'        => 'checkbox',
+					'disabled'       => $disabled,
+				)
+			);
+
+			$time_options = array();
+			for ( $hour = 0; $hour < 24; $hour++ ) {
+				foreach ( array( '00', '30' ) as $minute ) {
+					$time_value                  = $hour * 60 + intval( $minute );
+					$scheduled_time              = new \DateTime( "{$hour}:{$minute}", wp_timezone() );
+					$time_label                  = $scheduled_time->format( 'g:i a' );
+					$time_options[ $time_value ] = $time_label;
+				}
+			}
+
+			Util_Ui::config_item(
+				array(
+					'key'              => 'pgcache.wp_cron_time',
+					'label'            => esc_html__( 'Start Time', 'w3-total-cache' ),
+					'control'          => 'selectbox',
+					'selectbox_values' => $time_options,
+					'description'      => esc_html__( 'This setting controls the initial start time of the cron job. If the selected time has already passed, it will schedule the job for the following day at the selected time.', 'w3-total-cache' ),
+					'disabled'         => $disabled || $wp_disabled,
+				)
+			);
+
+			Util_Ui::config_item(
+				array(
+					'key'              => 'pgcache.wp_cron_interval',
+					'label'            => esc_html__( 'Interval', 'w3-total-cache' ),
+					'control'          => 'selectbox',
+					'selectbox_values' => array(
+						'hourly'     => esc_html__( 'Hourly', 'w3-total-cache' ),
+						'twicedaily' => esc_html__( 'Twice Daily', 'w3-total-cache' ),
+						'daily'      => esc_html__( 'Daily', 'w3-total-cache' ),
+						'weekly'     => esc_html__( 'Weekly', 'w3-total-cache' ),
+					),
+					'description'      => esc_html__( 'This setting controls the interval that the cron job should occur.', 'w3-total-cache' ),
+					'disabled'         => $disabled || $wp_disabled,
+				)
+			);
+			?>
+		</table>
+		<?php Util_Ui::postbox_footer(); ?>
+
 		<?php Util_Ui::postbox_header( esc_html__( 'Note(s)', 'w3-total-cache' ), '', 'notes' ); ?>
 		<table class="form-table">
 			<tr>
@@ -828,35 +941,6 @@ if ( ! defined( 'W3TC' ) ) {
 										'w3-total-cache'
 									),
 									'<acronym title="' . esc_attr__( 'Hypertext Transfer Protocol', 'w3-total-cache' ) . '">',
-									'</acronym>',
-									'<acronym title="' . esc_attr__( 'Hypertext Markup Language', 'w3-total-cache' ) . '">',
-									'</acronym>',
-									'<a href="' . esc_url( admin_url( 'admin.php?page=w3tc_browsercache' ) ) . '">',
-									'</a>'
-								),
-								array(
-									'a'       => array(
-										'href' => array(),
-									),
-									'acronym' => array(
-										'title' => array(),
-									),
-								)
-							);
-							?>
-						</li>
-						<li>
-							<?php
-							echo wp_kses(
-								sprintf(
-									// translators: 1 opening HTML acronym tag, 2 closing HTML acronym tag,
-									// translators: 3 opening HTML acronym tag, 4 closing HTML acronym tag,
-									// translators: 5 opening HTML a tag to W3TC BrowserCache admin page, 6 closing HTML a tag.
-									__(
-										'The %1$sTTL%2$s of page cache files is set via the "Expires header lifetime" field in the "%3$sHTML%4$s" section on %5$sBrowser Cache%6$s Settings tab.',
-										'w3-total-cache'
-									),
-									'<acronym title="' . esc_attr__( 'Time to Live', 'w3-total-cache' ) . '">',
 									'</acronym>',
 									'<acronym title="' . esc_attr__( 'Hypertext Markup Language', 'w3-total-cache' ) . '">',
 									'</acronym>',

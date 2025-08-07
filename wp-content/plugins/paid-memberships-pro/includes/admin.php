@@ -75,6 +75,36 @@ function pmpro_block_dashboard() {
 }
 
 /**
+ * Handle saving custom metabox order via AJAX.
+ *
+ * Saves the order of dashboard metaboxes for the current user.
+ *
+ * @since 3.5
+ * @return void
+ */
+function pmpro_save_metabox_order() {
+
+	// Nonce check.
+	if ( ! wp_verify_nonce( $_POST['pmpro_metabox_nonce'], 'pmpro_metabox_order' ) ) {
+		wp_send_json_error( __( 'Security check failed.', 'paid-memberships-pro' ) );
+	}
+
+	// Sanitize and validate order.
+	$order = sanitize_text_field( wp_unslash( $_POST['order'] ) );
+
+	// Save to user meta.
+	$user_id = get_current_user_id();
+	$updated = update_user_meta( $user_id, 'pmpro_dashboard_metabox_order', $order );
+
+	if ( false === $updated ) {
+		wp_send_json_error( __( 'Could not save order.', 'paid-memberships-pro' ) );
+	}
+
+	wp_send_json_success( __( 'Order saved successfully.', 'paid-memberships-pro' ) );
+}
+add_action( 'wp_ajax_pmpro_save_metabox_order', 'pmpro_save_metabox_order' );
+
+/**
  * Initialize our Site Health integration and add hooks.
  *
  * @since 2.6.2
@@ -284,24 +314,21 @@ function pmpro_admin_header() {
 add_action( 'admin_notices', 'pmpro_admin_header', 1 );
 
 /**
- * Add notice to rate us that replaces default WordPress footer text on PMPro pages.
+ * Replace the default WordPress footer text on PMPro pages.
  */
 function pmpro_admin_footer_text( $text ) {
-	global $current_screen;
-
 	// Show footer on our pages in admin, but not on the block editor.
 	if (
 		! isset( $_REQUEST['page'] ) ||
-		( isset( $_REQUEST['page'] ) && 'pmpro-' !== substr( $_REQUEST['page'], 0, 6 ) ) ||
-		( isset( $_REQUEST['page'] ) && 'pmpro-advancedsettings' === $_REQUEST['page'] )
+		( isset( $_REQUEST['page'] ) && 'pmpro-' !== substr( $_REQUEST['page'], 0, 6 ) )
 	) {
 		return $text;
 	}
 
 	return sprintf(
 		wp_kses(
-			/* translators: $1$s - Paid Memberships Pro plugin name; $2$s - WP.org review link. */
-			__( 'Please <a href="%1$s" target="_blank" rel="noopener noreferrer">rate us %2$s on WordPress.org</a> to help others find %3$s. Thank you from the %4$s team!', 'paid-memberships-pro' ),
+			/* translators: $1$s - Paid Memberships Pro plugin name; $2$s - testimonial link. */
+			__( 'Please <a href="%1$s" target="_blank" rel="noopener noreferrer">submit a testimonial</a> to help others find %2$s. Thank you from the %3$s team!', 'paid-memberships-pro' ),
 			[
 				'a' => [
 					'href'   => [],
@@ -313,8 +340,7 @@ function pmpro_admin_footer_text( $text ) {
 				],
 			]
 		),
-		'https://wordpress.org/support/plugin/paid-memberships-pro/reviews/?filter=5#new-post',
-		'<span class="pmpro-rating-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>',
+		'https://www.paidmembershipspro.com/submit-testimonial/',
 		'Paid Memberships Pro',
 		'PMPro'
 	);
@@ -326,7 +352,7 @@ add_filter( 'admin_footer_text', 'pmpro_admin_footer_text' );
  * @since 3.0
  */
 function pmpro_hide_non_pmpro_notices() {
-    global $wp_filter;
+	global $wp_filter;
 
 	// Make sure we're on a PMPro page.
 	if ( ! isset( $_REQUEST['page'] )
@@ -335,10 +361,10 @@ function pmpro_hide_non_pmpro_notices() {
 	}
 
 	// Handle notices added through these hooks.
-    $hooks = ['admin_notices', 'all_admin_notices'];
+	$hooks = ['admin_notices', 'all_admin_notices'];
 
-    foreach ($hooks as $hook) {
-        // If no callbacks are registered, skip.
+	foreach ($hooks as $hook) {
+		// If no callbacks are registered, skip.
 		if ( ! isset( $wp_filter[$hook] ) ) {
 			continue;
 		}
@@ -374,6 +400,6 @@ function pmpro_hide_non_pmpro_notices() {
 				}
 			}
 		}
-    }
+	}
 }
 add_action( 'in_admin_header', 'pmpro_hide_non_pmpro_notices' );

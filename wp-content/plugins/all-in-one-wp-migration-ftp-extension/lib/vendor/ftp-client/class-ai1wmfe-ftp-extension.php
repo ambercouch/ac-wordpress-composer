@@ -238,7 +238,7 @@ class Ai1wmfe_FTP_Extension implements Ai1wmfe_FTP_Interface {
 				rewind( $file_chunk_stream );
 
 				try {
-					if ( @ftp_fput( $this->get_connection(), $file_path, $file_chunk_stream, FTP_BINARY, $file_range_start ) === false ) {
+					if ( @ftp_fput( $this->get_connection(), $remote_file_path, $file_chunk_stream, FTP_BINARY, $file_range_start ) === false ) {
 						throw new Ai1wmfe_Error_Exception( __( 'FTP upload has failed', AI1WMFE_PLUGIN_NAME ) );
 					}
 				} catch ( Ai1wmfe_Error_Exception $e ) {
@@ -266,6 +266,36 @@ class Ai1wmfe_FTP_Extension implements Ai1wmfe_FTP_Interface {
 			if ( @ftp_get( $this->get_connection(), $local_file_path, $remote_file_path, FTP_BINARY ) === false ) {
 				throw new Ai1wmfe_Error_Exception( __( 'FTP download has failed', AI1WMFE_PLUGIN_NAME ) );
 			}
+		} catch ( Ai1wmfe_Error_Exception $e ) {
+			throw $e;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get file content
+	 *
+	 * @param  string  $remote_file_path Remote file path
+	 * @return string
+	 */
+	public function get_file_content( $remote_file_path ) {
+		$remote_file_path = $this->sanitize_path( $remote_file_path );
+
+		try {
+			// Open a temporary memory stream
+			$tmp_handle = fopen( 'php://temp', 'r+' );
+
+			if ( @ftp_fget( $this->get_connection(), $tmp_handle, $remote_file_path, FTP_BINARY ) === false ) {
+				throw new Ai1wmfe_Error_Exception( __( 'FTP download has failed', AI1WMFE_PLUGIN_NAME ) );
+			}
+
+			// Rewind the stream to read content
+			rewind( $tmp_handle );
+			$file_content = stream_get_contents( $tmp_handle );
+			fclose( $tmp_handle );
+
+			return $file_content;
 		} catch ( Ai1wmfe_Error_Exception $e ) {
 			throw $e;
 		}

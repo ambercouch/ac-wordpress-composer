@@ -129,16 +129,16 @@ function monsterinsights_get_addons_data( $key ) {
  */
 function monsterinsights_get_all_addons_data() {
 
-    $body = array(
-        'tgm-updater-action'     => 'get-all-addons-data',
-        'tgm-updater-key'        => '',
-        'tgm-updater-wp-version' => get_bloginfo( 'version' ),
-        'tgm-updater-referer'    => site_url(),
-        'tgm-updater-mi-version' => MONSTERINSIGHTS_VERSION,
-        'tgm-updater-is-pro'     => false,
-    );
+	$body = array(
+		'tgm-updater-action'     => 'get-all-addons-data',
+		'tgm-updater-key'        => '',
+		'tgm-updater-wp-version' => get_bloginfo( 'version' ),
+		'tgm-updater-referer'    => site_url(),
+		'tgm-updater-mi-version' => MONSTERINSIGHTS_VERSION,
+		'tgm-updater-is-pro'     => false,
+	);
 
-    return monsterinsights_perform_remote_request( 'verify-key', $body );
+	return monsterinsights_perform_remote_request( 'verify-key', $body );
 }
 
 function monsterinsights_get_addon( $installed_plugins, $addons_type, $addon, $slug ) {

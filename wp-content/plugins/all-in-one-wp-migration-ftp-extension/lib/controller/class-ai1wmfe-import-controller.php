@@ -89,6 +89,7 @@ class Ai1wmfe_Import_Controller {
 		foreach ( $items as $item ) {
 			if ( $item['type'] === 'folder' || pathinfo( $item['name'], PATHINFO_EXTENSION ) === 'wpress' ) {
 				$response['items'][] = array(
+					'index' => null,
 					'name'  => isset( $item['name'] ) ? $item['name'] : null,
 					'path'  => isset( $item['path'] ) ? $item['path'] : null,
 					'unix'  => isset( $item['date'] ) ? $item['date'] : null,
@@ -106,6 +107,61 @@ class Ai1wmfe_Import_Controller {
 		Ai1wmve_File_Sorter::sort( $response['items'], Ai1wmve_File_Sorter::by_type_desc_date_desc( 'unix' ) );
 
 		echo json_encode( $response );
+		exit;
+	}
+
+	public static function incremental( $params = array() ) {
+		ai1wm_setup_environment();
+
+		// Set params
+		if ( empty( $params ) ) {
+			$params = stripslashes_deep( $_GET );
+		}
+
+		// Set folder path
+		$folder_path = null;
+		if ( isset( $params['folder_path'] ) ) {
+			$folder_path = trim( $params['folder_path'] );
+		}
+
+		// Set FTP client
+		$ftp = Ai1wmfe_FTP_Factory::create(
+			get_option( 'ai1wmfe_ftp_type', AI1WMFE_FTP_DEFAULT_TYPE ),
+			get_option( 'ai1wmfe_ftp_hostname', false ),
+			get_option( 'ai1wmfe_ftp_username', false ),
+			get_option( 'ai1wmfe_ftp_password', false ),
+			get_option( 'ai1wmfe_ftp_authentication', AI1WMFE_FTP_DEFAULT_AUTHENTICATION ),
+			get_option( 'ai1wmfe_ftp_key', false ),
+			get_option( 'ai1wmfe_ftp_passphrase', false ),
+			get_option( 'ai1wmfe_ftp_directory', false ),
+			get_option( 'ai1wmfe_ftp_port', AI1WMFE_FTP_DEFAULT_PORT ),
+			get_option( 'ai1wmfe_ftp_active', false )
+		);
+
+		try {
+			$file_content = $ftp->get_file_content( sprintf( '%s/incremental.backups.list', $folder_path ) );
+		} catch ( Ai1wmfe_Error_Exception $e ) {
+		}
+
+		$items = array();
+		if ( isset( $file_content ) ) {
+			foreach ( str_getcsv( $file_content, "\n" ) as $row ) {
+				if ( list( $file_index, $file_path, $file_size, $file_mtime ) = str_getcsv( $row ) ) {
+					$items[] = array(
+						'index' => $file_index,
+						'name'  => sprintf( __( 'Restore point %d', AI1WMFE_PLUGIN_NAME ), $file_index ),
+						'path'  => sprintf( '%s/%s', $folder_path, $file_path ),
+						'unix'  => $file_mtime,
+						'date'  => get_date_from_gmt( date( 'Y-m-d H:i:s', $file_mtime ), 'M j, Y g:i a' ),
+						'size'  => ai1wm_size_format( $file_size ),
+						'bytes' => $file_size,
+						'type'  => 'application/octet-stream',
+					);
+				}
+			}
+		}
+
+		echo json_encode( array( 'items' => array_reverse( $items ), 'cursor' => null ) );
 		exit;
 	}
 }

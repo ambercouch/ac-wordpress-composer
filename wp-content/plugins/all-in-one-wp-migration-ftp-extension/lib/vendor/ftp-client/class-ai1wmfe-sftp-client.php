@@ -270,6 +270,28 @@ class Ai1wmfe_SFTP_Client implements Ai1wmfe_FTP_Interface {
 	}
 
 	/**
+	 * Get file content
+	 *
+	 * @param  string  $remote_file_path Remote file path
+	 * @return string
+	 */
+	public function get_file_content( $remote_file_path ) {
+		$remote_file_path = $this->sanitize_path( $remote_file_path );
+
+		try {
+			$file_content = @$this->get_connection()->get( $remote_file_path );
+
+			if ( $file_content === false ) {
+				throw new Ai1wmfe_Download_Exception( __( 'SFTP download has failed', AI1WMFE_PLUGIN_NAME ) );
+			}
+
+			return $file_content;
+		} catch ( Ai1wmfe_Error_Exception $e ) {
+			throw $e;
+		}
+	}
+
+	/**
 	 * Download file chunk
 	 *
 	 * @param  resource $file_stream      File stream

@@ -563,8 +563,8 @@ class wfLog {
 			if ($b->matchRequest($IP, $userAgent, $referrer) !== wfBlock::MATCH_NONE) {
 				$b->recordBlock();
 				wfActivityReport::logBlockedIP($IP, null, 'advanced');
-				$this->currentRequest->actionDescription = __('UA/Referrer/IP Range not allowed', 'wordfence');
-				$this->do503(3600, __("Advanced blocking in effect.", 'wordfence')); //exits
+				$this->currentRequest->actionDescription = @__('UA/Referrer/IP Range not allowed', 'wordfence');
+				$this->do503(3600, @__("Advanced blocking in effect.", 'wordfence')); //exits
 			}
 		}
 
@@ -576,7 +576,7 @@ class wfLog {
 				$bypassRedirDest = wfConfig::get('cbl_bypassRedirDest', '');
 				
 				$this->initLogRequest();
-				$this->getCurrentRequest()->actionDescription = __('redirected to bypass URL', 'wordfence');
+				$this->getCurrentRequest()->actionDescription = @__('redirected to bypass URL', 'wordfence');
 				$this->getCurrentRequest()->statusCode = 302;
 				$this->currentRequest->action = 'cbl:redirect';
 				$this->logHit();
@@ -590,7 +590,7 @@ class wfLog {
 				wfConfig::inc('totalCountryBlocked');
 				
 				$this->initLogRequest();
-				$this->getCurrentRequest()->actionDescription = sprintf(/* translators: URL */ __('blocked access via country blocking and redirected to URL (%s)', 'wordfence'), wfConfig::get('cbl_redirURL'));
+				$this->getCurrentRequest()->actionDescription = sprintf(/* translators: URL */ @__('blocked access via country blocking and redirected to URL (%s)', 'wordfence'), wfConfig::get('cbl_redirURL'));
 				$this->getCurrentRequest()->statusCode = 503;
 				if (!$this->getCurrentRequest()->action) {
 					$this->currentRequest->action = 'blocked:wordfence';
@@ -605,10 +605,10 @@ class wfLog {
 			}
 			else if ($match !== wfBlock::MATCH_NONE) {
 				$b->recordBlock();
-				$this->currentRequest->actionDescription = __('blocked access via country blocking', 'wordfence');
+				$this->currentRequest->actionDescription = @__('blocked access via country blocking', 'wordfence');
 				wfConfig::inc('totalCountryBlocked');
 				wfActivityReport::logBlockedIP($IP, null, 'country');
-				$this->do503(3600, __('Access from your area has been temporarily limited for security reasons', 'wordfence'));
+				$this->do503(3600, @__('Access from your area has been temporarily limited for security reasons', 'wordfence'));
 			}
 		}
 
@@ -623,7 +623,7 @@ class wfLog {
 			}
 			$reason = $ipBlock->reason;
 			if ($ipBlock->type == wfBlock::TYPE_IP_MANUAL || $ipBlock->type == wfBlock::TYPE_IP_AUTOMATIC_PERMANENT) {
-				$reason = __('Manual block by administrator', 'wordfence');
+				$reason = @__('Manual block by administrator', 'wordfence');
 			}
 			$this->do503($secsToGo, $reason); //exits
 		}
@@ -907,8 +907,8 @@ class wfUserIPRange {
 			return (strcmp($ip1N, $ipN) <= 0 && strcmp($ip2N, $ipN) >= 0);
 		}
 		else { //Treat as a literal IP
-			$ip1 = @wfUtils::inet_pton($ip_string);
-			$ip2 = @wfUtils::inet_pton($ip);
+			$ip1 = wfUtils::inet_pton($ip_string);
+			$ip2 = wfUtils::inet_pton($ip);
 			if ($ip1 !== false && $ip1 == $ip2) {
 				return true;
 			}
@@ -1007,10 +1007,15 @@ class wfUserIPRange {
 		$ip_string = $this->getIPString();
 		if (preg_match('/[^0-9a-f:\.\-]/i', $ip_string)) { return false; }
 		list($ip1, $ip2) = explode("-", $ip_string);
-		$ip1N = @wfUtils::inet_pton($ip1);
-		$ip2N = @wfUtils::inet_pton($ip2);
 		
-		if ($ip1N === false || !wfUtils::isValidIP($ip1) || $ip2N === false || !wfUtils::isValidIP($ip2)) {
+		if (!wfUtils::isValidIP($ip1) || !wfUtils::isValidIP($ip2)) {
+			return false;
+		}
+		
+		$ip1N = wfUtils::inet_pton($ip1);
+		$ip2N = wfUtils::inet_pton($ip2);
+		
+		if ($ip1N === false || $ip2N === false) {
 			return false;
 		}
 		
@@ -2057,6 +2062,10 @@ class wfErrorLogHandler {
 		}
 		
 		$path = untrailingslashit($path);
+		if (empty($path)) {
+			return array();
+		}
+		
 		$contents = @scandir($path);
 		if (!is_array($contents)) {
 			return array();

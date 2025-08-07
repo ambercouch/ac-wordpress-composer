@@ -137,14 +137,36 @@ class MainWP_Child_Back_WP_Up { //phpcs:ignore -- NOSONAR - multi methods.
 
             if ( $this->is_backwpup_installed ) {
                 MainWP_Helper::instance()->check_classes_exists( '\BackWPup' );
-                MainWP_Helper::instance()->check_methods( 'get_instance' );
-                \BackWPup::get_instance();
+
+                // Check the backwpup version and use the appropriate method
+                $this->init_backwpup_instance();
 
                 add_action( 'admin_init', array( $this, 'init_download_backup' ) );
                 add_filter( 'mainwp_site_sync_others_data', array( $this, 'sync_others_data' ), 10, 2 );
             }
         } catch ( MainWP_Exception $e ) {
             $this->is_backwpup_installed = false;
+        }
+    }
+
+    /**
+     * Starting an instance backwpup based on the version
+     */
+    private function init_backwpup_instance() {
+        // Check to see if the backwpup version has a get_instance method.
+        if ( method_exists( '\BackWPup', 'get_instance' ) ) {
+            try {
+                // The old version uses get_instance
+                \BackWPup::get_instance();
+            } catch ( \Exception $e ) {
+                // Processing exceptions if any
+            }
+        } else {
+            // The new version does not use get_instance
+            // Check if the backwpup has been initialized
+            if ( class_exists( '\BackWPup' ) && ! defined( 'BACKWPUP_INITIALIZED' ) ) {
+                define( 'BACKWPUP_INITIALIZED', true );
+            }
         }
     }
 
@@ -1010,10 +1032,26 @@ class MainWP_Child_Back_WP_Up { //phpcs:ignore -- NOSONAR - multi methods.
         }
         ?>
         <script type="text/javascript">
+            var dlClicked = false;
             document.addEventListener("DOMContentLoaded", function(event) {
-                var downloadLink = document.querySelector( 'a.backup-download-link[data-jobid="<?php echo intval( $_GET['download_click_id'] ); ?>"' );
-                if (typeof(downloadLink) !== 'undefined' && downloadLink !== null) {
-                    downloadLink.click();
+                if( dlClicked === false ){
+                    var downloadLink = document.querySelector( 'a.backup-download-link[data-jobid="<?php echo intval( $_GET['download_click_id'] ); ?>"' );
+                    if (typeof(downloadLink) !== 'undefined' && downloadLink !== null ) {
+                        downloadLink.click();
+                        dlClicked = true;
+                    }
+                    if( dlClicked === false ) { // for new version.
+                        setTimeout(
+                            function () {
+                                downloadLink = document.querySelector( 'button.js-backwpup-download-backup[data-jobid="<?php echo intval( $_GET['download_click_id'] ); ?>"' );
+                                if (typeof(downloadLink) !== 'undefined' && downloadLink !== null ) {
+                                    downloadLink.click();
+                                }
+                            },
+                            2000
+                        );
+                        dlClicked = true;
+                    }
                 }
             });
         </script>
@@ -1112,6 +1150,16 @@ class MainWP_Child_Back_WP_Up { //phpcs:ignore -- NOSONAR - multi methods.
     }
 
     /**
+     * MainWP BackWPup WP Die ajax handler.
+     *
+     * @param string $message Error message container.
+     * @return string Error message.
+     */
+    public static function mainwp_backwpup_wp_die_ajax_handler() {
+        return '__return_true';
+    }
+
+    /**
      * BackWPup Ajax Working.
      *
      * @uses MainWP_Child_Back_WP_Up::wp_list_table_dependency()
@@ -1131,16 +1179,6 @@ class MainWP_Child_Back_WP_Up { //phpcs:ignore -- NOSONAR - multi methods.
 
         $this->wp_list_table_dependency();
 
-        /**
-         * MainWP BackWPup WP Die ajax handler.
-         *
-         * @param string $message Error message container.
-         * @return string Error message.
-         */
-        function mainwp_backwpup_wp_die_ajax_handler() {
-            return 'mainwp_backwpup_wp_die_ajax_handler';
-        }
-
         // We do this in order to not die when using wp_die.
         if ( ! defined( 'DOING_AJAX' ) ) {
 
@@ -1153,7 +1191,7 @@ class MainWP_Child_Back_WP_Up { //phpcs:ignore -- NOSONAR - multi methods.
             define( 'DOING_AJAX', true );
         }
 
-        add_filter( 'wp_die_ajax_handler', 'mainwp_backwpup_wp_die_ajax_handler' );
+        add_filter( 'wp_die_ajax_handler', array( __CLASS__, 'mainwp_backwpup_wp_die_ajax_handler' ) );
         remove_filter( 'wp_die_ajax_handler', '_ajax_wp_die_handler' );
 
         ob_start();
@@ -1792,6 +1830,7 @@ class MainWP_Child_Back_WP_Up { //phpcs:ignore -- NOSONAR - multi methods.
             }
         }
 
+        // this assign not work with filter_input - INPUT_POST.
         foreach ( $settings['value'] as $key => $val ) {
             $_POST[ $key ] = $val;
         }

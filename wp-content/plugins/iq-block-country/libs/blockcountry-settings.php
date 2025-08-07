@@ -45,7 +45,7 @@ function iq_cachingisactive_notice()
             <h3>iQ Block Country</h3>
             <p><?php esc_html_e('A caching plugin appears to be active on your WordPress installation.', 'iq-block-country'); ?></p>
             <p><?php esc_html_e('Caching plugins do not always cooperate nicely together with the iQ Block Country plugin which may lead to non blocked visitors getting a cached banned message or page.', 'iq-block-country'); ?></p>
-            <p><?php esc_html_e('For more information visit the following page:', 'iq-block-country'); ?> <a target="_blank"href="https://www.webence.nl/questions/iq-block-country-and-caching-plugins/">https://www.webence.nl/questions/iq-block-country-and-caching-plugins/</a></p>
+            <p><?php esc_html_e('For more information visit the following page:', 'iq-block-country'); ?> <a target="_blank"href="https://www.webence.net/">https://www.webence.net/</a></p>
         </div>        
     <?php
 }
@@ -92,29 +92,26 @@ function iqblockcountry_register_mysettings()
 {
     //register our settings
     register_setting('iqblockcountry-settings-group', 'blockcountry_blockmessage');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_redirect');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_redirect_url', 'iqblockcountry_is_valid_url');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_header');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_buffer');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_tracking');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_nrstatistics');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_daysstatistics');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_lookupstatistics');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_geoapikey', 'iqblockcountry_check_geoapikey');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_geoapilocation');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_apikey', 'iqblockcountry_check_adminapikey');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_debuglogging');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_accessibility');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_ipoverride');        
-        register_setting('iqblockcountry-settings-group', 'blockcountry_logging');
-        register_setting('iqblockcountry-settings-group', 'blockcountry_adminajax');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_redirect');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_redirect_url', 'iqblockcountry_is_valid_url');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_header');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_buffer');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_tracking');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_nrstatistics');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_daysstatistics');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_lookupstatistics');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_debuglogging');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_accessibility');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_ipoverride');        
+    register_setting('iqblockcountry-settings-group', 'blockcountry_logging');
+    register_setting('iqblockcountry-settings-group', 'blockcountry_adminajax');
     register_setting('iqblockcountry-settings-group-backend', 'blockcountry_blockbackend');
     register_setting('iqblockcountry-settings-group-backend', 'blockcountry_backendbanlist');
-        register_setting('iqblockcountry-settings-group-backend', 'blockcountry_backendbanlist_inverse');
+    register_setting('iqblockcountry-settings-group-backend', 'blockcountry_backendbanlist_inverse');
     register_setting('iqblockcountry-settings-group-backend', 'blockcountry_backendblacklist', 'iqblockcountry_validate_ip');
     register_setting('iqblockcountry-settings-group-backend', 'blockcountry_backendwhitelist', 'iqblockcountry_validate_ip');
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_banlist');
-        register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_banlist_inverse');
+    register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_banlist_inverse');
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_frontendblacklist', 'iqblockcountry_validate_ip');
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_frontendwhitelist', 'iqblockcountry_validate_ip');
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_blocklogin');
@@ -122,17 +119,20 @@ function iqblockcountry_register_mysettings()
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_blockfrontend');
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_blocktag');
     register_setting('iqblockcountry-settings-group-frontend', 'blockcountry_blockfeed');
-        register_setting('iqblockcountry-settings-group-pages', 'blockcountry_blockpages');
-        register_setting('iqblockcountry-settings-group-pages', 'blockcountry_blockpages_inverse');
-        register_setting('iqblockcountry-settings-group-pages', 'blockcountry_pages');
-        register_setting('iqblockcountry-settings-group-posttypes', 'blockcountry_blockposttypes');
-        register_setting('iqblockcountry-settings-group-posttypes', 'blockcountry_posttypes');
-        register_setting('iqblockcountry-settings-group-cat', 'blockcountry_blockcategories');
-        register_setting('iqblockcountry-settings-group-cat', 'blockcountry_categories');
-        register_setting('iqblockcountry-settings-group-cat', 'blockcountry_blockhome');
-        register_setting('iqblockcountry-settings-group-tags', 'blockcountry_blocktags');
-        register_setting('iqblockcountry-settings-group-tags', 'blockcountry_tags');
-        register_setting('iqblockcountry-settings-group-se', 'blockcountry_allowse');
+    register_setting('iqblockcountry-settings-group-pages', 'blockcountry_blockpages');
+    register_setting('iqblockcountry-settings-group-pages', 'blockcountry_blockpages_inverse');
+    register_setting('iqblockcountry-settings-group-pages', 'blockcountry_pages');
+    register_setting('iqblockcountry-settings-group-posttypes', 'blockcountry_blockposttypes');
+    register_setting('iqblockcountry-settings-group-posttypes', 'blockcountry_posttypes');
+    register_setting('iqblockcountry-settings-group-cat', 'blockcountry_blockcategories');
+    register_setting('iqblockcountry-settings-group-cat', 'blockcountry_categories');
+    register_setting('iqblockcountry-settings-group-cat', 'blockcountry_blockhome');
+    register_setting('iqblockcountry-settings-group-tags', 'blockcountry_blocktags');
+    register_setting('iqblockcountry-settings-group-tags', 'blockcountry_tags');
+    register_setting('iqblockcountry-settings-group-se', 'blockcountry_allowse');
+    register_setting('iqblockcountry-settings-group-api', 'blockcountry_geoapikey', 'iqblockcountry_check_geoapilicense');
+    register_setting('iqblockcountry-settings-group-api', 'blockcountry_geoapilocation');
+    register_setting('iqblockcountry-settings-group-api', 'blockcountry_apikey', 'iqblockcountry_check_adminapikey');
 }
 
 /**
@@ -233,18 +233,18 @@ function iqblockcountry_uninstall() //deletes all the database entries that the 
         iqblockcountry_uninstall_loggingdb();
         delete_option('blockcountry_banlist');
         delete_option('blockcountry_banlist_inverse');
-    delete_option('blockcountry_backendbanlist');
+        delete_option('blockcountry_backendbanlist');
         delete_option('blockcountry_backendbanlist_inverse');
-    delete_option('blockcountry_backendblacklist');
-    delete_option('blockcountry_backendwhitelist');
-    delete_option('blockcountry_frontendblacklist');
-    delete_option('blockcountry_frontendwhitelist');
-    delete_option('blockcountry_blockmessage');
-    delete_option('blockcountry_backendnrblocks');
-    delete_option('blockcountry_frontendnrblocks');
-    delete_option('blockcountry_blocklogin');
-    delete_option('blockcountry_blockfrontend');
-    delete_option('blockcountry_blockbackend');
+        delete_option('blockcountry_backendblacklist');
+        delete_option('blockcountry_backendwhitelist');
+        delete_option('blockcountry_frontendblacklist');
+        delete_option('blockcountry_frontendwhitelist');
+        delete_option('blockcountry_blockmessage');
+        delete_option('blockcountry_backendnrblocks');
+        delete_option('blockcountry_frontendnrblocks');
+        delete_option('blockcountry_blocklogin');
+        delete_option('blockcountry_blockfrontend');
+        delete_option('blockcountry_blockbackend');
         delete_option('blockcountry_version');
         delete_option('blockcountry_header');
         delete_option('blockcountry_blockpages');    
@@ -460,7 +460,7 @@ function iqblockcountry_settings_tools()
             }
         }
         echo '</table>';
-        //echo $iqbc_plugins_string;
+
         global $wpdb;
         
         $iqbc_disabled_functions = @ini_get('disable_functions');
@@ -1123,6 +1123,65 @@ function iqblockcountry_settings_services()
     <?php
 }    
 
+/*
+ * Function: Services settings
+ */
+function iqblockcountry_settings_api()
+{
+
+    ?>
+
+<form method="post" action="options.php">
+    <?php
+    settings_fields('iqblockcountry-settings-group-api');
+    if (class_exists('GeoIP')) {
+        ?>
+
+
+            <table class="form-table" cellspacing="2" cellpadding="5" width="100%">            
+
+            <tr valign="top">
+            <th width="30%"><?php esc_html_e('GeoIP API Key:', 'iq-block-country'); ?><br />
+                <em><?php esc_html_e('If for some reason you cannot or do not want to download the MaxMind GeoIP databases you will need an API key for the GeoIP api. You can get an API key from: ', 'iq-block-country'); ?> <a href="https://webence.net/shop/" target="_blank">https://webence.net/shop/</a></em></th>
+            </th>
+            <td width="70%">
+                <input type="text" size="30" name="blockcountry_geoapikey" value="<?php echo get_option('blockcountry_geoapikey');?>">
+            </td></tr>
+            
+            <tr valign="top">
+            <th width="30%"><?php esc_html_e('GeoIP API Key Server Location:', 'iq-block-country'); ?><br />
+                <em><?php esc_html_e('Choose a location closest to your own location.', 'iq-block-country'); ?>
+            </th>
+            <td width="70%">
+                
+                <input type="radio" name="blockcountry_geoapilocation" value="EU" <?php checked('EU', get_option('blockcountry_geoapilocation'), true); ?>> Europe (Netherlands)<br />
+                <input type="radio" name="blockcountry_geoapilocation" value="EU3" <?php checked('EU3', get_option('blockcountry_geoapilocation'), true); ?>> Europe (Netherlands)<br />
+                <input type="radio" name="blockcountry_geoapilocation" value="US" <?php checked('US', get_option('blockcountry_geoapilocation'), true); ?>> United States - New York<br />
+                <input type="radio" name="blockcountry_geoapilocation" value="US2" <?php checked('US2', get_option('blockcountry_geoapilocation'), true); ?>> United States - San Francisco<br />
+                <input type="radio" name="blockcountry_geoapilocation" value="US3" <?php checked('US3', get_option('blockcountry_geoapilocation'), true); ?>> United States - Miami<br />
+
+            </td></tr>
+            <tr valign="top">
+            <th width="30%"><?php esc_html_e('Admin block API Key:', 'iq-block-country'); ?><br />
+                <em><?php esc_html_e('For additional security you can protect your backend from known IP addresses who have made hack attempts at other WordPress sites. You can get more information and an API key from: ', 'iq-block-country'); ?> <a href="https://webence.net/shop/" target="_blank">https://webence.net/shop/</a></em></th>
+            </th>
+            <td width="70%">
+                <input type="text" size="25" name="blockcountry_apikey" value="<?php echo get_option('blockcountry_apikey');?>">
+            </td></tr>
+
+            <tr><td></td><td>
+                        <p class="submit"><input type="submit" class="button-primary"
+                value="<?php esc_html_e('Save Changes', 'iq-block-country')?>" /></p>
+        </td></tr>    
+        </table>    
+        </form>
+        <?php
+    }
+    else
+        {
+        print "<p>You are missing the GeoIP class. Perhaps geoip.inc is missing?</p>";    
+    }
+}  
 
 /*
  * Settings frontend
@@ -1562,37 +1621,6 @@ function iqblockcountry_settings_home()
             </td></tr>
 
             <tr valign="top">
-            <th width="30%"><?php esc_html_e('GeoIP API Key:', 'iq-block-country'); ?><br />
-                <em><?php esc_html_e('If for some reason you cannot or do not want to download the MaxMind GeoIP databases you will need an API key for the GeoIP api. You can get an API key from: ', 'iq-block-country'); ?> <a href="https://webence.nl/geoip-api/" target="_blank">https://webence.nl/geoip-api/</a></em></th>
-            </th>
-            <td width="70%">
-                <input type="text" size="25" name="blockcountry_geoapikey" value="<?php echo get_option('blockcountry_geoapikey');?>">
-            </td></tr>
-            
-            
-            <tr valign="top">
-            <th width="30%"><?php esc_html_e('GeoIP API Key Server Location:', 'iq-block-country'); ?><br />
-                <em><?php esc_html_e('Choose a location closest to your own location.', 'iq-block-country'); ?>
-            </th>
-            <td width="70%">
-                
-                <input type="radio" name="blockcountry_geoapilocation" value="EU" <?php checked('EU', get_option('blockcountry_geoapilocation'), true); ?>> Europe (Netherlands)<br />
-                <input type="radio" name="blockcountry_geoapilocation" value="EU3" <?php checked('EU3', get_option('blockcountry_geoapilocation'), true); ?>> Europe (Netherlands)<br />
-                <input type="radio" name="blockcountry_geoapilocation" value="US" <?php checked('US', get_option('blockcountry_geoapilocation'), true); ?>> United States - New York<br />
-                <input type="radio" name="blockcountry_geoapilocation" value="US2" <?php checked('US2', get_option('blockcountry_geoapilocation'), true); ?>> United States - San Francisco<br />
-                <input type="radio" name="blockcountry_geoapilocation" value="US3" <?php checked('US3', get_option('blockcountry_geoapilocation'), true); ?>> United States - Miami<br />
-
-            </td></tr>
-            <tr valign="top">
-            <th width="30%"><?php esc_html_e('Admin block API Key:', 'iq-block-country'); ?><br />
-                <em><?php esc_html_e('For additional security you can protect your backend from known IP addresses who have made hack attempts at other WordPress sites. You can get more information and an API key from: ', 'iq-block-country'); ?> <a href="https://webence.nl/admin-block-api/" target="_blank">https://webence.nl/admin-block-api/</a></em></th>
-            </th>
-            <td width="70%">
-                <input type="text" size="25" name="blockcountry_apikey" value="<?php echo get_option('blockcountry_apikey');?>">
-            </td></tr>
-
-
-            <tr valign="top">
             <th width="30%"><?php esc_html_e('Accessibility options:', 'iq-block-country'); ?><br />
                 <em><?php esc_html_e('Set this option if you cannot use the default country selection box.', 'iq-block-country'); ?></em></th>
             <td width="70%">
@@ -1819,6 +1847,7 @@ function iqblockcountry_settings_page()
             <a href="?page=iq-block-country/libs/blockcountry-settings.php&tab=tools" class="nav-tab <?php echo $iqbc_active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Tools', 'iq-block-country'); ?></a>  
             <a href="?page=iq-block-country/libs/blockcountry-settings.php&tab=logging" class="nav-tab <?php echo $iqbc_active_tab == 'logging' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Logging', 'iq-block-country'); ?></a>  
             <a href="?page=iq-block-country/libs/blockcountry-settings.php&tab=export" class="nav-tab <?php echo $iqbc_active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Import/Export', 'iq-block-country'); ?></a>  
+            <a href="?page=iq-block-country/libs/blockcountry-settings.php&tab=api" class="nav-tab <?php echo $iqbc_active_tab == 'api' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('GeoIP API', 'iq-block-country'); ?></a>  
         </h2>  
   
     
@@ -1857,6 +1886,9 @@ function iqblockcountry_settings_page()
         elseif ($iqbc_active_tab == "export") {    
             iqblockcountry_settings_importexport();
         }
+        elseif ($iqbc_active_tab == "api") {    
+            iqblockcountry_settings_api();
+        }
         else
         {
              iqblockcountry_settings_home();
@@ -1868,8 +1900,8 @@ function iqblockcountry_settings_page()
         
         <p>This product uses GeoIP2 data created by MaxMind, available from <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.</p>
 
-        <p>If you like this plugin please link back to <a href="https://webence.nl/">webence.nl</a>! :-) and support the development of the plugin. 
-            See <a href="https://webence.nl/plugins/donate/">Plugin donation page</a></p>
+        <p>If you like this plugin please link back to <a href="https://webence.net/">webence.net</a>! :-) and support the development of the plugin. 
+            See <a href="https://webence.net/donate/">Plugin donation page</a></p>
 
         <?php
     

@@ -31,6 +31,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 <li>
 	<label for="ai1wm-no-inactive-plugins">
 		<input type="checkbox" id="ai1wm-no-inactive-plugins" name="options[no_inactive_plugins]" />
-		<?php _e( 'Do <strong>not</strong> export inactive plugins (files)', AI1WM_PLUGIN_NAME ); ?>
+		<?php _e( 'Exclude inactive plugins', AI1WM_PLUGIN_NAME ); ?>
 	</label>
 </li>

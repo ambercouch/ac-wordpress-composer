@@ -414,6 +414,16 @@ function acf_validate_block_type( $block ) {
 		$block['supports']['jsx'] = $block['supports']['__experimental_jsx'];
 	}
 
+	// Normalize block 'parent' setting.
+	if ( array_key_exists( 'parent', $block ) ) {
+		// As of WP 6.8, parent must be an array.
+		if ( null === $block['parent'] ) {
+			unset( $block['parent'] );
+		} elseif ( is_string( $block['parent'] ) ) {
+			$block['parent'] = array( $block['parent'] );
+		}
+	}
+
 	// Return block.
 	return $block;
 }
@@ -817,7 +827,7 @@ function acf_enqueue_block_assets() {
 	);
 
 	// Enqueue script.
-	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$min = defined( 'ACF_DEVELOPMENT_MODE' ) && ACF_DEVELOPMENT_MODE ? '' : '.min';
 
 	$blocks_js_path = acf_get_url( "assets/build/js/pro/acf-pro-blocks{$min}.js" );
 

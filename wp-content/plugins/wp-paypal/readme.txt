@@ -1,12 +1,12 @@
 === Payment Button for PayPal ===
 Contributors: naa986
 Donate link: https://wphowto.net/
-Tags: paypal, cart, checkout, donation, e-commerce
+Tags: paypal, cart, checkout, payment, ecommerce
 Requires at least: 5.3
-Tested up to: 6.5
-Stable tag: 1.2.3.34
+Tested up to: 6.8
+Stable tag: 1.2.3.40
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Easily accept payment in WordPress by adding a PayPal button to your website. Add PayPal Buy Now, Add to Cart, Subscription or Donation button.
 
@@ -30,6 +30,7 @@ Payment Button for PayPal supports PayPal Sandbox. PayPal Sandbox is a simulatio
 * [Variable Quantity](https://wphowto.net/how-to-add-a-quantity-field-to-a-paypal-button-6428)
 * [Variable Subscription](https://wphowto.net/how-to-add-a-recurring-price-field-to-a-paypal-subscription-button-6450)
 * [Custom Donations](https://wphowto.net/custom-donations-for-wordpress-paypal-donate-buttons-6778)
+* [Order Export](https://wphowto.net/wp-paypal-order-export-7347)
 
 === Payment Button for PayPal Features ===
 
@@ -104,6 +105,15 @@ When this feature is enabled an email is sent to your chosen recipient(s) after 
 
 You can use various email tags in the subject/body of an email to dynamically change its content. You can find the full list of available email tags in the [WordPress PayPal](https://wphowto.net/wordpress-paypal-plugin-732) plugin page.
 
+Can the email messages be sent over SMTP? Absolutely. The following SMTP plugins have been tested:
+
+* SMTP Mailer
+* Gmail SMTP
+* WP Mail SMTP
+* Post SMTP
+* FluentSMTP
+* Easy WP SMTP
+
 === How to Create a PayPal Checkout Button ===
 
 In order to create a PayPal Checkout button insert the shortcode like the following:
@@ -120,8 +130,6 @@ You can use additional parameters to customize your PayPal Checkout buttons.
 For more information check the [PayPal Checkout](https://wphowto.net/wordpress-paypal-plugin-732) documentation page.
 
 === How to Create a PayPal Payments Standard Button ===
-
-https://www.youtube.com/watch?v=lYVRUDp8c9s&rel=0
 
 In order to create a PayPal Payments Standard button insert the shortcode like the following.
 
@@ -190,7 +198,7 @@ For detailed documentation please check out the [Payment Button for PayPal](http
 
 === Translation ===
 
-If you are a non-English speaker please help [translate Payment Button for PayPal](https://translate.wordpress.org/projects/wp-plugins/wp-paypal) into your language.
+If you are a non-English speaker please help translate the plugin into your language.
 
 === Additional PayPal Documentation ===
 
@@ -255,6 +263,25 @@ No.
 none
 
 == Changelog ==
+
+= 1.2.3.40 =
+* Made changes to save payment data.
+
+= 1.2.3.39 =
+* Added an option to edit order data shown in the table.
+
+= 1.2.3.38 =
+* Fixed broken parameters in the return URL.
+
+= 1.2.3.37 =
+* File naming changes.
+* Language file updated.
+
+= 1.2.3.36 =
+* Some improvements in security reported by Wordfence.
+
+= 1.2.3.35 =
+* Some improvements in security reported by Wordfence.
 
 = 1.2.3.34 =
 * Added an option to append the purchase email to the sale notification email.

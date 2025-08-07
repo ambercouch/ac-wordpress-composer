@@ -416,8 +416,8 @@ class WPSEO_Utils {
 	 * @return void
 	 */
 	public static function clear_cache() {
-		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
-			w3tc_pgcache_flush();
+		if ( function_exists( 'w3tc_flush_posts' ) ) {
+			w3tc_flush_posts();
 		}
 		elseif ( function_exists( 'wp_cache_clear_cache' ) ) {
 			wp_cache_clear_cache();
@@ -663,10 +663,8 @@ class WPSEO_Utils {
 	 */
 	public static function is_yoast_seo_free_page( $current_page ) {
 		$yoast_seo_free_pages = [
-			'wpseo_dashboard',
 			'wpseo_tools',
 			'wpseo_search_console',
-			'wpseo_licenses',
 		];
 
 		return in_array( $current_page, $yoast_seo_free_pages, true );
@@ -863,9 +861,6 @@ class WPSEO_Utils {
 			'postTypeNamePlural'    => ( $page_type === 'post' ) ? $label_object->label : $label_object->name,
 			'postTypeNameSingular'  => ( $page_type === 'post' ) ? $label_object->labels->singular_name : $label_object->singular_name,
 			'isBreadcrumbsDisabled' => WPSEO_Options::get( 'breadcrumbs-enable', false ) !== true && ! current_theme_supports( 'yoast-seo-breadcrumbs' ),
-			// phpcs:ignore Generic.ControlStructures.DisallowYodaConditions -- Bug: squizlabs/PHP_CodeSniffer#2962.
-			'isPrivateBlog'         => ( (string) get_option( 'blog_public' ) ) === '0',
-			'news_seo_is_active'    => ( defined( 'WPSEO_NEWS_FILE' ) ),
 			'isAiFeatureActive'     => (bool) WPSEO_Options::get( 'enable_ai_generator' ),
 		];
 
@@ -914,7 +909,7 @@ class WPSEO_Utils {
 	 *
 	 * @param array $data The data to format.
 	 *
-	 * @return false|string The prepared JSON string.
+	 * @return string|false The prepared JSON string.
 	 */
 	public static function format_json_encode( $data ) {
 		$flags = ( JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
@@ -1095,7 +1090,7 @@ class WPSEO_Utils {
 		/**
 		 * The feature flag integration.
 		 *
-		 * @var Feature_Flag_Integration $feature_flag_integration;
+		 * @var Feature_Flag_Integration $feature_flag_integration
 		 */
 		$feature_flag_integration = YoastSEO()->classes->get( Feature_Flag_Integration::class );
 		return $feature_flag_integration->get_enabled_features();

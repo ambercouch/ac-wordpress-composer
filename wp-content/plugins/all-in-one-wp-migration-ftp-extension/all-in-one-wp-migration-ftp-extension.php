@@ -5,7 +5,7 @@
  * Description: Extension for All-in-One WP Migration that enables using FTP for imports and exports
  * Author: ServMask
  * Author URI: https://servmask.com/
- * Version: 2.85
+ * Version: 2.92
  * Text Domain: all-in-one-wp-migration-ftp-extension
  * Domain Path: /languages
  * Network: True

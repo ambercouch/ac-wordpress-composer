@@ -18,10 +18,6 @@
 	// Save settings.
 	if( !empty( $_REQUEST['savesettings'] ) ) {
 		pmpro_setOption( "spamprotection", intval( $_POST['spamprotection'] ) );
-		pmpro_setOption( "recaptcha", intval( $_POST['recaptcha'] ) );
-		pmpro_setOption( "recaptcha_version", sanitize_text_field( $_POST['recaptcha_version'] ) );
-		pmpro_setOption( "recaptcha_publickey", sanitize_text_field( $_POST['recaptcha_publickey'] ) );
-		pmpro_setOption( "recaptcha_privatekey", sanitize_text_field( $_POST['recaptcha_privatekey'] ) );
 		if ( isset( $_POST['use_ssl'] ) ) {
 			// REQUEST['use_ssl'] will not be set if the entire site is already over HTTPS.
 			pmpro_setOption( "use_ssl", intval( $_POST['use_ssl'] ) );
@@ -33,6 +29,13 @@
 		}
 		pmpro_setOption( "nuclear_HTTPS", $nuclear_HTTPS );
 
+		/**
+		 * Fires after security settings are saved.
+		 *
+		 * @since 3.2
+		 */
+		do_action( 'pmpro_save_security_settings' );
+
 		// Assume success.
 		$msg = true;
 		$msgt = __("Your security settings have been updated.", 'paid-memberships-pro' );
@@ -41,10 +44,6 @@
 
 	// Get settings.
 	$spamprotection = get_option( 'pmpro_spamprotection' );
-	$recaptcha = get_option( 'pmpro_recaptcha' );
-	$recaptcha_version = get_option( 'pmpro_recaptcha_version' );
-	$recaptcha_publickey = get_option( 'pmpro_recaptcha_publickey' );
-	$recaptcha_privatekey = get_option( 'pmpro_recaptcha_privatekey' );
 	$use_ssl = get_option( 'pmpro_use_ssl' );
 	$nuclear_HTTPS = get_option( 'pmpro_nuclear_HTTPS' );
 
@@ -91,6 +90,11 @@
 		<?php wp_nonce_field( 'savesettings', 'pmpro_securitysettings_nonce' );?>
 		<hr class="wp-header-end">
         <h1><?php esc_html_e( 'Security Settings', 'paid-memberships-pro' );?></h1>
+		<p><?php
+			$security_settings_link = '<a title="' . esc_attr__( 'Paid Memberships Pro - Security Settings', 'paid-memberships-pro' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/documentation/admin/security-settings/?utm_source=plugin&utm_medium=pmpro-securitysettings&utm_campaign=documentation&utm_content=security-settings">' . esc_html__( 'Security Settings', 'paid-memberships-pro' ) . '</a>';
+			// translators: %s: Link to Security Settings doc.
+			printf( esc_html__('Learn more about %s.', 'paid-memberships-pro' ), $security_settings_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		?></p>
 		<div class="pmpro_section" data-visibility="shown" data-activated="true">
 			<div class="pmpro_section_toggle">
 				<button class="pmpro_section-toggle-button" type="button" aria-expanded="true">
@@ -151,7 +155,7 @@
 						</tr>
 						<tr>
 							<th scope="row" valign="top">
-								<label for="spamprotection"><?php esc_html_e( 'Checkout Spam Protection', 'paid-memberships-pro' );?></label>
+								<label for="spamprotection"><?php esc_html_e( 'Spam Protection', 'paid-memberships-pro' );?></label>
 							</th>
 							<td>
 								<select id="spamprotection" name="spamprotection">
@@ -159,48 +163,18 @@
 									<!-- For reference, removed the Yes - Free memberships only. option -->
 									<option value="2" <?php if( $spamprotection > 0 ) { ?>selected="selected"<?php } ?>><?php esc_html_e('Yes - Enable Spam Protection', 'paid-memberships-pro' );?></option>
 								</select>
-								<p class="description"><?php printf( esc_html__( 'Block IPs from checkout if there are more than %d failures within %d minutes.', 'paid-memberships-pro' ), (int)PMPRO_SPAM_ACTION_NUM_LIMIT, (int)round(PMPRO_SPAM_ACTION_TIME_LIMIT/60,2) );?></p>
+								<p class="description"><?php printf( esc_html__( 'Block IPs from checkout and login if there are more than %d failures within %d minutes.', 'paid-memberships-pro' ), (int)PMPRO_SPAM_ACTION_NUM_LIMIT, (int)round(PMPRO_SPAM_ACTION_TIME_LIMIT/60,2) );?></p>
 							</td>
 						</tr>
-						<tr>
-							<th scope="row" valign="top">
-								<label for="recaptcha"><?php esc_html_e('Use reCAPTCHA?', 'paid-memberships-pro' );?></label>
-							</th>
-							<td>
-								<select id="recaptcha" name="recaptcha">
-									<option value="0" <?php if( !$recaptcha ) { ?>selected="selected"<?php } ?>><?php esc_html_e( 'No', 'paid-memberships-pro' );?></option>
-									<!-- For reference, removed the Yes - Free memberships only. option -->
-									<option value="2" <?php if( $recaptcha > 0 ) { ?>selected="selected"<?php } ?>><?php esc_html_e( 'Yes - All memberships.', 'paid-memberships-pro' );?></option>
-								</select>
-								<p class="description"><?php esc_html_e( 'A free reCAPTCHA key is required.', 'paid-memberships-pro' );?> <a href="https://www.google.com/recaptcha/admin/create" target="_blank" rel="nofollow noopener"><?php esc_html_e('Click here to signup for reCAPTCHA', 'paid-memberships-pro' );?></a>.</p>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="form-table" id="recaptcha_settings" <?php if(!$recaptcha) { ?>style="display: none;"<?php } ?>>
-					<tbody>
-						<tr>
-							<th scope="row" valign="top"><label for="recaptcha_version"><?php esc_html_e( 'reCAPTCHA Version', 'paid-memberships-pro' );?>:</label></th>
-							<td>					
-								<select id="recaptcha_version" name="recaptcha_version">
-									<option value="2_checkbox" <?php selected( '2_checkbox', $recaptcha_version ); ?>><?php esc_html_e( ' v2 - Checkbox', 'paid-memberships-pro' ); ?></option>
-									<option value="3_invisible" <?php selected( '3_invisible', $recaptcha_version ); ?>><?php esc_html_e( 'v3 - Invisible', 'paid-memberships-pro' ); ?></option>
-								</select>
-								<p class="description"><?php esc_html_e( 'Changing your version will require new API keys.', 'paid-memberships-pro' ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><label for="recaptcha_publickey"><?php esc_html_e('reCAPTCHA Site Key', 'paid-memberships-pro' );?>:</label></th>
-							<td>
-								<input type="text" id="recaptcha_publickey" name="recaptcha_publickey" value="<?php echo esc_attr($recaptcha_publickey);?>" class="regular-text code" />
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><label for="recaptcha_privatekey"><?php esc_html_e('reCAPTCHA Secret Key', 'paid-memberships-pro' );?>:</label></th>
-							<td>
-								<input type="text" id="recaptcha_privatekey" name="recaptcha_privatekey" value="<?php echo esc_attr($recaptcha_privatekey);?>" class="regular-text code" />
-							</td>
-						</tr>
+						<?php
+						/**
+						 * Fires after the spam protection settings are displayed.
+						 * Can be used to add additional spam protection settings.
+						 *
+						 * @since 3.2
+						 */
+						do_action( 'pmpro_security_spam_fields' );
+						?>
 					</tbody>
 				</table>
 			</div>
@@ -209,15 +183,51 @@
 			<div class="pmpro_section_toggle">
 				<button class="pmpro_section-toggle-button" type="button" aria-expanded="true">
 					<span class="dashicons dashicons-arrow-up-alt2"></span>
+					<?php esc_html_e( 'Restricted Files', 'paid-memberships-pro' ); ?>
+				</button>
+			</div>
+			<div class="pmpro_section_inside">
+				<p><?php esc_html_e( 'To keep your membership data safe, we store certain sensitive files in the following protected directory:', 'paid-memberships-pro' ); ?></p>
+				<?php
+					$restricted_file_path = pmpro_get_restricted_file_path();
+				?>
+				<p><code><?php echo esc_html( $restricted_file_path ); ?></code></p>
+				<p><?php
+					$restricted_file_settings_link = '<a title="' . esc_attr__( 'Paid Memberships Pro - Restricted File Settings', 'paid-memberships-pro' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/documentation/admin/security-settings/?utm_source=plugin&utm_medium=pmpro-securitysettings&utm_campaign=documentation&utm_content=restricted-file-settings#restricted-files">' . esc_html__( 'Restricted File Settings', 'paid-memberships-pro' ) . '</a>';
+					// translators: %s: Link to Security Settings doc.
+					printf( esc_html__('Learn more about %s.', 'paid-memberships-pro' ), $restricted_file_settings_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				?></p>
+
+				<?php
+					/**
+					 * Filter to determine if the site is using NGINX.
+					 *
+					 * @since 3.5
+					 *
+					 * @param bool $is_nginx Whether the site is using NGINX.
+					 */
+					$is_nginx = apply_filters( 'pmpro_is_nginx', ! empty( $GLOBALS['is_nginx'] && $GLOBALS['is_nginx'] ) );
+					if ( $is_nginx ) { ?>
+						<hr />
+						<p><?php esc_html_e( 'If your site is hosted on NGINX, you will need to manually restrict access to this folder by adding the following lines to your server config:', 'paid-memberships-pro' ); ?></p>
+						<textarea readonly rows="4" cols="50" class="pmpro_restricted_files_code">
+location ~ ^/wp-content/uploads/pmpro-[^/]+/ {
+	deny all;
+	return 403;
+}</textarea>
+						<?php
+					}
+				?>
+			</div> <!-- end pmpro_section_inside -->
+		</div> <!-- end pmpro_section -->
+		<div class="pmpro_section" data-visibility="hidden" data-activated="false">
+			<div class="pmpro_section_toggle">
+				<button class="pmpro_section-toggle-button" type="button" aria-expanded="true">
+					<span class="dashicons dashicons-arrow-up-alt2"></span>
 					<?php esc_html_e( 'HTTPS Settings', 'paid-memberships-pro' ); ?>
 				</button>
 			</div>
 			<div class="pmpro_section_inside">
-				<p><?php			
-					$ssl_settings_link = '<a title="' . esc_attr__( 'Paid Memberships Pro - SSL Settings', 'paid-memberships-pro' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/documentation/initial-plugin-setup/ssl/?utm_source=plugin&utm_medium=pmpro-paymentsettings&utm_campaign=documentation&utm_content=ssl&utm_term=link1">' . esc_html__( 'SSL', 'paid-memberships-pro' ) . '</a>';
-					// translators: %s: Link to SSL Settings doc.
-					printf( esc_html__('Learn more about %s.', 'paid-memberships-pro' ), $ssl_settings_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				?></p>
 				<table class="form-table">
 				<tbody>
 					<tr>
@@ -423,12 +433,3 @@
 			<input name="savesettings" type="submit" class="button button-primary" value="<?php esc_attr_e('Save Settings', 'paid-memberships-pro' );?>" />
 		</div>
 	</form>
-
-<script>
-	jQuery( document ).ready( function( $ ) {
-		//hide/show recaptcha settings
-		$( '#recaptcha' ).on( 'change', function( ev ) {
-			$( '#recaptcha_settings' ).toggle();
-		});
-	});
-</script>

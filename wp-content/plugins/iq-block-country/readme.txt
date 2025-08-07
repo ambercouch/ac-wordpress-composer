@@ -1,10 +1,10 @@
 === iQ Block Country ===
 Contributors: iqpascal
-Donate link: https://webence.nl/plugins/donate
-Tags: spam, block, country, comments, ban, geo, geo blocking, geo ip, block country, block countries, ban countries, ban country, allow list, block list, security
+Donate link: https://webence.net/donate
+Tags: Block Spam, Block Countries, Geoblocking, Ban countries, Block
 Requires at least: 3.5.2
-Tested up to: 6.6.1
-Stable tag: 1.2.23
+Tested up to: 6.8.2
+Stable tag: 1.2.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
@@ -294,6 +294,11 @@ Privacy policy regarding this service specific can be found here: https://webenc
 
 
 == Changelog ==
+
+= 1.2.24 =
+
+* Added: SiteGuru Service
+* Changed: Multiple internal changes
 
 = 1.2.23 =
 

@@ -827,6 +827,7 @@ class MainWP_Child_Updraft_Plus_Backups { //phpcs:ignore -- NOSONAR - multi meth
             $replace_token = preg_replace( '/^https?:\/\//i', '', $replace_token );
             $replace_token = sanitize_file_name( $replace_token );
             $str           = str_ireplace( '%siteurl%', $replace_token, $str );
+            $str           = str_ireplace( '_.', '.', $str ); // to fix strange chars issue.
         }
         return $str;
     }
@@ -2243,7 +2244,10 @@ class MainWP_Child_Updraft_Plus_Backups { //phpcs:ignore -- NOSONAR - multi meth
          * @global object $wp_filesystem WordPress filesystem.
          * @global object $updraftplus UpdraftPlus object.
          */
-        global $updraftplus, $wp_version;
+        global $updraftplus;
+
+        $wp_ver = MainWP_Child_Server_Information_Base::get_wordpress_version();
+
 
         include_once ABSPATH . WPINC . '/version.php'; // NOSONAR - WP compatible.
 
@@ -2384,8 +2388,8 @@ class MainWP_Child_Updraft_Plus_Backups { //phpcs:ignore -- NOSONAR - multi meth
                     if ( ! empty( $matches[3] ) ) {
                         $old_wp_version .= substr( $matches[3], 0, strlen( $matches[3] ) - 1 );
                     }
-                    if ( version_compare( $old_wp_version, $wp_version, '>' ) ) {
-                        $warn[] = sprintf( esc_html__( 'You are importing from a newer version of WordPress (%1$s) into an older one (%2$s). There are no guarantees that WordPress can handle this.', 'updraftplus' ), $old_wp_version, $wp_version );
+                    if ( version_compare( $old_wp_version, $wp_ver, '>' ) ) {
+                        $warn[] = sprintf( esc_html__( 'You are importing from a newer version of WordPress (%1$s) into an older one (%2$s). There are no guarantees that WordPress can handle this.', 'updraftplus' ), $old_wp_version, $wp_ver );
                     }
                     if ( preg_match( '/running on PHP (\d+\.\d+)([\s\.])/', $matches[4], $nmatches ) && preg_match( '/^(\d+\.\d+)([\s\.])/', PHP_VERSION, $cmatches ) ) {
                         $old_php_version     = $nmatches[1];
@@ -4293,7 +4297,8 @@ ENDHERE;
      * Remove UpdraftPlus from WP Admin menu.
      */
     public function remove_menu() {
-
+        // Remove UpdraftPlus from the admin menu.
+        remove_menu_page( 'options-general.php?page=updraftplus' );
         /** @global object $submenu WordPress submenu object. */
         global $submenu;
 

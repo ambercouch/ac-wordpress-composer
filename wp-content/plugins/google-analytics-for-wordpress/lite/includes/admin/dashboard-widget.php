@@ -100,12 +100,12 @@ class MonsterInsights_Dashboard_Widget {
 			array( $this, 'dashboard_widget_content' )
 		);
 
-		// Attept to place the widget at the top.
+		// Attempt to place the widget at the top.
 		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
 		$widget_instance  = array( self::WIDGET_KEY => $normal_dashboard[ self::WIDGET_KEY ] );
 		unset( $normal_dashboard[ self::WIDGET_KEY ] );
 		$sorted_dashboard                             = array_merge( $widget_instance, $normal_dashboard );
-		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
+		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Nothing to see here...
 	}
 
 	/**
@@ -139,15 +139,15 @@ class MonsterInsights_Dashboard_Widget {
 			// Translators: Wizrd Link tag starts with url and Wizard link tag ends.
 			$message = sprintf(
 				esc_html__( 'Your website analytics dashboard is not currently configured. Please use our %1$ssetup wizard%2$s to get started.', 'google-analytics-for-wordpress' ),
-				'<a href="' . esc_url( $url ) . '">',
+				'<a class="monsterinsights-setup-wizard-link">',
 				'</a>'
 			);
 			?>
 			<h2><?php echo $message; // phpcs:ignore ?></h2>
 			<?php if ( current_user_can( 'monsterinsights_save_settings' ) ) { ?>
 				<p><?php esc_html_e( 'To see your website stats, please connect MonsterInsights to Google Analytics.', 'google-analytics-for-wordpress' ); ?></p>
-				<a href="<?php echo esc_url( $url ); ?>"
-				   class="mi-dw-btn-large"><?php esc_html_e( 'Setup Website Analytics', 'google-analytics-for-wordpress' ); ?></a>
+				<a class="mi-dw-btn-large monsterinsights-setup-wizard-link"><?php esc_html_e( 'Setup Website Analytics', 'google-analytics-for-wordpress' ); ?></a>
+				<p><?php esc_html_e( 'Note: You will be transfered to MonsterInsights.com to complete the setup wizard.', 'google-analytics-for-wordpress' ); ?></p>
 			<?php } else { ?>
 				<p><?php esc_html_e( 'To see your website stats, please ask your site administrator to connect MonsterInsights to Google Analytics.', 'google-analytics-for-wordpress' ); ?></p>
 			<?php } ?>
@@ -168,7 +168,7 @@ class MonsterInsights_Dashboard_Widget {
 				MonsterInsights_Admin_Assets::enqueue_script_specific_css( 'src/modules/widget/widget.js' );
 			}
 			$widget_js_url = MonsterInsights_Admin_Assets::get_js_url( 'src/modules/widget/widget.js' );
-			wp_register_script( 'monsterinsights-vue-widget', $widget_js_url, array(), monsterinsights_get_asset_version(), true );
+			wp_register_script( 'monsterinsights-vue-widget', $widget_js_url, array( 'wp-i18n' ), monsterinsights_get_asset_version(), true );
 			wp_enqueue_script( 'monsterinsights-vue-widget' );
 
 			$plugins                = get_plugins();
@@ -207,7 +207,6 @@ class MonsterInsights_Dashboard_Widget {
 					'ajax'                   => admin_url( 'admin-ajax.php' ),
 					'nonce'                  => wp_create_nonce( 'mi-admin-nonce' ),
 					'network'                => is_network_admin(),
-					'translations'           => wp_get_jed_locale_data( monsterinsights_is_pro_version() ? 'ga-premium' : 'google-analytics-for-wordpress' ),
 					'assets'                 => plugins_url( $version_path . '/assets/vue', MONSTERINSIGHTS_PLUGIN_FILE ),
 					'shareasale_id'          => monsterinsights_get_shareasale_id(),
 					'shareasale_url'         => monsterinsights_get_shareasale_url( monsterinsights_get_shareasale_id(), '' ),
@@ -231,6 +230,14 @@ class MonsterInsights_Dashboard_Widget {
 			);
 
 			$this->remove_conflicting_asset_files();
+
+			$text_domain = monsterinsights_is_pro_version() ? 'google-analytics-premium' : 'google-analytics-for-wordpress';
+
+			wp_scripts()->add_inline_script(
+				'monsterinsights-vue-widget',
+				monsterinsights_get_printable_translations( $text_domain ),
+				'translation'
+			);
 		}
 	}
 
@@ -290,7 +297,7 @@ class MonsterInsights_Dashboard_Widget {
 			$this->options = self::wp_parse_args_recursive( get_user_meta( get_current_user_id(), 'monsterinsights_user_preferences', true ), self::$default_options );
 		}
 
-        // Set interval fixed to last30days on lite plugin.
+		// Set interval fixed to last30days on lite plugin.
 		$this->options['interval'] = 'last30days';
 
 		return apply_filters( 'monsterinsights_dashboard_widget_options', $this->options );

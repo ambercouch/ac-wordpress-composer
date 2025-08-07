@@ -770,6 +770,8 @@ class MainWP_Child_Wordfence { //phpcs:ignore -- NOSONAR - multi methods.
             }
         } catch ( MainWP_Exception $e ) {
             $information['error'] = $e->getMessage();
+        } catch ( \Exception $e ) {
+            $information['error'] = $e->getMessage();
         }
 
         MainWP_Helper::write( $information );
@@ -872,6 +874,7 @@ class MainWP_Child_Wordfence { //phpcs:ignore -- NOSONAR - multi methods.
             'loginSec_maskLoginErrors',
             'loginSec_blockAdminReg',
             'loginSec_disableAuthorScan',
+            'loginSec_disableApplicationPasswords',
             'other_blockBadPOST',
             'blockCustomText',
             'other_pwStrengthOnUpdate',
@@ -1704,6 +1707,9 @@ SQL
                     } catch ( MainWP_Exception $e ) {
                         $result['error'] = 'Your options have been saved, but you left your license key blank, so we tried to get you a free license key from the Wordfence servers. There was a problem fetching the free key: ' . wp_kses( $e->getMessage(), array() );
                         return $result;
+                    } catch ( \Exception $e ) {
+                        $result['error'] = 'Your options have been saved, but you left your license key blank, so we tried to get you a free license key from the Wordfence servers. There was a problem fetching the free key: ' . wp_kses( $e->getMessage(), array() );
+                        return $result;
                     }
                 } elseif ( ! empty( $apiKey ) && $existingAPIKey !== $apiKey ) {
                     $api = new \wfAPI( $apiKey, \wfUtils::getWPVersion() );
@@ -1731,6 +1737,9 @@ SQL
                             throw new MainWP_Exception( 'We could not understand the Wordfence API server reply when updating your API key.' );
                         }
                     } catch ( MainWP_Exception $e ) {
+                        $result['error'] = 'Your options have been saved. However we noticed you changed your API key and we tried to verify it with the Wordfence servers and received an error: ' . htmlentities( $e->getMessage() );
+                        return $result;
+                    } catch ( \Exception $e ) {
                         $result['error'] = 'Your options have been saved. However we noticed you changed your API key and we tried to verify it with the Wordfence servers and received an error: ' . htmlentities( $e->getMessage() );
                         return $result;
                     }
@@ -1786,6 +1795,9 @@ SQL
                     } catch ( MainWP_Exception $e ) {
                         $result['error'] = 'Your options have been saved. However we tried to verify your license key with the Wordfence servers and received an error: ' . wp_kses( $e->getMessage(), array() );
                         return $result;
+                    } catch ( \Exception $e ) {
+                        $result['error'] = 'Your options have been saved. However we tried to verify your license key with the Wordfence servers and received an error: ' . wp_kses( $e->getMessage(), array() );
+                        return $result;
                     }
                 }
             }
@@ -1826,7 +1838,7 @@ SQL
      *
      * @return array Action result.
      */
-    public function export_settings() {
+    public function export_settings() {//phpcs:ignore -- NOSONAR -complex.
 
         $export = array();
 
@@ -1857,6 +1869,8 @@ SQL
                 throw new MainWP_Exception( esc_html__( 'Invalid response: ', 'wordfence' ) );
             }
         } catch ( MainWP_Exception $e ) {
+            return array( 'errorExport' => esc_html__( 'An error occurred: ', 'wordfence' ) . $e->getMessage() );
+        } catch ( \Exception $e ) {
             return array( 'errorExport' => esc_html__( 'An error occurred: ', 'wordfence' ) . $e->getMessage() );
         }
     }
@@ -1931,6 +1945,8 @@ SQL
                 throw new MainWP_Exception( 'Invalid response: ' );
             }
         } catch ( MainWP_Exception $e ) {
+            return array( 'errorImport' => 'An error occurred: ' . $e->getMessage() );
+        } catch ( \Exception $e ) {
             return array( 'errorImport' => 'An error occurred: ' . $e->getMessage() );
         }
     }
@@ -2424,6 +2440,10 @@ SQL
                 return array(
                     'error' => $e->getMessage(),
                 );
+            }  catch ( \Exception $e ) {
+                return array(
+                    'error' => $e->getMessage(),
+                );
             }
         }
 
@@ -2607,6 +2627,10 @@ SQL
                 throw new MainWP_Exception( 'Could not understand the response we received from the Wordfence servers when applying for a free API key.' );
             }
         } catch ( MainWP_Exception $e ) {
+            $return['errorMsg'] = 'Could not fetch free API key from Wordfence: ' . htmlentities( $e->getMessage() );
+
+            return $return;
+        } catch ( \Exception $e ) {
             $return['errorMsg'] = 'Could not fetch free API key from Wordfence: ' . htmlentities( $e->getMessage() );
 
             return $return;
@@ -3313,10 +3337,12 @@ SQL
                             }
                         }
 
+                        $wp_ver = MainWP_Child_Server_Information_Base::get_wordpress_version();
+
                         $wordPressValues = array(
                             'WordPress Version'            => array(
                                 'description' => '',
-                                'value'       => $wp_version,
+                                'value'       => $wp_ver,
                             ),
                             'WP_DEBUG'                     => array(
                                 'description' => 'WordPress debug mode',

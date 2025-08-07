@@ -83,7 +83,7 @@ class MonsterInsights_WP_Site_Health_Lite {
 
 		if ( $this->is_tracking() ) {
 			$tests['async']['monsterinsights_tracking_code'] = array(
-				'label' => __( 'MonsterInsights Tracking Code', 'ga-premium' ),
+				'label' => __( 'MonsterInsights Tracking Code', 'google-analytics-for-wordpress' ),
 				'test'  => 'monsterinsights_test_tracking_code',
 			);
 		}
@@ -458,8 +458,8 @@ class MonsterInsights_WP_Site_Health_Lite {
 		if ( ! empty( $errors ) && is_array( $errors ) && ! empty( $errors[0] ) ) {
 			if ( $this->is_coming_soon_active() ) {
 				$result['status']      = 'good';
-				$result['label']       = __( 'Tracking code disabled: coming soon/maintenance mode plugin present', 'ga-premium' );
-				$result['description'] = __( 'MonsterInsights has detected that you have a coming soon or maintenance mode plugin currently activated on your site. This plugin does not allow other plugins (like MonsterInsights) to output Javascript, and thus MonsterInsights is not currently tracking your users (expected). Once the coming soon/maintenance mode plugin is deactivated, tracking will resume automatically.', 'ga-premium' );
+				$result['label']       = __( 'Tracking code disabled: coming soon/maintenance mode plugin present', 'google-analytics-for-wordpress' );
+				$result['description'] = __( 'MonsterInsights has detected that you have a coming soon or maintenance mode plugin currently activated on your site. This plugin does not allow other plugins (like MonsterInsights) to output Javascript, and thus MonsterInsights is not currently tracking your users (expected). Once the coming soon/maintenance mode plugin is deactivated, tracking will resume automatically.', 'google-analytics-for-wordpress' );
 			} else {
 				$result['status']      = 'critical';
 				$result['label']       = __( 'MonsterInsights has automatically detected an issue with your tracking setup', 'google-analytics-for-wordpress' );

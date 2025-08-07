@@ -1,10 +1,10 @@
 ﻿=== MonsterInsights - Google Analytics Dashboard for WordPress (Website Stats Made Easy) ===
 Contributors: chriscct7, smub
 Donate link: http://www.wpbeginner.com/wpbeginner-needs-your-help/
-Tags: WordPress analytics, google analytics, google analytics dashboard, google analytics widget, Website Analytics
+Tags: WordPress analytics, google analytics, analytics, google analytics dashboard, Website Analytics
 Requires at least: 5.6.0
-Tested up to: 6.6.1
-Stable tag: 9.0.1
+Tested up to: 6.8.1
+Stable tag: 9.6.1
 Requires PHP: 7.2
 License: GPL v3
 
@@ -55,7 +55,7 @@ We understand that Google Analytics has a steep learning curve. That's why Monst
 
 We have even created customized reports to help you filter through the noise and see the stats that really matter!
 
-* **Audience Report** shows you detailed insights like which country your visitors are coming from, what are they most interested in, which device are they using, their age, gender, and more. 
+* **Audience Report** shows you detailed insights like which country your visitors are coming from, what are they most interested in, which device are they using, their age, gender, and more.
 
 * **Publishers Report** helps you understand which pages your visitors are arriving, and which pages they are leaving from. Designed specifically for blogs and other resource sites, this powerful report will show you which outbound links are getting clicked so you can easily optimize for higher conversions.
 
@@ -75,15 +75,17 @@ We have even created customized reports to help you filter through the noise and
 
 * **Source and Medium Report** gives you an easy view of Google Analytics UTM tracking to see where you traffic comes from.
 
-* **Technology Report** shows you which devices and browsers visit your website, so you can optimize for each visitor. 
+* **Technology Report** shows you which devices and browsers visit your website, so you can optimize for each visitor.
 
-* **Campaign Report** easily unlocks all of your Google Analytics UTM tracking to show you how effective your marketing efforts have been. 
+* **Campaign Report** easily unlocks all of your Google Analytics UTM tracking to show you how effective your marketing efforts have been.
 
 * **Pages Report** shows you which pages are most poplular on your website, and shows impressive metrics like bounce rate, engaged sessions to help you optimize.
 
 * **Coupon Report** showcases your coupon usage, and shows important metrics like average order value and revenue.
 
-* **Funnel Report** visually shows you how many people view items in your store, add to cart, and make a purchase. You can easily breakdown the funnel and conversion report into channel, and customize your dates for in depth analysis. 
+* **Cart Abandon Report** shows you which products and the amount of revenue your customer's are leaving in their carts.
+
+* **Funnel Report** visually shows you how many people view items in your store, add to cart, and make a purchase. You can easily breakdown the funnel and conversion report into channel, and customize your dates for in depth analysis. Works automatically with WooCommerce analytics, and Easy Digital Downloads.
 
 Our custom Google Analytics Dashboard reports are based on over 12+ years of online business experience. We built MonsterInsights to be the Google Analytics plugin that we wish we had.
 
@@ -119,20 +121,79 @@ MonsterInsights&reg; is a registered trademark of MonsterInsights LLC. When writ
 4. Want more features? <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion">Purchase MonsterInsights Pro</a>!
 
 == Changelog ==
+= 9.6.1: June 26, 2025 =
+- Fixed: Minor updates and bug fixes
+
+= 9.6.0: June 17, 2025 =
+- Enhancement: Updated Forms Report to include more metrics and stats
+- Fixed: Minor updates and bug fixes
+
+= 9.5.3: May 14, 2025 =
+- Fixed: Minor updates and bug fixes
+
+= 9.5.2: May 6, 2025 =
+- Fixed: Minor updates and bug fixes
+
+= 9.5.1: May 5, 2025 =
+- New: Support for Pinterest PPC conversion tracking
+- Fixed: Minor updates and bug fixes
+
+= 9.4.1: March 27, 2025 =
+- Fixed: Minor updates and bug fixes
+
+= 9.4.0: March 25, 2025 =
+- New: Support for TikTok PPC conversion tracking
+- Enhancement: Adding translatable strings throughout our plugin. More to come!
+- Enhancement: Our monthly statistics emails got a fresh facelift
+- Enhancement: Our plugin code now follows WP VIP standards
+
+= 9.3.0: February 18, 2025 =
+- New: Overview Report Metrics
+- New: Cart Abandonment Report
+- Fixed: Minor updates and bug fixes
+
+= 9.2.4: December 13, 2024 =
+- Fixed: Minor updates and bug fixes
+
+= 9.2.3: December 11, 2024 =
+- Fixed: Minor updates and bug fixes
+
+= 9.2.2: November 13, 2024 =
+- New: Our Year In Review report is here. This report will automatically show up starting on January 1
+- Update: We'll now check to ensure your website time zone matches Google Analytics
+
+= 9.2.1: October 31, 2024 =
+- Fixed: Fixed a bug in the Headline Analyzer tool causing errors in WordPress versions lower than 6.6
+
+= 9.2.0: October 23, 2024 =
+- New: Country and region report to see where and how your visitors find your website
+- New: Advanced tracking options for users of Google Tag Manager
+- New: SEO & RankMath Integrations with our Custom Dimensions addon
+- Fixed: Minor updates and bug fixes
+
+= 9.1.1: September 24, 2024 =
+- Fix: We fixed a PHP issue related to translations.
+
+= 9.1.0: September 23, 2024 =
+- New: Stats at a Glance report shows you information about your website in a whole new way.
+- New: Google Ads Enhanced Conversion Support & Meta Conversion API Support (CAPI) for PPC Campaigns
+- Enhanced: Updated Google Analytics tag loading order to help increase Core Web Vital scores.
+- Fixed: Lots of minor updates and bug fixes.
+
 = 9.0.1: August 21, 2024 =
 - Fix: We resolved an issue in the Onboarding Recommended Addons page.
 
 = 9.0.0: July 29, 2024 =
 - New: Conversations AI - chat with your website's analytics without any need to read reports
 - New: AI Insights - Get automated insights about your website with the power of AI
-- Fix: We fixed a PHP error occurring inside our Forms reports 
+- Fix: We fixed a PHP error occurring inside our Forms reports
 
 = 8.28.0: July 08, 2024 =
 -New: Date Comparisons - Now you can easily compare your stats on any chart or graph.
 -Enhancement: We updated tooltips to make it easier to understand some options.
 
 = 8.27.0: May 29, 2024 =
-- New: Site Notes Automations addon. 
+- New: Site Notes Automations addon.
 - Fix: We fixed an issue related to eCommerce abandoned checkouts.
 - Fix: We fixed an issue related to UserJourney report pages.
 - Enhancement: We improved the notification system.
@@ -187,11 +248,11 @@ MonsterInsights&reg; is a registered trademark of MonsterInsights LLC. When writ
 
 = 8.20: October 03, 2023 =
 - New: Google Analytics and eCommerce support for WishList Member
-- New: Google Analytics and eCommerce support for WPCharitable 
+- New: Google Analytics and eCommerce support for WPCharitable
 - Enhanced: Improved support for PHP 8.2.
 - Enhanced: Improved Site Health compatibility.
 - Fixed: Restrict Content Pro, we fixed the refund event in GoogleAnalytics when order status is failed or abandoned.
-- Fixed: We fixed some minor bugs related to notifications. 
+- Fixed: We fixed some minor bugs related to notifications.
 - Fixed: Popular posts, we fixed a bug occurring in curated popular posts.
 - Fixed: We fixed some minor bugs related to User Journey.
 
@@ -213,8 +274,8 @@ MonsterInsights&reg; is a registered trademark of MonsterInsights LLC. When writ
 - Fixed: We fixed a bug in the AffiliateWP integration.
 
 = 8.16: June 19, 2023 =
-- New: User Journey report now available! See all of your website's purchases in one screen. 
-- Update: We updated the Popular Posts to support themes that allow widgets. 
+- New: User Journey report now available! See all of your website's purchases in one screen.
+- Update: We updated the Popular Posts to support themes that allow widgets.
 - Fixed: We fixed some layout issues in exported PDF reports.
 - Fixed: We fixed the deprecated YOAST function WPSEO_Utils::translate_score().
 - Fixed: We fixed a bug occurring while downloading files having the file download tracking enabled.

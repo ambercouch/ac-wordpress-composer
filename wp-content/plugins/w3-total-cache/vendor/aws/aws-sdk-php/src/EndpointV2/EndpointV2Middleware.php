@@ -5,8 +5,10 @@ use Aws\Api\Operation;
 use Aws\Api\Service;
 use Aws\Auth\Exception\UnresolvedAuthSchemeException;
 use Aws\CommandInterface;
+use Aws\MetricsBuilder;
 use Closure;
 use GuzzleHttp\Promise\Promise;
+use function JmesPath\search;
 
 /**
  * Handles endpoint rule evaluation and endpoint resolution.
@@ -76,7 +78,7 @@ class EndpointV2Middleware
         EndpointProviderV2 $endpointProvider,
         Service $api,
         array $args,
-        callable $credentialProvider = null
+        ?callable $credentialProvider = null
     )
     {
         $this->nextHandler = $nextHandler;
@@ -97,8 +99,10 @@ class EndpointV2Middleware
         $operation = $this->api->getOperation($command->getName());
         $commandArgs = $command->toArray();
         $providerArgs = $this->resolveArgs($commandArgs, $operation);
+        if (!empty($providerArgs[self::ACCOUNT_ID_PARAM])) {
+            $command->getMetricsBuilder()->append(MetricsBuilder::RESOLVED_ACCOUNT_ID);
+        }
         $endpoint = $this->endpointProvider->resolveEndpoint($providerArgs);
-
         if (!empty($authSchemes = $endpoint->getProperty('authSchemes'))) {
             $this->applyAuthScheme(
                 $authSchemes,
@@ -137,9 +141,14 @@ class EndpointV2Middleware
         $contextParams = $this->bindContextParams(
             $commandArgs, $operation->getContextParams()
         );
+        $operationContextParams = $this->bindOperationContextParams(
+            $commandArgs,
+            $operation->getOperationContextParams()
+        );
 
         return array_merge(
             $this->clientArgs,
+            $operationContextParams,
             $contextParams,
             $staticContextParams,
             $endpointCommandArgs
@@ -225,6 +234,33 @@ class EndpointV2Middleware
         foreach($contextParams as $name => $spec) {
             if (isset($commandArgs[$spec['shape']])) {
                 $scopedParams[$name] = $commandArgs[$spec['shape']];
+            }
+        }
+
+        return $scopedParams;
+    }
+
+    /**
+     * Binds context params to their corresponding values found in
+     * command arguments.
+     *
+     * @param array $commandArgs
+     * @param array $contextParams
+     *
+     * @return array
+     */
+    private function bindOperationContextParams(
+        array $commandArgs,
+        array $operationContextParams
+    ): array
+    {
+        $scopedParams = [];
+
+        foreach($operationContextParams as $name => $spec) {
+            $scopedValue = search($spec['path'], $commandArgs);
+
+            if ($scopedValue) {
+                $scopedParams[$name] = $scopedValue;
             }
         }
 

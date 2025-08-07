@@ -42,23 +42,40 @@ if ( ! class_exists( 'Ai1wmve_Schedules_Controller' ) ) {
 					$events = new Ai1wmve_Schedule_Events();
 					$event  = $events->find_or_new( $event_id );
 
+					// List DB tables with default WP table prefix
 					$mysql = Ai1wm_Database_Utility::create_client();
 
 					// Include table prefixes
 					if ( ai1wm_table_prefix() ) {
 						$mysql->add_table_prefix_filter( ai1wm_table_prefix() );
 
-						// Include table prefixes (Webba Booking)
-						foreach ( array( 'wbk_services', 'wbk_days_on_off', 'wbk_locked_time_slots', 'wbk_appointments', 'wbk_cancelled_appointments', 'wbk_email_templates', 'wbk_service_categories', 'wbk_gg_calendars', 'wbk_coupons' ) as $table_name ) {
+						// Include table prefixes (Webba Booking and CiviCRM)
+						foreach ( array( 'wbk_', 'civicrm_' ) as $table_name ) {
 							$mysql->add_table_prefix_filter( $table_name );
 						}
 					}
+					$exclude_tables = $mysql->get_tables();
+
+					// List db tables without WP default table prefix
+					$mysql = Ai1wm_Database_Utility::create_client();
+
+					// Exclude default wp table prefix
+					if ( ai1wm_table_prefix() ) {
+						$mysql->add_table_prefix_filter( '', sprintf( '(%s|%s|%s)', ai1wm_table_prefix(), 'wbk_', 'civicrm_' ) );
+					} else {
+						$mysql->add_table_prefix_filter( '', sprintf( '(%s|%s)', 'wbk_', 'civicrm_' ) );
+					}
+					$include_tables = $mysql->get_tables();
+
+					$incremental_storages = apply_filters( 'ai1wmve_incremental_storages', array() );
 
 					Ai1wm_Template::render(
 						'schedules/create-edit',
 						array(
-							'event'  => $event,
-							'tables' => $mysql->get_tables(),
+							'event'                => $event,
+							'exclude_tables'       => $exclude_tables,
+							'include_tables'       => $include_tables,
+							'incremental_storages' => $incremental_storages,
 						),
 						AI1WMVE_TEMPLATES_PATH
 					);

@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
+<?php
 
 use security\wordpress\vulnerabilities\Rsssl_File_Storage;
 
@@ -47,14 +47,9 @@ if (!class_exists("rsssl_vulnerabilities")) {
 
         public function __construct()
         {
-            $this->risk_naming = [
-                'l' => __('low-risk', 'really-simple-ssl'),
-                'm' => __('medium-risk', 'really-simple-ssl'),
-                'h' => __('high-risk', 'really-simple-ssl'),
-                'c' => __('critical', 'really-simple-ssl'),
-            ];
-
 	        $this->init();
+            $this->load_translations_just_in_time();
+
 	        add_filter('rsssl_vulnerability_data', array($this, 'get_stats'));
 
 	        //now we add the action to the cron.
@@ -62,6 +57,35 @@ if (!class_exists("rsssl_vulnerabilities")) {
 	        add_filter('rsssl_notices', [$this, 'show_help_notices'], 10, 1);
 	        add_action( 'rsssl_after_save_field', array( $this, 'maybe_delete_local_files' ), 10, 4 );
 	        add_action( 'rsssl_upgrade', array( $this, 'upgrade_encrypted_files') );
+        }
+
+        /**
+         * As this class is not only instantiated by requiring this file
+         * but also in other class instances, we are not 100% sure of the
+         * current filter or action. So we check if we are in the init action
+         * or if the init action has already been executed. If so, we load the
+         * translations immediately and just in time.
+         */
+        public function load_translations_just_in_time(): void
+        {
+            add_action('init', [$this, 'load_translations']);
+
+            if (current_filter() === 'init' || did_action('init') > 0) {
+                $this->load_translations();
+            }
+        }
+
+        /**
+         * Load the translations for the risk levels
+         */
+        public function load_translations(): void
+        {
+            $this->risk_naming = [
+                'l' => __('low-risk', 'really-simple-ssl'),
+                'm' => __('medium-risk', 'really-simple-ssl'),
+                'h' => __('high-risk', 'really-simple-ssl'),
+                'c' => __('critical', 'really-simple-ssl'),
+            ];
         }
 
 	    /**
@@ -167,9 +191,11 @@ if (!class_exists("rsssl_vulnerabilities")) {
 		    if ( ! rsssl_admin_logged_in() ) {
 			    return;
 		    }
+
 		    \security\wordpress\vulnerabilities\Rsssl_File_Storage::DeleteOldFiles();
 
-		    if ( isset($_GET['rsssl_check_vulnerabilities']) || get_option('rsssl_reload_vulnerability_files') ) {
+		    if ( get_option('rsssl_reload_vulnerability_files') ) {
+
 			    delete_option('rsssl_reload_vulnerability_files');
 			    $this->reload_files_on_update();
 			    update_option('rsssl_clear_vulnerability_notices', true, false);
@@ -473,6 +499,7 @@ if (!class_exists("rsssl_vulnerabilities")) {
             if ( !$force_update && !empty($this->workable_plugins) ) {
                 return;
             }
+
 		    //first we get all installed plugins
 		    $installed_plugins = get_plugins();
 
@@ -856,7 +883,6 @@ if (!class_exists("rsssl_vulnerabilities")) {
          * @param string $url
          *
          * @return mixed|null
-         * @noinspection PhpComposerExtensionStubsInspection
          */
         private function download(string $url)
         {
@@ -1546,7 +1572,7 @@ if (!class_exists("rsssl_vulnerabilities")) {
                 'message' => $message . ' ' .
                              __('Based on your settings, Really Simple Security will take appropriate action, or you will need to solve it manually.','really-simple-ssl') .' '.
                              sprintf(__('Get more information from the Really Simple Security dashboard on %s'), $this->domain() ),
-                'url' => rsssl_admin_url( [], '#settings/vulnerabilities_notifications'),
+                'url' => rsssl_admin_url( [], '#settings/vulnerabilities/vulnerabilities-overview'),
             ];
         }
 

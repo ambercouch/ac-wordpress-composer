@@ -34,16 +34,16 @@
 		--rsp-other-plugins-color: var(--rsp-pink);
 	  }
 
-	  &.rsssl-burst-statistics {
-		--rsp-other-plugins-color: var(--rsp-green);
-	  }
-
 	  &.rsssl-complianz-gdpr {
 		--rsp-other-plugins-color: var(--rsp-blue);
 	  }
 
       &.rsssl-complianz-terms-conditions {
         --rsp-other-plugins-color: var(--rsp-black);
+      }
+
+      &.rsssl-simplybook {
+        --rsp-other-plugins-color: var(--rsp-simplybook-blue);
       }
 
 	  &.rsssl-really-simple-ssl {

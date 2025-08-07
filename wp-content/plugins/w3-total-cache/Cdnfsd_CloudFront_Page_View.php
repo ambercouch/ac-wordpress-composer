@@ -1,4 +1,10 @@
 <?php
+/**
+ * File: Cdnfsd_CloudFront_Page_View.php
+ *
+ * @package W3TC
+ */
+
 namespace W3TC;
 
 if ( ! defined( 'W3TC' ) ) {
@@ -9,7 +15,7 @@ $key        = $config->get_string( 'cdnfsd.cloudfront.access_key' );
 $authorized = ! empty( $key );
 
 ?>
-		<?php Util_Ui::postbox_header( esc_html__( 'Configuration: Full-Site Delivery', 'w3-total-cache' ), '', 'configuration' ); ?>
+		<?php Util_Ui::postbox_header( esc_html__( 'Configuration: Full-Site Delivery', 'w3-total-cache' ), '', 'configuration-fsd' ); ?>
 		<table class="form-table">
 			<tr>
 				<th style="width: 300px;">

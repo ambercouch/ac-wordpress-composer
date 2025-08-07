@@ -40,18 +40,9 @@ if ( !class_exists('rsssl_mailer_admin') ) {
 				return;
 			}
 
-			if ( isset($_GET['rsssl_force_verification'] ) ){
-				update_option( 'rsssl_email_verification_status', 'completed', false );
-			}
-
-			if ( ! isset( $_GET['rsssl_verification_code'] )  ) {
+			if ( ! isset( $_GET['rsssl_verification_code'] ) || ! isset( $_GET['rsssl_nonce'] ) ) {
 				return;
 			}
-
-			// Handle e-mail verification
-			$verification_code = $_GET['rsssl_verification_code'];
-			$verification_code = preg_replace( "/[^0-9]/", "", $verification_code );
-			$verification_code = substr( $verification_code, 0, 6 );
 
 			// verify code
 			$user_id = get_current_user_id();
@@ -60,6 +51,11 @@ if ( !class_exists('rsssl_mailer_admin') ) {
 				return;
 			}
 
+			// Handle e-mail verification
+			$verification_code = $_GET['rsssl_verification_code'];
+			$verification_code = preg_replace( "/[^0-9]/", "", $verification_code );
+			$verification_code = substr( $verification_code, 0, 6 );
+
 			$current_time                  = time();
 			$saved_verification_code       = get_option('rsssl_email_verification_code');
 			$saved_verification_expiration = get_option('rsssl_email_verification_code_expiration');
@@ -67,7 +63,7 @@ if ( !class_exists('rsssl_mailer_admin') ) {
 			if ( $verification_code === $saved_verification_code && $saved_verification_expiration && $current_time < $saved_verification_expiration ) {
 				// If the verification code is correct and hasn't expired, update the verification status
 				update_option( 'rsssl_email_verification_status', 'completed', false );
-				set_transient('rsssl_redirect_to_settings_page', true, HOUR_IN_SECONDS );
+				update_option('rsssl_redirect_to_settings_page', true);
 			}
 		}
 

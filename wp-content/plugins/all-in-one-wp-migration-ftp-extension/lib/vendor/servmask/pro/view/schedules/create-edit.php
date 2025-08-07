@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php _e( 'Create Event', AI1WM_PLUGIN_NAME ); ?>
 				</h1>
 
-				<schedule-event inline-template :event='<?php echo $event->to_json(); ?>' :advanced-options='<?php echo json_encode( $event->advanced_options() ); ?>' :global-increment="<?php echo defined( 'AI1WM_INCREMENTAL_PATH' ) ? 'true' : 'false'; ?>">
+				<schedule-event inline-template :event='<?php echo $event->to_json(); ?>' :advanced-options='<?php echo json_encode( $event->advanced_options() ); ?>' :incremental-storages='<?php echo json_encode( $incremental_storages ); ?>'>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php?action=ai1wm_schedule_event_save' ) ); ?>" id="ai1wmve-schedule-event-form" class="ai1wm-clear">
 						<input type="hidden" name="event_id" v-model="form.event_id">
 						<div class="ai1wm-event-fieldset">
@@ -105,19 +105,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<div class="ai1wm-event-field ai1wm-event-field-row">
 									<label for="ai1wmve-exclude_files">
 										<input type="checkbox" id="ai1wmve-exclude_files" class="ai1wm-event-input" v-model="exclude_files"/>
-										<?php _e( 'Do <strong>not</strong> include the selected files', AI1WM_PLUGIN_NAME ); ?>
+										<?php _e( 'Exclude the selected files', AI1WM_PLUGIN_NAME ); ?>
 									</label>
 									<file-browser :value="this.excludedFiles"></file-browser>
 								</div>
 							</div>
 
 							<div class="ai1wm-event-row" v-if="form.type === '<?php echo Ai1wmve_Schedule_Event::TYPE_EXPORT; ?>'">
-								<div class="ai1wm-event-field ai1wm-event-field-row" id="ai1wmve-db-table-excluder">
+								<div class="ai1wm-event-field ai1wm-event-field-row" id="ai1wmve-db-table-excluder" v-show="databaseIncluded">
 									<label for="ai1wmve-exclude_db_tables" v-show="showDbExcluder">
 										<input type="checkbox" id="ai1wmve-exclude_db_tables" class="ai1wm-event-input" v-model="exclude_db_tables"/>
-										<?php _e( 'Do <strong>not</strong> include the selected database tables', AI1WM_PLUGIN_NAME ); ?>
+										<?php _e( 'Exclude the selected database tables', AI1WM_PLUGIN_NAME ); ?>
 									</label>
-									<db-tables v-show="showDbExcluder" :value="this.excludedDbTables" :db-tables='<?php echo json_encode( $tables, JSON_HEX_APOS ); ?>'></db-tables>
+									<db-tables v-show="showDbExcluder" :value="this.excludedDbTables" :db-tables='<?php echo json_encode( $exclude_tables, JSON_HEX_APOS ); ?>' label-id="#ai1wmve-exclude_db_tables" field-name="excluded_db_tables" />
+								</div>
+							</div>
+
+							<div class="ai1wm-event-row" v-if="form.type === '<?php echo Ai1wmve_Schedule_Event::TYPE_EXPORT; ?>'">
+								<div class="ai1wm-event-field ai1wm-event-field-row" id="ai1wmve-db-table-excluder" v-show="databaseIncluded">
+									<label for="ai1wmve-include_db_tables" v-show="showDbIncluder">
+										<input type="checkbox" id="ai1wmve-include_db_tables" class="ai1wm-event-input" v-model="include_db_tables"/>
+										<?php _e( 'Include the selected non‑WP tables', AI1WM_PLUGIN_NAME ); ?>
+									</label>
+									<db-tables v-show="showDbIncluder" :value="this.includedDbTables" :db-tables='<?php echo json_encode( $include_tables, JSON_HEX_APOS ); ?>' label-id="#ai1wmve-include_db_tables" field-name="included_db_tables" />
 								</div>
 							</div>
 						</div>
@@ -182,7 +192,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<select class="ai1wm-event-input" id="ai1wm-event-schedule-day" v-model="form.schedule.day" name="schedule[day]" required>
 											<option value="" disabled><?php _e( 'Day', AI1WM_PLUGIN_NAME ); ?></option>
 											<?php foreach ( range( 1, 28 ) as $day ) : ?>
-												<option value="<?php echo $day; ?>"><?php echo date_i18n( 'd', mktime( null, null, null, null, $day ) ); ?></option>
+												<option value="<?php echo $day; ?>"><?php echo date_i18n( 'd', mktime( 0, null, null, null, $day ) ); ?></option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -207,7 +217,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<select class="ai1wm-event-input" id="ai1wm-event-schedule-minute" v-model="form.schedule.minute" name="schedule[minute]" required>
 											<option value="" disabled><?php _e( 'Minute', AI1WM_PLUGIN_NAME ); ?></option>
 											<?php foreach ( range( 0, 59 ) as $minute ) : ?>
-												<option value="<?php echo $minute; ?>"><?php echo date_i18n( 'i', mktime( null, $minute ) ); ?></option>
+												<option value="<?php echo $minute; ?>"><?php echo date_i18n( 'i', mktime( 0, $minute ) ); ?></option>
 											<?php endforeach; ?>
 										</select>
 									</div>

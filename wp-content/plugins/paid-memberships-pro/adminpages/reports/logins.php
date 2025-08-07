@@ -3,17 +3,19 @@
 	PMPro Report
 	Title: Logins
 	Slug: login
-	
-	For each report, add a line like:
-	global $pmpro_reports;
-	$pmpro_reports['slug'] = 'Title';
-	
-	For each report, also write two functions:
+
+	For each report, write three functions:
+	* pmpro_report_{slug}_register() to register the widget (slug and title).
 	* pmpro_report_{slug}_widget()   to show up on the report homepage.
 	* pmpro_report_{slug}_page()     to show up when users click on the report page widget.
 */
-global $pmpro_reports;
-$pmpro_reports['login'] = __('Visits, Views, and Logins', 'paid-memberships-pro');
+function pmpro_report_login_register( $pmpro_reports ) {
+	$pmpro_reports['login'] = __( 'Visits, Views, and Logins', 'paid-memberships-pro' );
+
+	return $pmpro_reports;
+}
+
+add_filter( 'pmpro_registered_reports', 'pmpro_report_login_register' );
 
 function pmpro_report_login_widget() {
 	global $wpdb, $pmpro_reports;
@@ -167,7 +169,7 @@ function pmpro_report_login_page()
 	<div class="pmpro_report-filters">
 		<h3><?php esc_html_e( 'Customize Report', 'paid-memberships-pro'); ?></h3>
 		<div class="tablenav top">
-			<label for="l"><?php echo esc_html_x( 'Show', 'Dropdown label, e.g. Show All Users', 'paid-memberships-pro' ); ?></label>
+			<label for="l" class="pmpro_report-filter-text"><?php echo esc_html_x( 'Show', 'Dropdown label, e.g. Show All Users', 'paid-memberships-pro' ); ?></label>
 			<select id="l" name="l" onchange="jQuery('#visits-views-logins-form').trigger('submit');" aria-label="<?php esc_attr_e( 'Select a membership level to customize this report', 'paid-memberships-pro' ); ?>">
 				<option value="" <?php if(!$l) { ?>selected="selected"<?php } ?>><?php esc_html_e('All Users', 'paid-memberships-pro')?></option>
 				<option value="all" <?php if($l == "all") { ?>selected="selected"<?php } ?>><?php esc_html_e('All Levels', 'paid-memberships-pro')?></option>
@@ -183,7 +185,6 @@ function pmpro_report_login_page()
 					}
 				?>
 			</select>
-			<br class="clear" />
 		</div> <!-- end tablenav -->
 	</div> <!-- end pmpro_report-filters -->
 	<?php if ( $theusers ) { ?>
@@ -296,7 +297,7 @@ function pmpro_report_login_page()
 	<div class="tablenav bottom">
 		<div class="tablenav-pages">
 			<?php
-				echo wp_kses_post( pmpro_getPaginationString($pn, $totalrows, $limit, 1, admin_url( "admin.php?page=pmpro-reports&report=login&s=" . urlencode($s)), "&l=$l&limit=$limit&pn=") );
+				echo wp_kses_post( pmpro_getPaginationString($pn, $totalrows, $limit, 1, admin_url( "admin.php?page=pmpro-reports&report=login&s=" . urlencode($s)), "&l=$l&limit=$limit&pn=", __( 'Logins Report Pagination', 'paid-memberships-pro' ) ) );
 			?>
 		</div>
 	</div>
@@ -308,68 +309,75 @@ function pmpro_report_login_page()
 */
 //get values for a user
 function pmpro_reports_get_values_for_user($type, $user_id = NULL) {
-	//default to current user
-	if(empty($user_id))
-	{
+	// Default to current user.
+	if ( empty( $user_id )) {
 		global $current_user;
 		$user_id = $current_user->ID;
 	}
 
-	//need a type and user
-	if(empty($type) || empty($user_id))
+	// Need a type and user.
+	if ( empty( $type ) || empty( $user_id ) ) {
 		return false;
+	}
 
-	//get values from user meta
+	// Get values from user meta.
 	$values = get_user_meta($user_id, "pmpro_" . $type, true);
 
-	//clean them up
-	if(empty($values))
-		$values = array("last"=>"N/A", "thisdate"=>NULL, "week"=>0, "thisweek"=>NULL, "month"=>0, "thismonth"=>NULL, "ytd"=>0, "thisyear"=>NULL, "alltime"=>0);
-	else
-	{
-		//check if we should reset any of the values
+	// Set up empty $values array if it is not set or empty.
+	if ( ! is_array( $values ) || empty( $values ) ) {
+		$values = array(
+			"last"      => "N/A",
+			"thisdate"  => NULL,
+			"week"      => 0,
+			"thisweek"  => NULL,
+			"month"     => 0,
+			"thismonth" => NULL,
+			"ytd"       => 0,
+			"thisyear"  => NULL,
+			"alltime"   => 0
+		);
+	} else {
+		// Check if we should reset any of the values.
 		$now = current_time('timestamp');
 		$thisdate = date("Y-d-m", $now);
 		$thisweek = date("W", $now);
 		$thismonth = date("n", $now);
 		$thisyear = date("Y", $now);
 
-		if(!isset($values['thisdate']) || $thisdate != $values['thisdate'])
-		{
+		if ( ! isset( $values['thisdate'] ) || $thisdate != $values['thisdate'] ) {
 			$values['today'] = 0;
 			$values['thisdate'] = $thisdate;
 			$update = true;
 		}
 
-		if(!isset($values['thisweek']) || $thisweek != $values['thisweek'])
-		{
+		if ( ! isset($values['thisweek']) || $thisweek != $values['thisweek'] ) {
 			$values['week'] = 0;
 			$values['thisweek'] = $thisweek;
 			$update = true;
 		}
 
-		if(!isset($values['thismonth']) || $thismonth != $values['thismonth'])
-		{
+		if ( ! isset($values['thismonth']) || $thismonth != $values['thismonth'] ) {
 			$values['month'] = 0;
 			$values['thismonth'] = $thismonth;
 			$update = true;
 		}
 
-		if(!isset($values['thisyear']) || $thisyear != $values['thisyear'])
-		{
+		if ( ! isset($values['thisyear']) || $thisyear != $values['thisyear'] ) {
 			$values['ytd'] = 0;
 			$values['thisyear'] = $thisyear;
 			$update = true;
 		}
+	}
 
-		if(!empty($update))
-			update_user_meta($user_id, 'pmpro_' . $type, $values);
+	// Update user meta if changes were made.
+	if ( ! empty( $update ) ) {
+		update_user_meta( $user_id, 'pmpro_' . $type, $values );
 	}
 
 	return $values;
 }
 
-//get values for a user
+//get all values
 function pmpro_reports_get_all_values($type) {
 	//need a type and user
 	if(empty($type))

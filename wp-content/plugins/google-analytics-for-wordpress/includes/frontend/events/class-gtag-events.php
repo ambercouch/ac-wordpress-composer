@@ -99,9 +99,16 @@ class MonsterInsights_Gtag_Events {
 		if ( ! file_exists( MONSTERINSIGHTS_PLUGIN_DIR . 'assets/js/frontend-gtag.min.js' ) ) {
 			$suffix = '';
 		}
+
 		wp_enqueue_script( 'monsterinsights-frontend-script', plugins_url( 'assets/js/frontend-gtag' . $suffix . '.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), false );
 
-        monsterinsights_localize_script(
+		$use_async = apply_filters( 'monsterinsights_frontend_gtag_script_async', true );
+
+		if ( $use_async ) {
+			wp_script_add_data( 'monsterinsights-frontend-script', 'strategy', 'async' );
+		}
+
+		monsterinsights_localize_script(
 			'monsterinsights-frontend-script',
 			'monsterinsights_frontend',
 			array(
@@ -110,7 +117,7 @@ class MonsterInsights_Gtag_Events {
 				'inbound_paths'       => $inbound_paths, /* Let's get the internal paths to track */
 				'home_url'            => home_url(), /* Let's get the url to compare for external/internal use */
 				'hash_tracking'       => $hash_tracking, /* Should hash track */
-				'v4_id'               => monsterinsights_get_v4_id(), /* V4 ID used for tracking */
+				'v4_id'               => monsterinsights_get_v4_id_to_output(), /* V4 ID used for tracking */
 			)
 		);
 	}

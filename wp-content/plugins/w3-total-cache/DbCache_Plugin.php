@@ -3,14 +3,17 @@
  * File: DbCache_Plugin.php
  *
  * @package W3TC
- *
- * phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 
 namespace W3TC;
 
 /**
+ * Class DbCache_Plugin
+ *
  * W3 DbCache plugin
+ *
+ * phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+ * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
  */
 class DbCache_Plugin {
 	/**
@@ -21,18 +24,27 @@ class DbCache_Plugin {
 	private $_config = null;
 
 	/**
-	 * Constructor.
+	 * Constructor for the DbCache_Plugin class.
+	 *
+	 * Initializes the configuration for the plugin.
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 		$this->_config = Dispatcher::config();
 	}
 
 	/**
-	 * Runs plugin
+	 * Runs the initialization logic for the DbCache plugin.
+	 *
+	 * Hooks into various WordPress actions and filters to manage database cache operations.
+	 *
+	 * @return void
 	 */
 	public function run() {
 		// phpcs:ignore WordPress.WP.CronInterval.ChangeDetected
 		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
+		add_action( 'w3tc_dbcache_purge_wpcron', array( $this, 'w3tc_dbcache_purge_wpcron' ) );
 
 		if ( 'file' === $this->_config->get_string( 'dbcache.engine' ) ) {
 			add_action( 'w3_dbcache_cleanup', array( $this, 'cleanup' ) );
@@ -59,9 +71,34 @@ class DbCache_Plugin {
 		// Profile.
 		add_action( 'edit_user_profile_update', array( $this, 'on_change' ), 0 );
 
+		// Multisite.
 		if ( Util_Environment::is_wpmu() ) {
-			add_action( 'wp_uninitialize_site', array( $this, 'on_change' ), 0 );
-			add_action( 'wp_update_site', array( $this, 'on_change' ), 0 );
+			$util_attachtoactions = new Util_AttachToActions();
+
+			/**
+			 * Fires once a site has been deleted from the database.
+			 *
+			 * @since 5.1.0
+			 *
+			 * @see w3tc_flush_posts()
+			 *
+			 * @link https://developer.wordpress.org/reference/hooks/wp_delete_site/
+			 *
+			 * @param WP_Site $old_site Deleted site object.
+			 */
+			add_action( 'wp_delete_site', 'w3tc_flush_posts', 0, 0 );
+
+			/**
+			 * Fires once a site has been updated in the database.
+			 *
+			 * @since 5.1.0
+			 *
+			 * @link https://developer.wordpress.org/reference/hooks/wp_update_site/
+			 *
+			 * @param WP_Site $new_site New site object.
+			 * @param WP_Site $old_site Old site object.
+			 */
+			add_action( 'wp_update_site', array( $util_attachtoactions, 'on_update_site' ), 0, 2 );
 		}
 
 		add_filter( 'w3tc_admin_bar_menu', array( $this, 'w3tc_admin_bar_menu' ) );
@@ -72,7 +109,9 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Does disk cache cleanup
+	 * Cleans up expired database cache files.
+	 *
+	 * Instantiates and executes the Cache_File_Cleaner with the specified configurations.
 	 *
 	 * @return void
 	 */
@@ -88,32 +127,50 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Cron schedules filter
+	 * Modifies the WordPress cron schedules to include custom schedules for database cache cleanup.
 	 *
-	 * @param array $schedules Schedules.
+	 * @param array $schedules Existing WordPress cron schedules.
 	 *
-	 * @return array
+	 * @return array Modified array of cron schedules.
 	 */
 	public function cron_schedules( $schedules ) {
-		$gc = $this->_config->get_integer( 'dbcache.file.gc' );
+		$c               = $this->_config;
+		$dbcache_enabled = $c->get_boolean( 'dbcache.enabled' );
+		$engine          = $c->get_string( 'dbcache.engine' );
 
-		return array_merge(
-			$schedules,
-			array(
-				'w3_dbcache_cleanup' => array(
-					'interval' => $gc,
-					'display'  => sprintf(
-						// translators: 1 interval in seconds.
-						__( '[W3TC] Database Cache file GC (every %d seconds)', 'w3-total-cache' ),
-						$gc
-					),
+		if ( $dbcache_enabled && ( 'file' === $engine || 'file_generic' === $engine ) ) {
+			$interval                        = $c->get_integer( 'dbcache.file.gc' );
+			$schedules['w3_dbcache_cleanup'] = array(
+				'interval' => $interval,
+				'display'  => sprintf(
+					// translators: 1 interval in seconds.
+					__( '[W3TC] Database Cache file GC (every %d seconds)', 'w3-total-cache' ),
+					$interval
 				),
-			)
-		);
+			);
+		}
+
+		return $schedules;
 	}
 
 	/**
-	 * Change action
+	 * Triggers the purging of the database cache via wp-cron.
+	 *
+	 * Dispatches the CacheFlush component to handle the flush operation.
+	 *
+	 * @return void
+	 */
+	public function w3tc_dbcache_purge_wpcron() {
+		$flusher = Dispatcher::component( 'CacheFlush' );
+		$flusher->dbcache_flush();
+	}
+
+	/**
+	 * Handles generic cache changes triggered by various events.
+	 *
+	 * Ensures the database cache is flushed only once during a request cycle.
+	 *
+	 * @return void
 	 */
 	public function on_change() {
 		static $flushed = false;
@@ -127,10 +184,14 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Change post action
+	 * Handles cache changes triggered by post-related actions.
 	 *
-	 * @param int   $post_id Post ID.
-	 * @param mixed $post Post.
+	 * Validates the post before initiating a database cache flush.
+	 *
+	 * @param int          $post_id The ID of the post being changed.
+	 * @param WP_Post|null $post    Optional post object.
+	 *
+	 * @return void
 	 */
 	public function on_post_change( $post_id = 0, $post = null ) {
 		static $flushed = false;
@@ -152,9 +213,13 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Comment change action
+	 * Handles cache changes triggered by comment-related actions.
 	 *
-	 * @param integer $comment_id Comment ID.
+	 * Flushes the database cache based on the post associated with the comment.
+	 *
+	 * @param int $comment_id The ID of the comment being changed.
+	 *
+	 * @return void
 	 */
 	public function on_comment_change( $comment_id ) {
 		$post_id = 0;
@@ -168,22 +233,27 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Comment status action fired immediately after transitioning a comment’s status from one to another
-	 * in the database and removing the comment from the database cache, but prior to all status transition hooks.
+	 * Handles comment status updates and triggers a cache flush.
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/wp_set_comment_status/
 	 *
-	 * @param integer $comment_id Comment ID.
-	 * @param string  $status Status.
+	 * @param int    $comment_id The ID of the comment being updated.
+	 * @param string $status     The new comment status.
+	 *
+	 * @return void
 	 */
 	public function on_comment_status( $comment_id, $status ) {
 		$this->on_comment_change( $comment_id );
 	}
 
 	/**
-	 * Setup admin menu elements
+	 * Modifies the W3 Total Cache admin bar menu items.
 	 *
-	 * @param array $menu_items Menu items.
+	 * Adds a menu item for flushing the database cache.
+	 *
+	 * @param array $menu_items Existing admin bar menu items.
+	 *
+	 * @return array Modified admin bar menu items.
 	 */
 	public function w3tc_admin_bar_menu( $menu_items ) {
 		$menu_items['20310.dbcache'] = array(
@@ -200,9 +270,13 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Usage statistics of request filter
+	 * Collects usage statistics for the current request related to the database cache.
 	 *
-	 * @param object $storage Storage object.
+	 * Delegates the request statistics to the ObjectCache_WpObjectCache_Regular component.
+	 *
+	 * @param array $storage The storage array for request usage statistics.
+	 *
+	 * @return void
 	 */
 	public function w3tc_usage_statistics_of_request( $storage ) {
 		$o = Dispatcher::component( 'ObjectCache_WpObjectCache_Regular' );
@@ -210,9 +284,11 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Retrive usage statistics metrics
+	 * Adds custom metrics for usage statistics related to the database cache.
 	 *
-	 * @param array $metrics Metrics.
+	 * @param array $metrics Existing usage statistics metrics.
+	 *
+	 * @return array Modified array of metrics.
 	 */
 	public function w3tc_usage_statistics_metrics( $metrics ) {
 		return array_merge(
@@ -227,11 +303,11 @@ class DbCache_Plugin {
 	}
 
 	/**
-	 * Usage Statisitcs sources filter.
+	 * Adds custom sources for usage statistics based on the configured database cache engine.
 	 *
-	 * @param array $sources Sources.
+	 * @param array $sources Existing usage statistics sources.
 	 *
-	 * @return array
+	 * @return array Modified array of sources.
 	 */
 	public function w3tc_usage_statistics_sources( $sources ) {
 		$c = Dispatcher::config();

@@ -30,9 +30,6 @@
 			//make sure PayPal Express is a gateway option
 			add_filter('pmpro_gateways', array('PMProGateway_paypalstandard', 'pmpro_gateways'));
 
-			//add fields to payment settings
-			add_filter('pmpro_payment_options', array('PMProGateway_paypalstandard', 'pmpro_payment_options'));
-
 			//code to add at checkout
 			$gateway = pmpro_getGateway();
 			if($gateway == "paypalstandard")
@@ -68,9 +65,11 @@
 		 * @return array
          *
 		 * @since 1.8
+		 * @deprecated 3.5
 		 */
 		static function getGatewayOptions()
 		{
+			_deprecated_function( __METHOD__, '3.5' );
 			$options = array(
 				'gateway_environment',
 				'gateway_email',
@@ -90,9 +89,11 @@
          * @return array
          *
 		 * @since 1.8
+		 * @deprecated 3.5
 		 */
 		static function pmpro_payment_options($options)
 		{
+			_deprecated_function( __METHOD__, '3.5' );
 			//get stripe options
 			$paypal_options = PMProGateway_paypalexpress::getGatewayOptions();
 
@@ -111,6 +112,82 @@
 		static function pmpro_payment_option_fields($values, $gateway) {
 			_deprecated_function( __FUNCTION__, '3.1', 'PMProGateway_paypalexpress::pmpro_payment_option_fields()' );
 			PMProGateway_paypalexpress::pmpro_payment_option_fields( $values, $gateway );
+		}
+
+		/**
+		 * Display fields for PayPal options.
+		 *
+		 * @since 3.5
+		 */
+		public static function show_settings_fields() {
+			?>
+			<div id="pmpro_paypal" class="pmpro_section" data-visibility="shown" data-activated="true">
+				<div class="pmpro_section_toggle">
+					<button class="pmpro_section-toggle-button" type="button" aria-expanded="true">
+						<span class="dashicons dashicons-arrow-up-alt2"></span>
+						<?php esc_html_e( 'Settings', 'paid-memberships-pro' ); ?>
+					</button>
+				</div>
+				<div class="pmpro_section_inside">
+					<table class="form-table">
+						<tbody>
+							<tr class="gateway gateway_paypalstandard">
+								<td colspan="2" style="padding: 0px;">
+									<div class="notice error inline">
+										<p>
+										<?php
+											$allowed_message_html = array (
+												'a' => array (
+													'href' => array(),
+													'target' => array(),
+													'title' => array(),
+												),
+											);
+											echo sprintf( wp_kses( __( 'Note: We do not recommend using PayPal Standard. We suggest using PayPal Express, Website Payments Pro (Legacy), or PayPal Pro (Payflow Pro). <a target="_blank" href="%s" title="More information on why can be found here">More information on why can be found here</a>.', 'paid-memberships-pro' ), $allowed_message_html ), 'https://www.paidmembershipspro.com/read-using-paypal-standard-paid-memberships-pro/?utm_source=plugin&utm_medium=pmpro-paymentsettings&utm_campaign=blog&utm_content=read-using-paypal-standard-paid-memberships-pro' );
+										?>
+										</p>
+									</div>
+								</td>
+							</tr>
+							<tr class="gateway gateway_paypal gateway_paypalexpress gateway_paypalstandard">
+								<th scope="row" valign="top">
+									<label for="gateway_email"><?php esc_html_e('Gateway Account Email', 'paid-memberships-pro' );?></label>
+								</th>
+								<td>
+									<input type="text" id="gateway_email" name="gateway_email" value="<?php echo esc_attr( get_option( 'pmpro_gateway_email' ) ); ?>" class="regular-text code" />
+								</td>
+							</tr>
+							<tr class="gateway gateway_paypal gateway_paypalexpress gateway_paypalstandard">
+								<th scope="row" valign="top">
+									<label><?php esc_html_e('IPN Handler URL', 'paid-memberships-pro' );?></label>
+								</th>
+								<td>
+									<p class="description"><?php esc_html_e('To fully integrate with PayPal, be sure to set your IPN Handler URL to ', 'paid-memberships-pro' );?></p>
+									<p><code><?php echo esc_html( add_query_arg( 'action', 'ipnhandler', admin_url('admin-ajax.php') ) );?></code></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Save settings for PayPal.
+		 *
+		 * @since 3.5
+		 */
+		public static function save_settings_fields() {
+			$settings_to_save = array(
+				'gateway_email',
+			);
+
+			foreach ( $settings_to_save as $setting ) {
+				if ( isset( $_REQUEST[ $setting ] ) ) {
+					update_option( 'pmpro_' . $setting, sanitize_text_field( $_REQUEST[ $setting ] ) );
+				}
+			}
 		}
 
 		/**
@@ -248,14 +325,17 @@
 			global $pmpro_currency;
 
 			//taxes on initial amount
-			$initial_payment = $order->InitialPayment;
+			$initial_payment = $order->subtotal;
 			$initial_payment_tax = $order->getTaxForPrice($initial_payment);
 			$initial_payment = pmpro_round_price_as_string( (float) $initial_payment + (float) $initial_payment_tax );
 
 			//taxes on the amount
-			$amount = $order->PaymentAmount;
+			$level = $order->getMembershipLevelAtCheckout();
+			$amount = $level->billing_amount;
 			$amount_tax = $order->getTaxForPrice($amount);
 			$amount = pmpro_round_price_as_string( (float) $amount + (float) $amount_tax );
+
+			$user = get_userdata($order->user_id);
 
 			//build PayPal Redirect	URL
 			$environment = get_option("pmpro_gateway_environment");
@@ -269,18 +349,18 @@
 			if(pmpro_isLevelRecurring($order->membership_level))
 			{
 				//convert billing period
-				if($order->BillingPeriod == "Day")
+				if( $level->cycle_period == "Day")
 					$period = "D";
-				elseif($order->BillingPeriod == "Week")
+				elseif( $level->cycle_period == "Week")
 					$period = "W";
-				elseif($order->BillingPeriod == "Month")
+				elseif( $level->cycle_period == "Month")
 					$period = "M";
-				elseif($order->BillingPeriod == "Year")
+				elseif( $level->cycle_period == "Year")
 					$period = "Y";
 				else
 				{
-					$order->error = "Invalid billing period: " . $order->BillingPeriod;
-					$order->shorterror = "Invalid billing period: " . $order->BillingPeriod;
+					$order->error = "Invalid billing period: " . $level->cycle_period;
+					$order->shorterror = "Invalid billing period: " . $level->cycle_period;
 					return false;
 				}
 
@@ -289,13 +369,13 @@
                     'business'      => get_option("pmpro_gateway_email"),
 					'cmd'           => '_xclick-subscriptions',
 					'a1'			=> $initial_payment,
-					'p1'			=> $order->BillingFrequency,
+					'p1'			=> $level->cycle_number,
 					't1'			=> $period,
 					'a3'			=> $amount,
-					'p3'			=> $order->BillingFrequency,
+					'p3'			=> $level->cycle_number,
 					't3'			=> $period,
 					'item_name'     => apply_filters( 'pmpro_paypal_level_description', substr($order->membership_level->name . " at " . get_bloginfo("name"), 0, 127), $order->membership_level->name, $order, get_bloginfo("name") ),
-					'email'         => $order->Email,
+					'email'         => empty( $user->user_email ) ? '' : $user->user_email,
 					'no_shipping'   => '1',
 					'shipping'      => '0',
 					'no_note'       => '1',
@@ -315,21 +395,20 @@
 				/*
 					Note here that the TrialBillingCycles value is being ignored. PayPal Standard only offers 1 payment during each trial period.
 				*/
-				if(!empty($order->TrialBillingPeriod))
-				{
+				if ( pmpro_isLevelTrial( $level ) ) {
 					//if a1 and a2 are 0, let's just combine them. PayPal doesn't like a2 = 0.
-					if($paypal_args['a1'] == 0 && $order->TrialAmount == 0)
+					if($paypal_args['a1'] == 0 && pmpro_round_price( $level->trial_amount ) == 0)
 					{
-						$paypal_args['p1'] = $paypal_args['p1'] + $order->TrialBillingFrequency;
+						$paypal_args['p1'] = $paypal_args['p1'] + $level->cycle_number;
 					}
 					else
 					{
-						$trial_amount = $order->TrialAmount;
+						$trial_amount = pmpro_round_price( $level->trial_amount );
 						$trial_tax = $order->getTaxForPrice($trial_amount);
 						$trial_amount = pmpro_round_price_as_string((float)$trial_amount + (float)$trial_tax);
 
 						$paypal_args['a2'] = $trial_amount;
-						$paypal_args['p2'] = $order->TrialBillingFrequency;
+						$paypal_args['p2'] = $level->cycle_number;
 						$paypal_args['t2'] = $period;
 					}
 				}
@@ -342,8 +421,8 @@
                                 strtotime(
                                         sprintf(
                                                 "+ %s %s",
-                                                $order->BillingFrequency,
-                                                $order->BillingPeriod
+                                                $level->cycle_number,
+                                                $level->cycle_period
                                             ),
                                         current_time("timestamp" )
                                 )
@@ -377,16 +456,16 @@
 				}
 
 				//billing limit?
-				if(!empty($order->TotalBillingCycles))
+				if(!empty($level->billing_limit))
 				{
 					if(!empty($trial_amount))
 					{
 
-						$srt = intval($order->TotalBillingCycles) - 1;	//subtract one for the trial period
+						$srt = intval($level->billing_limit) - 1;	//subtract one for the trial period
 					}
 					else
 					{
-						$srt = intval($order->TotalBillingCycles);
+						$srt = intval($level->billing_limit);
 					}
 
 					//srt must be at least 2 or the subscription is not "recurring" according to paypal
@@ -406,7 +485,7 @@
 					'cmd'           => '_xclick',
 					'amount'        => $initial_payment,
 					'item_name'     => apply_filters( 'pmpro_paypal_level_description', substr($order->membership_level->name . " at " . get_bloginfo("name"), 0, 127), $order->membership_level->name, $order, get_bloginfo("name") ),
-					'email'         => $order->Email,
+					'email'         => empty( $user->user_email ) ? '' : $user->user_email,
 					'no_shipping'   => '1',
 					'shipping'      => '0',
 					'no_note'       => '1',

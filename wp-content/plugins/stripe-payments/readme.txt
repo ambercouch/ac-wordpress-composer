@@ -1,11 +1,11 @@
 === Accept Stripe Payments ===
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
-Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
-Requires at least: 5.0
-Tested up to: 6.6
+Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
+Requires at least: 6.0
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.87
+Stable tag: 2.0.93
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,21 +15,23 @@ Easily accept payments on your WordPress site via Stripe payment gateway.
 
 The Stripe Payments plugin allows you to accept credit card payments via Stripe payment gateway on your WordPress site easily.
 
-It has a simple shortcode that lets you put Stripe "Buy Now" buttons anywhere on your site for a product or service. You can accept donation via Stripe also.
+Easily add Stripe 'Buy Now' buttons anywhere on your site using a simple shortcode or block. The plugin also supports accepting donations via Stripe.
 
-One click payment via Stripe with a remember me feature. Responsive design so it is compatible with all devices and browsers.
+Enable seamless one-click payments via Stripe with a built-in "Remember Me" feature for faster repeat transactions. The plugin is designed with a fully responsive layout, ensuring compatibility across all devices and browsers.
 
-Your customers will be redirected to the "Checkout Result" page after the credit card payment. This page shows them the details of the transaction (the item that they just paid for).
+After completing a payment, customers are automatically redirected to a "Thank You/Checkout Result" page, where they can view detailed information about their transaction, including the purchased item.
 
-The transaction info is also captured in the orders menu of the plugin. You can view all the payments you received from your WordPress admin dashboard.
+All transaction details are securely recorded in the plugin's "Orders" menu. You can conveniently review and manage your payments and orders directly from your WordPress admin dashboard.
+
+For enhanced security, credit card details are never stored by the plugin or your site. All payments are processed directly by Stripe and securely stored in your Stripe account, utilizing their state-of-the-art security measures for credit card handling.
+
+= Checkout Demonstration Video =
+
+https://www.youtube.com/watch?v=b6owgRBTUwA
 
 = Setup and Usage Video =
 
 https://www.youtube.com/watch?v=L0n_jlEhmoA
-
-= Checkout Demo Video =
-
-https://www.youtube.com/watch?v=b6owgRBTUwA
 
 = Features =
 
@@ -66,8 +68,10 @@ https://www.youtube.com/watch?v=b6owgRBTUwA
 * Option to enable Terms and Conditions that your customers have to accept before they can make a purchase.
 * Ability to configure variable products. You can charge different amount for different options of the product.
 * Ability to create "Authorize Only" products. You can hold funds on a card then capture it later.
+* Option to display a security badge and message on the payment form.
 * 3D Secure payments compatible.
 * Strong Customer Authentication (SCA) Compliant.
+* Browse the [plugin documentation](https://s-plugins.com/stripe-payments-plugin-tutorials/) to learn more about the features of this plugin.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -150,6 +154,53 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.93 =
+- Updated the help text of the 'Thank You' page field.
+- New filter hook 'asp_hide_captcha_disabled_warning_notice_in_admin' added to hide captcha disabled warning msg.
+- New filter hook 'asp_additional_items_data_line' added, which allows you to modify additional item data (such as variation details) via custom code.
+- Type casting `$p_customer_details->metadata` to an array to prevent any potential PHP warnings.
+- Option to specify default sorting option on the shop/products page.
+- Added new filteer hooks 'asp_buyer_email_headers' and 'asp_seller_email_headers' to allow customization of the email headers.
+- The seller notification email now sets the buyers email as the reply-to email address.
+
+= 2.0.92 =
+- Added a CSS class to all table rows in the order summary table on the Thank You page.
+- Added a new action hook 'asp_ng_pp_output_before_closing_form' to allow adding custom HTML content before the closing form tag in the payment window.
+- Removed the unused Stripe token field from orders menu.
+- iDEAL payment addon compatibility issue fixed.
+- Klarna payment method added to the Additional Payment Methods addon.
+- Added example code to show how to collect custom data via query string in the payment popup window and send it to Stripe as metadata.
+- Added filter hooks to allow Cloudflare Turnstile integration with the plugin.
+
+= 2.0.91 =
+- Added support for the default_quantity query parameter, allowing custom quantity to be applied directly via the product link URL.
+- Reorganized the shortcode registration logic for the asp_product shortcode (internal optimization; no functional changes).
+- Fixed a minor JavaScript warning on the product listing page.
+- Introduced new filter hooks to extend email-sending capabilities.
+- Added several PHP isset checks to prevent warnings.
+- Fixed a minor PHP warning in the asp_show_my_transactions shortcode.
+
+= 2.0.90 =
+- Resolved an issue with the newly added 'Use Separate Name Fields' option when used alongside the 'Prefill Logged In User Name and Email' settings.
+- Moved the payment popup related options to the Advanced settings menu of the plugin.
+- Added the following new email merge tags:
+{item_description}, {download_url}, {product_url}
+
+= 2.0.89 =
+- Stripe API version updated to the latest version (2024-12-18.acacia).
+- Added a new option to display security badge and message on the payment popup window.
+- Added a new filter hook 'asp_ng_pp_security_message_content' to allow customization of the secure badge content.
+
+= 2.0.88 =
+- Introduced a new option in the Advanced Settings menu to display the "First Name" and "Last Name" fields as separate entries on the checkout/payment form.
+- The Orders menu in the plugin now displays the customer's name within the "Customer Details" section of each order.
+- The tax amount for a transaction is now passed to Stripe via the metadata field.
+- Added a new action hook 'asp_stripe_process_ipn_error' to allow custom handling of IPN error.
+- Updated the update checker addon to be PHP 8.3 compatible.
+- Fixed the incorrect use of a sanitization function for the customer name in the dynamic product shortcode.
+- Added a 3rd parameter to the 'shortcode_atts' function of the 'accept_stripe_payment_ng' shortcode to allow further customization.
+- The default 'Thank You' page shortcode has been enhanced to display additional checkout details.
 
 = 2.0.87 =
 - Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.

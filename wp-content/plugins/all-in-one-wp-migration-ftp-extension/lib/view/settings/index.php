@@ -227,6 +227,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<?php echo $next_backup_date; ?>
 								</strong>
 							</p>
+
+							<p>
+								<label for="ai1wmfe-ftp-incremental">
+									<input type="checkbox" name="ai1wmfe_ftp_incremental" id="ai1wmfe-ftp-incremental" value="1" <?php echo empty( $incremental ) ? null : 'checked'; ?> />
+									<?php _e( 'Enable incremental backups (optimize backup file size)', AI1WMFE_PLUGIN_NAME ); ?>
+								</label>
+							</p>
+
 						</article>
 
 						<article class="ai1wmfe-article">

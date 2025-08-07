@@ -10,7 +10,7 @@ import FieldsData from "../FieldsData";
 import WhiteListTableStore from "./WhiteListTableStore";
 
 const TrustIpAddressModal = (props) => {
-    const { note, setNote, ipAddress, setIpAddress, maskError, dataLoaded, updateRow, resetRange} = WhiteListTableStore();
+    const { note, setNote, ipAddress, setIpAddress, maskError, setDataLoaded, dataLoaded, updateRow, resetRange} = WhiteListTableStore();
     const [rangeDisplay, setRangeDisplay] = useState(false);
     const {showSavedSettingsNotice} = FieldsData();
 
@@ -26,6 +26,9 @@ const TrustIpAddressModal = (props) => {
             await updateRow(ipAddress, note, props.status ,props.filter).then((response) => {
                 if (response.success) {
                     showSavedSettingsNotice(response.message);
+                    //we fetch the data again
+                    setDataLoaded(false);
+
                 } else {
                     showSavedSettingsNotice(response.message, 'error');
                 }

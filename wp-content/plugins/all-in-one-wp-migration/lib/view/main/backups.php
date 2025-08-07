@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2023 ServMask Inc.
+ * Copyright (C) 2014-2025 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * Attribution: This code is part of the All-in-One WP Migration plugin, developed by
+ *
  * ███████╗███████╗██████╗ ██╗   ██╗███╗   ███╗ █████╗ ███████╗██╗  ██╗
  * ██╔════╝██╔════╝██╔══██╗██║   ██║████╗ ████║██╔══██╗██╔════╝██║ ██╔╝
  * ███████╗█████╗  ██████╔╝██║   ██║██╔████╔██║███████║███████╗█████╔╝
@@ -23,9 +25,9 @@
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
 
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Kangaroos cannot jump here' );
 }
 
-printf( ' <span class="ai1wm-menu-count %s" title="%s">%d</span>', ( $count === 0 ? 'ai1wm-menu-hide' : null ), sprintf( _n( 'You have %d backup', 'You have %d backups', $count, AI1WM_PLUGIN_NAME ), $count ), $count );
+?>
+<span class="<?php echo esc_attr( 'ai1wm-menu-count ' . ( $count === 0 ? 'ai1wm-menu-hide' : null ) ); ?>" title="<?php echo esc_attr( sprintf( /* translators: Numbers of backups. */ _n( 'You have %d backup', 'You have %d backups', $count, 'all-in-one-wp-migration' ), $count ) ); ?>"><?php echo esc_html( $count ); ?></span>

@@ -52,17 +52,22 @@ class MonsterInsights_Site_Notes_DB_Base
 		}
 
 		$categories = array(
-			__('Website Updates', 'google-analytics-for-wordpress'),
-			__('Blog Post', 'google-analytics-for-wordpress'),
-			__('Promotion', 'google-analytics-for-wordpress'),
+			array(
+				'name' => __('Website Updates', 'google-analytics-for-wordpress'),
+				'background_color' => '#F072B2'
+			),
+			array(
+				'name' => __('Blog Post', 'google-analytics-for-wordpress'),
+				'background_color' => '#8D87E5'
+			),
+			array(
+				'name' => __('Promotion', 'google-analytics-for-wordpress'),
+				'background_color' => '#1EC185'
+			),
 		);
 
 		foreach ($categories as $category) {
-			$this->create_category(
-				array(
-					'name' => $category,
-				)
-			);
+			$this->create_category( $category );
 		}
 
 		update_option('monsterinsights_sitenotes_installed', time());

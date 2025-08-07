@@ -143,7 +143,7 @@ class ASP_PP_Ajax {
                         $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
                         wp_send_json( $out );
                     }
-                }                
+                }
                 
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
 
@@ -267,6 +267,7 @@ class ASP_PP_Ajax {
 		$price_variation = isset( $_POST['pvar'] ) ? sanitize_text_field( stripslashes ( $_POST['pvar'] ) ) : '';
 		$post_billing_details = isset( $_POST['billing_details'] ) ? sanitize_text_field( stripslashes ( $_POST['billing_details'] ) ) : '';
 		$post_shipping_details = isset( $_POST['shipping_details'] ) ? sanitize_text_field( stripslashes ( $_POST['shipping_details'] ) ) : '';
+		$post_customer_details = isset( $_POST['customer_details'] ) ? sanitize_text_field( stripslashes ( $_POST['customer_details'] ) ) : '';
 
 		//Check create_pi nonce
 		if ( ! wp_verify_nonce( $nonce, 'asp_pp_ajax_create_pi_nonce' ) ) {
@@ -457,6 +458,12 @@ class ASP_PP_Ajax {
 				$billing_details = json_decode( $post_billing_details );
 			}
 
+			if ( isset( $post_customer_details ) ) {
+				$post_customer_details = html_entity_decode( $post_customer_details );
+
+				$customer_details = json_decode( $post_customer_details );
+			}
+
 			$dont_save_card = $this->asp_main->get_setting( 'dont_save_card' );
 
 			if ( ! $dont_save_card ) {
@@ -523,6 +530,13 @@ class ASP_PP_Ajax {
 					}
 				}
 
+				$is_use_separate_name_fields_enabled = \AcceptStripePayments::get_instance()->get_setting('use_separate_name_fields_enabled', false);
+                if ($is_use_separate_name_fields_enabled){
+                    $customer_opts['metadata'] = array(
+                        'First Name' => isset($customer_details->firstName) ? sanitize_text_field($customer_details->firstName) : '',
+                        'Last Name' => isset($customer_details->lastName) ? sanitize_text_field($customer_details->lastName) : '',
+                    );
+                }
 				$customer_opts = apply_filters( 'asp_ng_before_customer_create_update', $customer_opts, empty( $cust_id ) ? false : $cust_id );
 
 				if ( empty( $cust_id ) ) {
@@ -557,6 +571,11 @@ class ASP_PP_Ajax {
 
             $metadata['Surcharge Amount']   = $surcharge_amount;
             $metadata['Surcharge Label']   = $item->get_surcharge_label();
+
+            $tax_amount = $item->get_tax_amount();
+            if (!empty($tax_amount)){
+                $metadata['Tax Amount']   = \ASP_Utils::formatted_price( $tax_amount, $curr );
+            }
 
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
@@ -632,18 +651,32 @@ class ASP_PP_Ajax {
 	}
 
 	public function save_form_data() {
-                if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
-			$out['err'] = __( 'Error occurred: Nonce verification failed on save_form_data().', 'stripe-payments' );
-			wp_send_json( $out );
-                }
+        if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
+            $out['err'] = __( 'Error occurred: Nonce verification failed on save_form_data().', 'stripe-payments' );
+            wp_send_json( $out );
+        }
 		$out['success'] = true;
 		$sess = ASP_Session::get_instance();
-		wp_parse_str( $_POST['form_data'], $form_data );
-                $filtered_form_data = array_map( 'sanitize_text_field', $form_data );
+
+        wp_parse_str( $_POST['form_data'], $form_data );
+        $filtered_form_data = $this->sanitize_nested_form_data($form_data);
+
 		$sess->set_transient_data( 'asp_pp_form_data', $filtered_form_data );
 		//ASP_Debug_Logger::log( 'Saved form data: ' . json_encode( $filtered_form_data ) );
 		wp_send_json( $out );
 	}
+
+    public function sanitize_nested_form_data($data) {
+	    foreach ($data as $key => $value) {
+		    if (is_array($value)) {
+			    $data[$key] = $this->sanitize_nested_form_data($value);
+		    } else {
+			    $data[$key] = sanitize_text_field($value);
+		    }
+	    }
+	    return $data;
+    }
+
 
 	public function handle_check_coupon() {
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );

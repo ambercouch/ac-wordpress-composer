@@ -52,7 +52,10 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 		 */
 		function Init() {
 			if ( ( isset( $_GET['sib_action'] ) ) && ( 'logout' === sanitize_text_field($_GET['sib_action'] )) ) {
-				$this->logout();
+				$logout_nonce =  $_GET['_wpnonce'] ?? null;
+				if( wp_verify_nonce($logout_nonce , 'brevo_logout_url' ) ) {
+					$this->logout();
+				}
 			}
 		}
 
@@ -184,10 +187,29 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 			$smtp_status = SIB_API_Manager::get_smtp_status();
 
 			$home_settings = get_option( SIB_Manager::HOME_OPTION_NAME );
-			// for upgrade to 2.6.0 from old version.
-			if ( ! isset( $home_settings['activate_ma'] ) ) {
-				$home_settings['activate_ma'] = 'no';
-			}
+			$push_activated = SIB_Push_Utils::is_push_active();
+			$contactSyncMessage = SIB_Push_Utils::is_contact_sync_active()
+				? sprintf(
+						// translators: %1$s: advanced settings, $2%s deactivate push notifications link
+						__( 'To stop creating contacts from push subscribers, %1$s. To disable notifications entirely, %2$s.', 'mailin' ),
+					'<a href="'.add_query_arg( 'page', SIB_Page_Push::PAGE_ID, admin_url( 'admin.php' ) ).'#/settings/advanced" style="font-size:12px;">' . __( 'go to Advanced settings', 'mailin' ) . '</a>',
+					'<a href="#" style="font-size:12px;" id="deactivate_push_btn">' . __( 'turn off Web push', 'mailin' ) . '</a>'
+				)
+				: sprintf(
+						// translators: %1$s: advanced settings, $2%s deactivate push notifications link
+						__( 'To use Brevo segments and lists, enable contact creation from push subscribers %1$s. To stop notifications completely, %2$s.', 'mailin' ),
+					'<a href="'.add_query_arg( 'page', SIB_Page_Push::PAGE_ID, admin_url( 'admin.php' ) ).'#/settings/advanced" style="font-size:12px;">' . __( 'in Advanced settings', 'mailin' ) . '</a>',
+					'<a href="#" style="font-size:12px;" id="deactivate_push_btn">' . __( 'turn off Web push', 'mailin' ) . '</a>'
+				);
+
+			/*											printf(
+											); */
+			$show_push = SIB_Push_Settings::getSettings()->getShowPush();
+			$push_app = null;
+			try { $push_app = SIB_Push_Utils::get_push_application(300); } catch (Exception $e) { }
+
+			$is_ma_active = SIB_Manager::is_ma_active();
+
 			// set default sender info.
 			$senders = SIB_API_Manager::get_sender_lists();
 			if (is_array( $senders)  && (!isset( $home_settings['sender'] ) || (count($senders) == 1 && $home_settings['from_email'] != $senders[0]['from_email']))) {
@@ -233,8 +255,29 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 										}
 									}
 									?>
-									<a class="text-decoration-none" href="<?php echo esc_url( add_query_arg( 'sib_action', 'logout' ) ); ?>"><i class="fa fa-angle-right"></i>&nbsp;<?php esc_attr_e( 'Log out', 'mailin' ); ?></a>
-								</p>
+									<?php if ($show_push): ?>
+										Web push -
+										<?php
+											$isEnterpriseClient = isset($account_settings['enterprise']) ? $account_settings['enterprise'] : false;
+											$isFreeClient = !empty(array_filter($account_data, function($entry) {
+												return isset($entry['type']) && $entry['type'] === 'free';
+											}));
+											echo $isEnterpriseClient ? esc_attr('unlimited') : '<strong>' . esc_attr('free') . '</strong> '. esc_attr('up to') . ' ' . number_format($isFreeClient ? 10000 : 100000);
+										?>
+										<?php esc_attr_e( 'subscribers', 'mailin' ); ?><br>
+									<?php endif; ?>
+
+									<a class="text-decoration-none" href="<?php
+										$nonce = wp_create_nonce( 'brevo_logout_url' );
+										echo esc_url(
+											add_query_arg(array(
+												'page'	=> 'sib_page_home',
+												'sib_action' => 'logout',
+												'_wpnonce' => $nonce
+											), "")
+									 	);?>" >
+										<i class="fa fa-angle-right"></i>&nbsp;<?php esc_attr_e( 'Log out', 'mailin' ); ?></a>
+									</p>
 							</div>
 
 							<span><b><?php esc_attr_e( 'Contacts', 'mailin' ); ?></b></span>
@@ -340,10 +383,11 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 							<div class="col-md-3">
 								<label class="col-md-5"><input type="radio" name="activate_ma" id="activate_ma_radio_yes" value="yes"
 								<?php
-								checked( $home_settings['activate_ma'], 'yes' );
+								checked( true, $is_ma_active  );
 									?>
 									 >&nbsp;<?php esc_attr_e( 'Yes', 'mailin' ); ?></label>
-								<label class="col-md-5"><input type="radio" name="activate_ma" id="activate_ma_radio_no" value="no" <?php checked( $home_settings['activate_ma'], 'no' ); ?>>&nbsp;<?php esc_attr_e( 'No', 'mailin' ); ?></label>
+								<label class="col-md-5"><input type="radio" name="activate_ma" id="activate_ma_radio_no" value="no" <?php
+									checked( false, $is_ma_active ); ?>>&nbsp;<?php esc_attr_e( 'No', 'mailin' ); ?></label>
 							</div>
 							<div class="col-md-5">
 								<small style="font-style: italic;"><?php esc_attr_e( 'Choose "Yes" if you want to use Brevo Automation to track your website activity', 'mailin' ); ?></small>
@@ -359,7 +403,85 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 						</div>
 					</div>
 				</div>
-
+				<?php if ($show_push): ?>
+					<!-- Push notifications -->
+					<div class="card sib-small-content">
+						<div class="card-header">
+							<strong><?php esc_attr_e( 'Web push', 'mailin' ); ?></strong>
+						</div>
+						<div class="card-body">
+							<?php if ( $push_activated && $push_app ) : ?>
+								<div class="row">
+									<div class="col-sm-12 text-left">
+									</div>
+								</div>
+								<div class="row">
+									<p class="col-md-4 text-left">
+										<?php
+										// translators: %s: number of subscribers
+										printf( esc_html( _n( 'Web push is currently active, you have %s subscriber.', 'Push is currently active, you have %s subscribers.', $push_app->getSubscribers(), 'mailin' ) ), number_format_i18n( $push_app->getSubscribers() ) ); ?>
+									</p>
+									<div class="col-md-3">
+										<a href="<?php echo add_query_arg( 'page', SIB_Page_Push::PAGE_ID, admin_url( 'admin.php' ) ) ?>"
+										   class="col-md-12 btn btn-success"><?php esc_attr_e( 'Web push dashboard', 'mailin' ); ?></a>
+									</div>
+									<div class="col-md-5">
+										<small style="font-style: italic;">
+											<?php echo $contactSyncMessage; ?>
+										</small>
+										<span style="display: none" id="deactivate_push_content"><?php _e("Warning: Deactivating push will stop new subscriptions and prevent notifications from being sent. To stop creating contacts without disabling push, click 'Cancel' and go to Advanced Settings. Are you sure you want to deactivate push?", 'mailin') ?></span>
+									</div>
+								</div>
+							<?php else : ?>
+								<div class="row">
+									<p class="col-md-4 text-left"><?php esc_attr_e( 'Activate web push', 'mailin' ); ?></p>
+									<div class="col-md-3">
+										<button type="button" id="activate_push_btn" class="col-md-12 btn btn-success"><span
+													class="sib-spin"><i class="fa fa-circle-o-notch fa-spin fa-lg"></i>&nbsp;&nbsp;</span><?php esc_attr_e( 'Activate', 'mailin' ); ?>
+										</button>
+										<small id="sib-push-activation-message" style="display: none">
+											<br/>
+											<?php esc_attr_e( 'Please wait, activation might take up to a minute.', 'mailin' ); ?>
+										</small>
+									</div>
+									<div class="col-md-5">
+<!--										NOTE: deactivate woocommerce-->
+<!--										<small style="font-style: italic;">--><?php //esc_attr_e( 'Click "Activate" to start notifying your readers whenever a new post is published, let your users subscribe to their favorite topics, or set up automated e-commerce notifications for your WooCommerce business.', 'mailin' ); ?><!--</small>-->
+										<small style="font-style: italic;"><?php esc_attr_e( 'Click "Activate" to start notifying your readers whenever a new post is published, let your users subscribe to their favorite topics.', 'mailin' ); ?></small>
+									</div>
+								</div>
+							<?php endif ?>
+						</div>
+					</div>
+				<?php endif; ?>
+				<div class="card sib-small-content">
+					<div class="card-header">
+						<strong><?php esc_attr_e( 'SMS', 'mailin' ); ?></strong>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-12 text-left">
+							</div>
+						</div>
+						<div class="row">
+							<p class="col-md-4 text-left">
+								<?php
+								// translators: %s: number of subscribers
+								esc_html( _e( 'SMS statistics', 'mailin' ) ) ?>
+							</p>
+							<div class="col-md-3">
+								<a href="https://my.brevo.com/camp/message/stats/sms?utm_medium=plugin&utm_source=wordpress_plugin&utm_campaign=sms_stats"
+								   class="col-md-12 btn btn-success"><?php esc_attr_e( 'SMS dashboard', 'mailin' ); ?></a>
+							</div>
+							<div class="col-md-5">
+								<small style="font-style: italic;">
+									<?php _e('Check your SMS campaign statistics, you can see more here:', 'mailin') ?>
+									<a href="https://help.brevo.com/hc/en-us/articles/4439515713810-Analyze-and-export-your-SMS-campaign-report"><?php _e('Learn about SMS statistics', 'mailin') ?></a>
+								</small>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		<?php
 		}
@@ -615,16 +737,16 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 		/** Ajax module to change activate marketing automation option */
 		public static function ajax_validate_ma() {
 			check_ajax_referer( 'ajax_sib_admin_nonce', 'security' );
-			$main_settings = get_option( SIB_Manager::MAIN_OPTION_NAME );
+			$general_settings = get_option( SIB_Manager::MAIN_OPTION_NAME, array() );
 			$home_settings = get_option( SIB_Manager::HOME_OPTION_NAME );
-			$ma_key = $main_settings['ma_key'];
-			if ( '' != $ma_key ) {
+			$ma_key = isset( $general_settings['ma_key'] ) ? sanitize_text_field($general_settings['ma_key']) : null;
+			if ( $ma_key !== null && strlen($ma_key) > 0 ) {
 				$option_val = isset( $_POST['option_val'] ) ? sanitize_text_field( wp_unslash( $_POST['option_val'] ) ) : 'no';
 				$home_settings['activate_ma'] = $option_val;
 				update_option( SIB_Manager::HOME_OPTION_NAME, $home_settings );
 				wp_send_json( $option_val );
 			} else {
-				$home_settings['activate_ma'] = 'no';
+				$home_settings['activate_ma'] = 'default';
 				update_option( SIB_Manager::HOME_OPTION_NAME, $home_settings );
 				wp_send_json( 'disabled' );
 			}
@@ -796,7 +918,7 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 
 			$home_settings = array(
 				'activate_email' => 'no',
-				'activate_ma' => 'no',
+				'activate_ma' => 'default',
 			);
 			update_option( SIB_Manager::HOME_OPTION_NAME, $home_settings );
 
@@ -808,6 +930,9 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 			// remove all forms.
 			SIB_Forms::removeAllForms();
 			SIB_Forms_Lang::remove_all_trans();
+
+			// Clear push settings
+			SIB_Push_Settings::clearAllSettings();
 
 			wp_safe_redirect( add_query_arg( 'page', self::PAGE_ID, admin_url( 'admin.php' ) ) );
 			exit();
@@ -850,6 +975,8 @@ if ( ! class_exists( 'SIB_Page_Home' ) ) {
 					$apiClient = new SendinblueApiClient();
 					$params["active"] = false;
 					$params["deactivated_at"] = gmdate("Y-m-d\TH:i:s\Z");
+					$params["connection"] = 27;
+					$params["plugin_version"] = SendinblueApiClient::PLUGIN_VERSION;
 					$apiClient->updateInstallationInfo($installationId, $params);
 				}
 			}

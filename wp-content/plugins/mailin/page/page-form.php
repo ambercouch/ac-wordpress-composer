@@ -43,6 +43,13 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
          */
 		public $defaultComplianceNote;
 
+        /**
+         * Forms list instance
+         *
+         * @var SIB_Forms_List
+         */
+        public $forms;
+
 		/**
 		 * Constructs new page object and adds entry to WordPress admin menu
 		 */
@@ -304,7 +311,7 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
 											</div>
 											<div id="sib-field-content">
 												<div style="margin-top: 30px;">
-													<div class="sib-attr-normal sib-attr-category small-content2"
+													<div class="sib-attr-normal sib-attr-category sib-attr-multiple-choice small-content2"
 														 style="margin-top: 10px;" id="sib_field_label_area">
 														<?php esc_attr_e( 'Label', 'mailin' ); ?>
 														<small>(<?php esc_attr_e( 'Optional', 'mailin' ); ?>)</small>
@@ -332,17 +339,20 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
 												</div>
 												<div style="margin-top: 20px;">
 
-													<div class="sib-attr-normal sib-attr-category small-content2" style="margin-top: 5px;" id="sib_field_required_area">
+													<div class="sib-attr-normal sib-attr-category sib-attr-multiple-choice small-content2" style="margin-top: 5px;" id="sib_field_required_area">
 														<label style="font-weight: normal;"><input type="checkbox" class="sib_field_changes" id="sib_field_required">&nbsp;&nbsp;<?php esc_attr_e( 'Required field ?', 'mailin' ); ?>
 														</label>
 													</div>
-													<div class="sib-attr-category small-content2"
+													<div class="sib-attr-category sib-attr-multiple-choice small-content2"
 														 style="margin-top: 5px;" id="sib_field_type_area">
 														<label style="font-weight: normal;"><input type="radio" class="sib_field_changes" name="sib_field_type" value="select"
 																								   checked>&nbsp;<?php esc_attr_e( 'Drop-down List', 'mailin' ); ?>
 														</label>&nbsp;&nbsp;
-														<label style="font-weight: normal;"><input type="radio" class="sib_field_changes" name="sib_field_type"
+														<label class="sib-attr-category" style="font-weight: normal;"><input type="radio" class="sib_field_changes" name="sib_field_type"
 																								   value="radio">&nbsp;<?php esc_attr_e( 'Radio List', 'mailin' ); ?>
+														</label>
+														<label  class="sib-attr-multiple-choice" style="font-weight: normal;"><input type="radio" class="sib_field_changes" name="sib_field_type"
+																								   value="radio">&nbsp;<?php esc_attr_e( 'Checkboxes List', 'mailin' ); ?>
 														</label>
 													</div>
 												</div>
@@ -384,7 +394,7 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
                                             </div>
                                             <div id="sib_multi_list_field" style="display: none;">
                                                 <div style="margin-top: 30px;">
-                                                    <div class="sib-attr-normal sib-attr-category small-content2"
+                                                    <div class="sib-attr-normal sib-attr-category sib-attr-multiple-choice small-content2"
                                                          style="margin-top: 10px;" id="sib_multi_field_label_area">
                                                         <?php esc_attr_e( 'Label', 'mailin' ); ?>
                                                         <small>(<?php esc_attr_e( 'Optional', 'mailin' ); ?>)</small>
@@ -392,7 +402,7 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
                                                     </div>
                                                 </div>
                                                 <div style="margin-top: 20px;">
-                                                    <div class="sib-attr-normal sib-attr-category small-content2" style="margin-top: 5px;" id="sib_multi_field_required_area">
+                                                    <div class="sib-attr-normal sib-attr-category sib-attr-multiple-choice small-content2" style="margin-top: 5px;" id="sib_multi_field_required_area">
                                                         <label style="font-weight: normal;"><input type="checkbox" class="sib_field_changes" id="sib_multi_field_required">&nbsp;&nbsp;<?php esc_attr_e( 'Required field ?', 'mailin' ); ?>
                                                         </label>
                                                     </div>
@@ -627,6 +637,8 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
 											   value="<?php esc_attr_e( 'Brevo merge fields : Normal', 'mailin' ); ?>">
 										<input type="hidden" id="sib_hidden_message_3"
 											   value="<?php esc_attr_e( 'Brevo merge fields : Category', 'mailin' ); ?>">
+										<input type="hidden" id="sib_hidden_message_multichoice"
+										   value="<?php esc_attr_e( 'Brevo merge fields : Multiple Choice', 'mailin' ); ?>">
 										<input type="hidden" id="sib_hidden_message_4"
 											   value="<?php esc_attr_e( 'Other', 'mailin' ); ?>">
 										<input type="hidden" id="sib_hidden_message_5"
@@ -669,9 +681,9 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
 									<span id="sib_disclaim_smtp"
 										  style="display: none;"><?php _e( 'Confirmation emails will be sent through your own email server, but you have no guarantees on their deliverability. <br/> <a href="https://app-smtp.brevo.com/" target="_blank" rel="noopener">Click here</a> to send your emails through Brevo in order to improve your deliverability and get statistics', 'mailin' ); ?></span>
 									<span id="sib_disclaim_do_template"
-										  style="display: none;"><?php _e( 'The template you selected does not include a link [DOUBLEOPTIN] to allow subscribers to confirm their subscription. <br/> Please edit the template to include a link with [DOUBLEOPTIN] as URL.', 'mailin' ); ?></span>
+										  style="display: none;"><?php _e( 'The template you selected does not include a link {{DOUBLEOPTIN}} to allow subscribers to confirm their subscription. <br/> Please edit the template to include a link with {{DOUBLEOPTIN}} as URL.', 'mailin' ); ?></span>
                                     <span id="sib_disclaim_confirm_template"
-                                          style="display: none;"><?php _e( 'You cannot select a template with the tag [DOUBLEOPTIN]', 'mailin' ); ?></span>
+                                          style="display: none;"><?php _e( 'You cannot select a template with the tag {{DOUBLEOPTIN}}', 'mailin' ); ?></span>
 								</div>
 
 								<!-- Linked List -->
@@ -773,7 +785,7 @@ if ( ! class_exists( 'SIB_Page_Form' ) ) {
 								</div>
                                 <div class="row sib-small-content mt-3" id="sib_final_confirm_template_area">
 									<span class="col-md-3"><?php esc_attr_e( 'Select final confirmation email template', 'mailin' ); ?><?php echo esc_html( SIB_Page_Home::get_narration_script( __( 'Final confirmation', 'mailin' ), __( 'This is the final confirmation email your contacts will receive once they click on the double opt-in confirmation link. You can select one of the default templates we have created for you, e.g. \'Default template - Final confirmation\'.
-For your information, you cannot select a template with the tag [DOUBLEOPTIN].', 'mailin' ) ) ); ?></span>
+For your information, you cannot select a template with the tag {{DOUBLEOPTIN}}.', 'mailin' ) ) ); ?></span>
                                     <div class="row col-md-8">
                                         <input type="hidden" id="sib_selected_confirm_template_id" value="<?php echo esc_attr( $formData['confirmID'] );?>">
                                         <div class="col-md-5" id="sib_final_confirm_template_id_area">
@@ -1008,7 +1020,11 @@ For your information, you cannot select a template with the tag [DOUBLEOPTIN].',
 
 			// get available attributes list.
 			$attributes = SIB_API_Manager::get_attributes();
-			$attributes = array_merge( $attributes['attributes']['normal_attributes'],$attributes['attributes']['category_attributes'] );
+			$attributes = array_merge(
+				$attributes['attributes']['normal_attributes'],
+				$attributes['attributes']['category_attributes'],
+				$attributes['attributes']['multiple_choice_attributes']
+			);
 			$available_attrs = array( 'email' );
 			if ( isset( $attributes ) && is_array( $attributes ) ) {
 				foreach ( $attributes as $attribute ) {

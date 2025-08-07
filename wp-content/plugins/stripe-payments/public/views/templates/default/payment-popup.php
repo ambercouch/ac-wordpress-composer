@@ -289,12 +289,44 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 								<fieldset id="name-email-cont" style="width: 100%;">
 									<div class="pure-u-1 pure-u-md-11-24">
 										<label for="billing_name"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', _x( 'Name', 'Customer name', 'stripe-payments' ), 'pp_billing_name' ) ); ?></label>
-										<div style="position: relative;">
+										<?php
+                                        $customer_name = isset($a['data']['customer_name']) && !empty($a['data']['customer_name']) ? trim($a['data']['customer_name']) : '';
+                                        $is_use_separate_name_fields_enabled = \AcceptStripePayments::get_instance()->get_setting('use_separate_name_fields_enabled', false);
+                                        if ($is_use_separate_name_fields_enabled == 1) {
+	                                        $customer_first_name = '';
+	                                        $customer_last_name = '';
+
+	                                        if (!empty($customer_name)){
+		                                        $pos = strrpos($customer_name, ' ');
+		                                        if ($pos !== false) {
+			                                        $customer_first_name = substr($customer_name, 0, $pos);
+			                                        $customer_last_name = substr($customer_name, $pos + 1);
+		                                        }
+	                                        }
+
+                                            ?>
+                                            <div class="pure-g"  style="position: relative;">
+                                                <div class="pure-u-1-2 pure-md-1">
+                                                    <svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                        <path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
+                                                    </svg>
+                                                    <input style="margin: 0" class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $customer_first_name ); ?>" placeholder="<?php _e('First Name', 'stripe-payments')?>" required>
+                                                </div>
+                                                <div class="pure-u-1-2 pure-md-1" style="position: relative;">
+                                                    <svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                        <path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
+                                                    </svg>
+                                                    <input style="margin: 0" class="pure-input-1 has-icon" type="text" id="billing-last-name" name="billing_last_name" value="<?php echo esc_attr( $customer_last_name ); ?>" placeholder="<?php _e('Last Name', 'stripe-payments')?>" required>
+                                                </div>
+                                            </div>
+										<?php } else { ?>
+                                        <div style="position: relative;">
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
 											</svg>
-											<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $a['data']['customer_name'] ); ?>" required>
+											<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $customer_name ); ?>" required>
 										</div>
+										<?php } ?>
 									</div>
 									<div class="pure-u-md-1-24"></div>
 									<div class="pure-u-1 pure-u-md-12-24">
@@ -449,6 +481,17 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 								?>
 							</div>
 						</div>
+
+                        <?php
+                        $is_display_security_badge = \AcceptStripePayments::get_instance()->get_setting('display_security_badge', false);
+                        if ($is_display_security_badge){
+                            $security_badge_content = \AcceptStripePayments::get_instance()->get_setting('security_badge_and_message_content', '');
+                        	?>
+							<div class="asp-secure-badge-container">
+								<?php echo apply_filters('asp_ng_pp_security_message_content',wp_kses($security_badge_content, ASP_Utils_Misc::secure_badge_allowed_tags())); ?>
+							</div>
+                        <?php } ?>
+
 						<input type="hidden" id="payment-intent" name="payment_intent" value="">
 						<input type="hidden" id="btn-uniq-id" name="btn_uniq_id" value="<?php echo ! empty( $a['btn_uniq_id'] ) ? esc_attr( $a['btn_uniq_id'] ) : ''; ?>">
 						<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
@@ -462,6 +505,10 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<input type="hidden" value="1" name="create_token">
 						<input type="hidden" value="" id="sub_id" name="sub_id">
 						<?php } ?>
+						<?php 
+						//Trigger action to output additional data to the payment form before closing </form> tag
+						do_action( 'asp_ng_pp_output_before_closing_form', $a );
+						?>
 					</form>
 				</div>
 			</div>

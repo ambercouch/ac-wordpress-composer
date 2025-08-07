@@ -37,8 +37,9 @@ $iqbc_searchengines = array(
     "Pinterest" => "Pinterest",
     "SEMrush" => "SemrushBot",
     "SEOkicks" => "SEOkicks-Robot",
+    "SiteGuru" => "SiteGuruCrawler",
     "TinEye" =>  "tineye-bot",
-    "Twitter" => "twitterbot",
+    "X" => "twitterbot",
     "Yahoo!" => "yahoo! slurp",
     "Yandex" => "yandexbot"
 );

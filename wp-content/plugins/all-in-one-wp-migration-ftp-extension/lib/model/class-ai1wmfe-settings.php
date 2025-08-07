@@ -103,6 +103,10 @@ class Ai1wmfe_Settings {
 	}
 
 	public function get_cron_args() {
+		if ( $this->get_incremental() ) {
+			return array( 'secret_key' => get_option( AI1WM_SECRET_KEY ), 'incremental' => 1, 'ftp' => 1 );
+		}
+
 		return array( 'secret_key' => get_option( AI1WM_SECRET_KEY ), 'ftp' => 1 );
 	}
 
@@ -264,5 +268,13 @@ class Ai1wmfe_Settings {
 
 	public function get_notify_email() {
 		return get_option( 'ai1wmfe_ftp_notify_email', false );
+	}
+
+	public function set_incremental( $incremental ) {
+		return update_option( 'ai1wmfe_ftp_incremental', $incremental );
+	}
+
+	public function get_incremental() {
+		return get_option( 'ai1wmfe_ftp_incremental', false );
 	}
 }

@@ -1513,10 +1513,9 @@ class MainWP_Child_Back_Up_Buddy { //phpcs:ignore -- NOSONAR - multi methods.
 
         \pb_backupbuddy::set_status_serial( 'restore' );
 
-        /** @global string $wp_version WordPress version. */
-        global $wp_version;
+        $wp_ver = MainWP_Child_Server_Information_Base::get_wordpress_version();
 
-        \pb_backupbuddy::status( 'details', 'BackupBuddy v' . \pb_backupbuddy::settings( 'version' ) . ' using WordPress v' . $wp_version . ' on ' . PHP_OS . '.' );
+        \pb_backupbuddy::status( 'details', 'BackupBuddy v' . \pb_backupbuddy::settings( 'version' ) . ' using WordPress v' . $wp_ver . ' on ' . PHP_OS . '.' );
 
         require_once \pb_backupbuddy::plugin_path() . '/classes/_restoreFiles.php'; // NOSONAR - WP compatible.
 
@@ -2294,7 +2293,7 @@ class MainWP_Child_Back_Up_Buddy { //phpcs:ignore -- NOSONAR - multi methods.
         $profile_array   = \pb_backupbuddy::$options['profiles'][ $requested_profile ];
         $serial_override = \pb_backupbuddy::random_string( 10 );
 
-        if ( true !== $newBackup->start_backup_process( $profile_array, 'manual', array(), isset( $_POST['post_backup_steps'] ) && is_array( $_POST['post_backup_steps'] ) ? wp_unslash( $_POST['post_backup_steps'] ) : array(), '', $serial_override, '', '', '' ) ) {
+        if ( true !== $newBackup->start_backup_process( $profile_array, 'manual', array(), isset( $_POST['post_backup_steps'] ) && is_array( $_POST['post_backup_steps'] ) ? wp_unslash( $_POST['post_backup_steps'] ) : array(), '', $serial_override, array(), '', '' ) ) {
             return array( 'error' => esc_html__( 'Fatal Error #4344443: Backup failure. Please see any errors listed in the Status Log for details.', 'mainwp-child' ) );
         }
         return array( 'result' => 'SUCCESS' );
@@ -3045,12 +3044,11 @@ class MainWP_Child_Back_Up_Buddy { //phpcs:ignore -- NOSONAR - multi methods.
             require_once \pb_backupbuddy::plugin_path() . '/destinations/stash2/init.php'; // NOSONAR - WP compatible.
             require_once \pb_backupbuddy::plugin_path() . '/destinations/live/init.php'; // NOSONAR - WP compatible.
 
-            /** @global string $wp_version WordPress version. */
-            global $wp_version;
+            $wp_ver = MainWP_Child_Server_Information_Base::get_wordpress_version();
 
             $itxapi_username = strtolower( $_POST['live_username'] );
             $password_hash   = \iThemes_Credentials::get_password_hash( $itxapi_username, $_POST['live_password'] );
-            $access_token    = \ITXAPI_Helper2::get_access_token( $itxapi_username, $password_hash, site_url(), $wp_version );
+            $access_token    = \ITXAPI_Helper2::get_access_token( $itxapi_username, $password_hash, site_url(), $wp_ver );
 
             $settings = array(
                 'itxapi_username' => $itxapi_username,

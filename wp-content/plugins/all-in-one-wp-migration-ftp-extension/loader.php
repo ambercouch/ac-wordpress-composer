@@ -44,6 +44,14 @@ if ( defined( 'WP_CLI' ) ) {
 				'command' .
 				DIRECTORY_SEPARATOR .
 				'class-ai1wmfe-ftp-wp-cli-command.php';
+
+	require_once AI1WMFE_VENDOR_PATH .
+				DIRECTORY_SEPARATOR .
+				'servmask' .
+				DIRECTORY_SEPARATOR .
+				'command' .
+				DIRECTORY_SEPARATOR .
+				'class-ai1wmfe-ftp-wp-cli-incremental-command.php';
 }
 
 require_once AI1WMFE_VENDOR_PATH .
@@ -86,6 +94,27 @@ require_once AI1WMFE_EXPORT_PATH .
 			DIRECTORY_SEPARATOR .
 			'class-ai1wmfe-export-done.php';
 
+require_once AI1WMFE_EXPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-export-incremental-content.php';
+
+require_once AI1WMFE_EXPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-export-incremental-media.php';
+
+require_once AI1WMFE_EXPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-export-incremental-plugins.php';
+
+require_once AI1WMFE_EXPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-export-incremental-themes.php';
+
+
+require_once AI1WMFE_EXPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-export-incremental-backups.php';
+
 require_once AI1WMFE_IMPORT_PATH .
 			DIRECTORY_SEPARATOR .
 			'class-ai1wmfe-import-ftp.php';
@@ -101,6 +130,14 @@ require_once AI1WMFE_IMPORT_PATH .
 require_once AI1WMFE_IMPORT_PATH .
 			DIRECTORY_SEPARATOR .
 			'class-ai1wmfe-import-settings.php';
+
+require_once AI1WMFE_IMPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-import-incremental-ftp.php';
+
+require_once AI1WMFE_IMPORT_PATH .
+			DIRECTORY_SEPARATOR .
+			'class-ai1wmfe-import-incremental-download.php';
 
 require_once AI1WMFE_MODEL_PATH .
 			DIRECTORY_SEPARATOR .

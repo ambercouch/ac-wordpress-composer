@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2023 ServMask Inc.
+ * Copyright (C) 2014-2025 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Attribution: This code is part of the All-in-One WP Migration plugin, developed by
  *
  * ███████╗███████╗██████╗ ██╗   ██╗███╗   ███╗ █████╗ ███████╗██╗  ██╗
  * ██╔════╝██╔════╝██╔══██╗██║   ██║████╗ ████║██╔══██╗██╔════╝██║ ██╔╝
@@ -45,7 +47,7 @@ class Ai1wm_Import_Check_Encryption {
 		}
 
 		if ( ! ai1wm_can_decrypt() ) {
-			$message = __( 'Importing an encrypted backup is not supported on this server. <a href="https://help.servmask.com/knowledgebase/unable-to-encrypt-and-decrypt-backups/" target="_blank">Technical details</a>', AI1WM_PLUGIN_NAME );
+			$message = __( 'Importing an encrypted backup is not supported on this server. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/unable-to-encrypt-and-decrypt-backups/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' );
 
 			if ( defined( 'WP_CLI' ) ) {
 				WP_CLI::error( $message );
@@ -58,7 +60,7 @@ class Ai1wm_Import_Check_Encryption {
 		if ( defined( 'WP_CLI' ) ) {
 			$message = __(
 				'Backup is encrypted. Please provide decryption password: ',
-				AI1WM_PLUGIN_NAME
+				'all-in-one-wp-migration'
 			);
 
 			$params['decryption_password'] = readline( $message );

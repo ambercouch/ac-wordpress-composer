@@ -91,8 +91,12 @@ class MonsterInsights_Welcome {
 			return;
 		}
 
-		$upgrade = get_option( 'monsterinsights_version_upgraded_from', false );
-		if ( apply_filters( 'monsterinsights_enable_onboarding_wizard', false === $upgrade ) ) {
+		$upgrade            = get_option( 'monsterinsights_version_upgraded_from', false );
+		$skip_wizard        = get_option( 'monsterinsights_skip_wizard', false );
+		// if it is an upgrade (a version_from is present) or the option for skip wizard is set, skip wizard
+		$run_wizard         = ! ( $skip_wizard || false !== $upgrade ) ;
+		$do_redirect        = apply_filters( 'monsterinsights_enable_onboarding_wizard', $run_wizard ); // default true
+		if ( $do_redirect ) {
 			$path     = 'index.php?page=monsterinsights-getting-started&monsterinsights-redirect=1';
 			$redirect = is_network_admin() ? network_admin_url( $path ) : admin_url( $path );
 			wp_safe_redirect( $redirect );
@@ -121,7 +125,7 @@ class MonsterInsights_Welcome {
 		}
 
 		$app_js_url = MonsterInsights_Admin_Assets::get_js_url( 'src/modules/wizard-onboarding/wizard.js' );
-		wp_register_script( 'monsterinsights-vue-script', $app_js_url, array(), monsterinsights_get_asset_version(), true );
+		wp_register_script( 'monsterinsights-vue-script', $app_js_url, array( 'wp-i18n' ), monsterinsights_get_asset_version(), true );
 		wp_enqueue_script( 'monsterinsights-vue-script' );
 
 		$user_data = wp_get_current_user();
@@ -133,11 +137,9 @@ class MonsterInsights_Welcome {
 				'ajax'                 => add_query_arg( 'page', 'monsterinsights-onboarding', admin_url( 'admin-ajax.php' ) ),
 				'nonce'                => wp_create_nonce( 'mi-admin-nonce' ),
 				'network'              => is_network_admin(),
-				'translations'         => wp_get_jed_locale_data( 'mi-vue-app' ),
 				'assets'               => plugins_url( $version_path . '/assets/vue', MONSTERINSIGHTS_PLUGIN_FILE ),
 				'roles'                => monsterinsights_get_roles(),
 				'roles_manage_options' => monsterinsights_get_manage_options_roles(),
-				'wizard_url'           => is_network_admin() ? network_admin_url( 'index.php?page=monsterinsights-onboarding' ) : admin_url( 'index.php?page=monsterinsights-onboarding' ),
 				'shareasale_id'        => monsterinsights_get_shareasale_id(),
 				'shareasale_url'       => monsterinsights_get_shareasale_url( monsterinsights_get_shareasale_id(), '' ),
 				// Used to add notices for future deprecations.
@@ -147,6 +149,14 @@ class MonsterInsights_Welcome {
 				'exit_url'             => add_query_arg( 'page', 'monsterinsights_settings', admin_url( 'admin.php' ) ),
 				'had_ecommerce'        => monsterinsights_get_option( 'gadwp_ecommerce', false ),
 			)
+		);
+
+		$text_domain = monsterinsights_is_pro_version() ? 'google-analytics-premium' : 'google-analytics-for-wordpress';
+
+		wp_scripts()->add_inline_script(
+			'monsterinsights-vue-script',
+			monsterinsights_get_printable_translations( $text_domain ),
+			'translation'
 		);
 	}
 

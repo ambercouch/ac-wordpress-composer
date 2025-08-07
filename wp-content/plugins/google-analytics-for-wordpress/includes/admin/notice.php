@@ -234,9 +234,9 @@ final class MonsterInsights_Notice_Admin {
 				if ( $is_dismissible ) {
 					?>
 					<button type="button" class="notice-dismiss<?php echo esc_attr($dismissible); ?>">
-                        <span class="screen-reader-text">
-                            <?php esc_html_e( 'Dismiss this notice', 'google-analytics-for-wordpress' ); ?>
-                        </span>
+						<span class="screen-reader-text">
+							<?php esc_html_e( 'Dismiss this notice', 'google-analytics-for-wordpress' ); ?>
+						</span>
 					</button>
 					<?php
 				}

@@ -26,6 +26,7 @@ class MonsterInsights_Rest_Routes {
 			$this,
 			'update_measurement_protocol_secret'
 		) );
+
 		add_action( 'wp_ajax_monsterinsights_vue_get_report_data', array( $this, 'get_report_data' ) );
 		add_action( 'wp_ajax_monsterinsights_vue_install_plugin', array( $this, 'install_plugin' ) );
 		add_action( 'wp_ajax_monsterinsights_vue_notice_status', array( $this, 'get_notice_status' ) );
@@ -54,6 +55,9 @@ class MonsterInsights_Rest_Routes {
 			$this,
 			'dismiss_first_time_notice'
 		) );
+		add_action( 'wp_ajax_monsterinsights_vue_update_included_metrics', array( $this, 'update_included_metrics' ) );
+		add_action( 'wp_ajax_monsterinsights_vue_get_user_included_metrics', array( $this, 'get_user_included_metrics' ) );
+
 	}
 
 	/**
@@ -114,6 +118,9 @@ class MonsterInsights_Rest_Routes {
 			'network_viewname'                    => $auth->get_network_viewname(),
 			'network_manual_v4'                   => $auth->get_network_manual_v4_id(),
 			'network_measurement_protocol_secret' => $auth->get_network_measurement_protocol_secret(),
+			//  Custom tracking fields (Gtag selector)
+			'gtag_selector_tracking_tag'          => monsterinsights_get_option( 'gtag_selector_tracking_tag', '' ),
+			'gtag_selector_tracking_mp'           => monsterinsights_get_option( 'gtag_selector_tracking_mp', '' ),
 		) );
 
 	}
@@ -205,6 +212,7 @@ class MonsterInsights_Rest_Routes {
 
 	}
 
+
 	/**
 	 * Ajax handler for updating the settings.
 	 */
@@ -277,18 +285,33 @@ class MonsterInsights_Rest_Routes {
 		}
 
 		return sanitize_text_field( $value );
-
+	}
+	/**
+	 * Return the addons as an array instead of JSON format.
+	 *
+	 * @since 9.5.0
+	 */
+	public function onboarding_get_addons() {
+		return $this->get_addons( true );
 	}
 
 	/**
 	 * Return the state of the addons ( installed, activated )
+	 *
+	 * @param boolean $is_onboarding If the request comes from the onboarding or not.
 	 */
-	public function get_addons() {
+	public function get_addons( $is_onboarding ) {
 		global $current_user;
-		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
 
-		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) ) {
-			return;
+		if ( true !== $is_onboarding ) {
+			check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+			if ( ! current_user_can( 'monsterinsights_view_dashboard' ) ) {
+				return;
+			}
+		}
+
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		if ( isset( $_POST['network'] ) && intval( $_POST['network'] ) > 0 ) {
@@ -380,6 +403,17 @@ class MonsterInsights_Rest_Routes {
 			'basename'  => 'insert-headers-and-footers/ihaf.php',
 			'slug'      => 'insert-headers-and-footers',
 			'settings'  => admin_url('admin.php?page=wpcode-settings'),
+		);
+		// WP Consent
+		$parsed_addons['wpconsent'] = array(
+			'active'    => defined( 'WPCONSENT_VERSION' ),
+			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/plugins/plugin-wpconsent.png',
+			'title'     => 'WP Consent',
+			'excerpt'   => __( 'WP Consent is the easiest way to add a cookie consent banner to your WordPress website.' ),
+			'installed' => array_key_exists( 'wpconsent-cookies-banner-privacy-suite/wpconsent.php', $installed_plugins ),
+			'basename'  => 'wpconsent-cookies-banner-privacy-suite/wpconsent.php',
+			'slug'      => 'wpconsent-cookies-banner-privacy-suite',
+			'settings'  => admin_url( 'admin.php?page=wpconsent_dashboard' ),
 		);
 
 		// Duplicator
@@ -519,17 +553,6 @@ class MonsterInsights_Rest_Routes {
 		// Use the plugin dir name as the array key since AJAX activation in add-ons page won't work.
 		$parsed_addons['all-in-one-seo-pack'] = $parsed_addons['aioseo'];
 
-		// OptinMonster.
-		$parsed_addons['optinmonster'] = array(
-			'active'    => class_exists( 'OMAPI' ),
-			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/plugins/plugin-om.png',
-			'title'     => 'OptinMonster',
-			'excerpt'   => __( 'Instantly get more subscribers, leads, and sales with the #1 conversion optimization toolkit. Create high converting popups, announcement bars, spin a wheel, and more with smart targeting and personalization.', 'google-analytics-for-wordpress' ),
-			'installed' => array_key_exists( 'optinmonster/optin-monster-wp-api.php', $installed_plugins ),
-			'basename'  => 'optinmonster/optin-monster-wp-api.php',
-			'slug'      => 'optinmonster',
-			'settings'  => admin_url( 'admin.php?page=optin-monster-dashboard' ),
-		);
 		// WP Mail Smtp.
 		$parsed_addons['wp-mail-smtp'] = array(
 			'active'    => function_exists( 'wp_mail_smtp' ),
@@ -792,7 +815,11 @@ class MonsterInsights_Rest_Routes {
 
 		$parsed_addons = apply_filters('monsterinsights_parsed_addons', $parsed_addons);
 
-		wp_send_json( $parsed_addons );
+		if ( true !== $is_onboarding ) {
+			wp_send_json( $parsed_addons );
+		}
+
+		return $parsed_addons;
 	}
 
 	/**
@@ -920,7 +947,7 @@ class MonsterInsights_Rest_Routes {
 		$api->set_additional_data( array(
 			'mp_token' => $value,
 		) );
-
+			
 		// Even if there's an error from Relay, we can still return a successful json
 		// payload because we can try again with Relay token push in the future
 		$data   = array();
@@ -935,7 +962,6 @@ class MonsterInsights_Rest_Routes {
 
 		wp_send_json_success( $data );
 	}
-
 
 	/**
 	 * Import exported JSON file.
@@ -1110,6 +1136,7 @@ class MonsterInsights_Rest_Routes {
 		if ( $isnetwork ) {
 			$args['network'] = true;
 		}
+		$args['included_metrics'] = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', true ) ?? 'sessions,pageviews';
 
 		if ( monsterinsights_is_pro_version() && ! MonsterInsights()->license->license_can( $report->level ) ) {
 			$data = array(
@@ -1119,7 +1146,6 @@ class MonsterInsights_Rest_Routes {
 		} else {
 			$data = apply_filters( 'monsterinsights_vue_reports_data', $report->get_data( $args ), $report_name, $report );
 		}
-
 		if ( ! empty( $data['success'] ) ) {
 			if ( empty( $data['data'] ) ) {
 				wp_send_json_success( new stdclass() );
@@ -1620,5 +1646,63 @@ class MonsterInsights_Rest_Routes {
 				'category'  => intval( ( ! empty( $category ) && ! empty( $category->term_id ) ) ? $category->term_id : 0 ),
 			) );
 		}
+	}
+	/**
+	 * Updates the selected metrics for the current user to be included into the overview reports.
+	 *
+	 * @since 9.2.3
+	 * @return void
+	 */
+	public function update_included_metrics() {
+		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+		if ( isset( $_POST['selected_metrics'] ) ) {
+			$current_metrics  = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', false );
+			$selected_metrics = sanitize_text_field( wp_unslash( $_POST['selected_metrics'] ) );
+			if ( $current_metrics !== $selected_metrics ) {
+				// If the metrics change, let's clear the cache so we can load the new metrics.
+				delete_transient( 'monsterinsights_report_data_overview' );
+				delete_site_option( 'monsterinsights_report_data_overview' );
+				delete_transient( 'monsterinsights_network_report_data_overview' );
+				delete_site_option( 'monsterinsights_network_report_data_overview' );
+				delete_site_option( 'monsterinsights_report_data_compare_overview' );
+				delete_transient( 'monsterinsights_report_data_compare_overview' );
+			}
+			update_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', $selected_metrics );
+		}
+		wp_send_json_success();
+	}
+	/**
+	 * Get's the user included metrics to visualize in the overview reports.
+	 *
+	 * @since 9.2.3
+	 * @return void
+	 */
+	public function get_user_included_metrics() {
+		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+		$user_included_metrics = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', true );
+		if ( false === $user_included_metrics || empty( $user_included_metrics ) ) {
+			$user_included_metrics = 'pageviews,sessions';
+		}
+		$user_included_metrics = $this->remove_premium_metrics( $user_included_metrics );
+		wp_send_json_success( $user_included_metrics );
+	}
+	/**
+	 * If license has expired, removes access to the premium metrics.
+	 *
+	 * @param string $included_metrics the current metrics provided by the user.
+	 * @return string
+	 */
+	public function remove_premium_metrics( $included_metrics ) {
+		$premium_metrics = [
+			'revenue_sales,',
+			'average_revenue_per_user,',
+			'average_revenue_per_session,',
+			'ecommerce_purchases,',
+		];
+		if ( MonsterInsights()->license->license_expired() || false === monsterinsights_is_pro_version() ) {
+			$included_metrics = str_replace( $premium_metrics, '', $included_metrics );
+			$included_metrics = str_replace( ',,', ',', $included_metrics ); // Clear the extra commas to avoid an empty iteration.
+		}
+		return $included_metrics;
 	}
 }

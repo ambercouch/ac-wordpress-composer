@@ -21,18 +21,23 @@ class ASP_Shortcode_NG {
 
 		$this->asp_main = AcceptStripePayments::get_instance();
 
-		$use_old_api = $this->asp_main->get_setting( 'use_old_checkout_api1' );
-		$use_old_api = 0;
-
+		//Enqueue scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
-		add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
-		if ( ! $use_old_api ) {
+		if ( ! is_admin() ) {
+			//Frontend only.
+			
+			//The standard shortcode for product
 			add_shortcode( 'asp_product', array( $this, 'shortcode_asp_product' ) );
-			add_shortcode( 'accept_stripe_payment', array( $this, 'shortcode_accept_stripe_payment' ) );
+			add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
+
+			//The dynamic shortcode for accepting payments (we have deprecated this shortcode).
+			add_shortcode( 'accept_stripe_payment', array( $this, 'shortcode_accept_stripe_payment' ) );		
+			add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
+			
 			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		}
+
 	}
 
 	public function enqueue_scripts() {
@@ -375,7 +380,8 @@ class ASP_Shortcode_NG {
 				'button_text'       => $this->asp_main->get_setting( 'button_text' ),
 				'compat_mode'       => 0,
 			),
-			$atts
+			$atts,
+			'asp_accept_stripe_payment_atts', /* Provided for context to enable filtering */
 		);
 
 		$product_id        = absint(sanitize_text_field( $sc_attrs['product_id'] ));
@@ -393,7 +399,7 @@ class ASP_Shortcode_NG {
 		$billing_address   = sanitize_text_field( $sc_attrs['billing_address'] );
 		$shipping_address  = sanitize_text_field( $sc_attrs['shipping_address'] );
 		$customer_email    = sanitize_email( $sc_attrs['customer_email'] );
-		$customer_name     = sanitize_email( $sc_attrs['customer_name'] );
+		$customer_name     = sanitize_text_field( $sc_attrs['customer_name'] );
 		$currency          = sanitize_text_field( $sc_attrs['currency'] );
 		$currency_variable = sanitize_text_field( $sc_attrs['currency_variable'] );
 		$checkout_lang     = sanitize_text_field( $sc_attrs['checkout_lang'] );

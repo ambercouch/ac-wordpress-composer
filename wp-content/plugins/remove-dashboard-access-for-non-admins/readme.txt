@@ -3,8 +3,8 @@ Contributors: TrustedLogin
 Donate link: https://www.trustedlogin.com
 Tags: dashboard, access, administration, login, restrict
 Requires at least: 3.1.0
-Tested up to: 6.4.2
-Stable tag: 1.2
+Tested up to: 6.7
+Stable tag: 1.2.1
 Requires PHP: 5.3
 
 Disable Dashboard access for users of a specific role or capability. Disallowed users are redirected to a chosen URL. Get set up in seconds.
@@ -68,7 +68,7 @@ No. Disable the plugin if you don't wish to leverage the functionality.
 
 The function returns an associative array with `$pagenow` as the key and a nested array of key => value pairs where the key is the `$_GET` parameter and the value is the allowed value.
 
-Example: If you want to allow a URL of `tools.php?page=EXAMPLE`, there are three parts to know:
+Example: If you want to allow a URL of `admin.php?page=EXAMPLE`, there are three parts to know:
 
 - The `$pagenow` global value (`tools.php` in this case)
 - The `$_GET` key (`page` in this case)
@@ -76,7 +76,7 @@ Example: If you want to allow a URL of `tools.php?page=EXAMPLE`, there are three
 
 Here is how we would add that URL to the allowlist:
 
-<pre lang="php">
+`
 /**
  * Allow users to access a page with a URL of tools.php?page=EXAMPLE
  *
@@ -85,7 +85,7 @@ Here is how we would add that URL to the allowlist:
  */
 function wpdocs_allow_example_dashboard_page( $pages ) {
 
-    // If the $pages array doesn't contain the 'tools.php' key, add it.
+    // If the $pages array doesn't contain the 'admin.php' key, add it.
     if ( ! isset( $pages['tools.php'] ) ) {
         $pages['tools.php'] = array();
     }
@@ -99,11 +99,11 @@ function wpdocs_allow_example_dashboard_page( $pages ) {
 }
 
 add_filter( 'rda_allowlist', 'wpdocs_allow_example_dashboard_page' );
-</pre>
+`
 
 = How can I filter the disallowed Toolbar nodes on the front-end? =
 
-<pre lang="php">
+`
 /**
  * Filter hidden Toolbar menus on the front-end.
  *
@@ -114,9 +114,7 @@ function wpdocs_hide_some_toolbar_menu( $ids ) {
 	$ids[] = 'SOMETHING';
 	return $ids;
 }
-
 add_filter( 'rda_frontend_toolbar_nodes', 'wpdocs_hide_some_toolbar_menu' );
-</pre>
 
 <strong>Common plugin Toolbar menus and their ids:</strong>
 
@@ -145,6 +143,11 @@ Yes. The plugin does not collect any personal data, nor does it set any cookies.
 3. Optional login message.
 
 == Changelog ==
+
+= 1.2.1 on November 29, 2024 =
+
+* Fixed: Compatibility with WordPress 6.7 (there was a warning that translations were being loaded too soon)
+* Tweak: Sanitized admin menu URL
 
 = 1.2 on January 29, 2024 =
 

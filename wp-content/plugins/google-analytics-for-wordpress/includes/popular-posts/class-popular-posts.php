@@ -377,7 +377,7 @@ class MonsterInsights_Popular_Posts {
 			'numberposts'         => 25,
 			'ignore_sticky_posts' => true,
 			'fields'              => 'ids',
-			'orderby'              => 'rand',
+			'orderby'              => 'rand', // phpcs:ignore WordPressVIPMinimum.Performance.OrderByRand.orderby_orderby
 		);
 		$args = wp_parse_args( $this->query_args(), $args );
 
@@ -655,7 +655,7 @@ class MonsterInsights_Popular_Posts {
 	public function is_current_post( $id ) {
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			$current_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : false;
+			$current_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			return $id === $current_id;
 		}

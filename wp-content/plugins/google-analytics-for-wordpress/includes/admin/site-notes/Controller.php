@@ -1,7 +1,6 @@
 <?php
 
-class MonsterInsights_SiteNotes_Controller
-{
+class MonsterInsights_SiteNotes_Controller {
 
 	public static $instance;
 
@@ -13,28 +12,24 @@ class MonsterInsights_SiteNotes_Controller
 	/**
 	 * @return self
 	 */
-	public static function get_instance()
-	{
+	public static function get_instance() {
 		if (!isset(self::$instance) && !(self::$instance instanceof MonsterInsights_SiteNotes_Controller)) {
 			self::$instance = new MonsterInsights_SiteNotes_Controller();
 		}
 		return self::$instance;
 	}
 
-	public function run()
-	{
+	public function run() {
 		$this->load_dependencies();
 		$this->add_hooks();
 	}
 
-	public function load_dependencies()
-	{
+	public function load_dependencies() {
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/site-notes/Database.php';
 		$this->db = new MonsterInsights_Site_Notes_DB_Base();
 	}
 
-	public function add_hooks()
-	{
+	public function add_hooks() {
 		add_action('init', array($this->db, 'install'));
 		add_action('wp_ajax_monsterinsights_vue_get_notes', array($this, 'get_notes'));
 		add_action('wp_ajax_monsterinsights_vue_get_note', array($this, 'get_note'));
@@ -66,8 +61,7 @@ class MonsterInsights_SiteNotes_Controller
 		add_action('admin_enqueue_scripts', array($this, 'load_metabox_assets'));
 	}
 
-	private function prepare_notes($params)
-	{
+	private function prepare_notes($params) {
 		$args = wp_parse_args($params, array(
 			'per_page' => 10,
 			'page' => 1,
@@ -105,9 +99,20 @@ class MonsterInsights_SiteNotes_Controller
 		return $this->db->get_items($args);
 	}
 
-	public function get_notes()
-	{
+	/**
+	 * AJAX callback function to get notes.
+	 */
+	public function get_notes() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) && ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to view notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$params = !empty($_POST['params']) ? json_decode(html_entity_decode(stripslashes($_POST['params'])), true) : [];
 
@@ -138,9 +143,20 @@ class MonsterInsights_SiteNotes_Controller
 		wp_send_json($output);
 	}
 
-	public function get_note()
-	{
+	/**
+	 * AJAX callback function to get a note.
+	 */
+	public function get_note() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) && ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to view notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$id = !empty($_POST['id']) ? intval($_POST['id']) : null;
 		$item = $this->db->get($id);
@@ -157,9 +173,20 @@ class MonsterInsights_SiteNotes_Controller
 		wp_send_json($item);
 	}
 
-	public function get_categories()
-	{
+	/**
+	 * AJAX callback function to get categories.
+	 */
+	public function get_categories() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) && ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to view notes categories.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$params = !empty($_POST['params']) ? json_decode(html_entity_decode(stripslashes($_POST['params'])), true) : [];
 
@@ -191,9 +218,20 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function save_note()
-	{
+	/**
+	 * AJAX Callback function to save a note.
+	 */
+	public function save_note() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to update notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$note = !empty($_POST['note']) ? json_decode(html_entity_decode(stripslashes($_POST['note']))) : [];
 
@@ -230,9 +268,20 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function save_category()
-	{
+	/**
+	 * AJAX Callback function to save a category.
+	 */
+	public function save_category() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to update categories.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$category = !empty($_POST['category']) ? json_decode(html_entity_decode(stripslashes($_POST['category']))) : [];
 
@@ -278,8 +327,7 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function change_restore_note_status($new_status, $post_id, $previous_status)
-	{
+	public function change_restore_note_status($new_status, $post_id, $previous_status) {
 		if ('monsterinsights_note' !== get_post_type($post_id)) {
 			return $new_status;
 		}
@@ -287,9 +335,20 @@ class MonsterInsights_SiteNotes_Controller
 		return $previous_status;
 	}
 
-	public function trash_notes()
-	{
+	/**
+	 * AJAX Callback function to trash notes.
+	 */
+	public function trash_notes() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to update notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$ids = !empty($_POST['ids']) ? json_decode(html_entity_decode(stripslashes($_POST['ids']))) : [];
 
@@ -314,9 +373,20 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function restore_notes()
-	{
+	/**
+	 * AJAX Callback function to restore notes.
+	 */
+	public function restore_notes() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to update notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$ids = !empty($_POST['ids']) ? json_decode(html_entity_decode(stripslashes($_POST['ids']))) : [];
 
@@ -341,9 +411,20 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function delete_notes()
-	{
+	/**
+	 * AJAX callback function to delete notes.
+	 */
+	public function delete_notes() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to update notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$ids = !empty($_POST['ids']) ? json_decode(html_entity_decode(stripslashes($_POST['ids']))) : [];
 
@@ -368,9 +449,20 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function delete_categories()
-	{
+	/**
+	 * AJAX callback function to delete categories.
+	 */
+	public function delete_categories() {
 		check_ajax_referer('mi-admin-nonce', 'nonce');
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			wp_send_json(
+				array(
+					'published' => false,
+					'message' => __( "You don't have permission to update notes.", 'google-analytics-for-wordpress' ),
+				)
+			);
+		}
 
 		$ids = !empty($_POST['ids']) ? json_decode(html_entity_decode(stripslashes($_POST['ids']))) : [];
 
@@ -395,8 +487,7 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function export_notes()
-	{
+	public function export_notes() {
 		if (!isset($_POST['monsterinsights_action']) || empty($_POST['monsterinsights_action'])) {
 			return;
 		}
@@ -461,8 +552,7 @@ class MonsterInsights_SiteNotes_Controller
 		exit;
 	}
 
-	public function add_categories_to_editor($vars)
-	{
+	public function add_categories_to_editor($vars) {
 		$args = array(
 			'per_page' => 0,
 			'page' => 1,
@@ -486,8 +576,7 @@ class MonsterInsights_SiteNotes_Controller
 		return $vars;
 	}
 
-	public function register_meta()
-	{
+	public function register_meta() {
 		if (!function_exists('register_post_meta')) {
 			return;
 		}
@@ -529,8 +618,7 @@ class MonsterInsights_SiteNotes_Controller
 		);
 	}
 
-	public function save_custom_fields($current_post_id)
-	{
+	public function save_custom_fields($current_post_id) {
 		if (!isset($_POST['monsterinsights_metabox_nonce']) || !wp_verify_nonce($_POST['monsterinsights_metabox_nonce'], 'monsterinsights_metabox')) {
 			return;
 		}
@@ -558,8 +646,7 @@ class MonsterInsights_SiteNotes_Controller
 		}
 	}
 
-	public function create_note_with_post($post_ID)
-	{
+	public function create_note_with_post($post_ID) {
 		if ('monsterinsights_note' === get_post_type($post_ID) || 'publish' !== get_post_status($post_ID)) {
 			return;
 		}
@@ -601,8 +688,7 @@ class MonsterInsights_SiteNotes_Controller
 		update_post_meta($post_ID, '_monsterinsights_sitenote_id', $created_note_id);
 	}
 
-	public function admin_scripts()
-	{
+	public function admin_scripts() {
 		if (!function_exists('get_current_screen')) {
 			return;
 		}
@@ -618,8 +704,7 @@ class MonsterInsights_SiteNotes_Controller
 		wp_enqueue_media();
 	}
 
-	public function prepare_data_overview_chart($data)
-	{
+	public function prepare_data_overview_chart($data) {
 		if (!isset($data['data']['overviewgraph'])) {
 			return $data;
 		}
@@ -638,7 +723,7 @@ class MonsterInsights_SiteNotes_Controller
 		$data['data']['overviewgraph']['notes'] = array();
 
 		foreach ($notes['items'] as $note) {
-			$date_index = date('j M', strtotime($note['note_date'], current_time('U')));
+			$date_index = date('j M', strtotime($note['note_date'], current_time('U'))); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- We need this to depend on the runtime timezone.
 			if (!isset($data['data']['overviewgraph']['notes'][$date_index])) {
 				$data['data']['overviewgraph']['notes'][$date_index] = array();
 			}
@@ -652,8 +737,7 @@ class MonsterInsights_SiteNotes_Controller
 		return $data;
 	}
 
-	public function add_metabox_contents($skipped, $post)
-	{
+	public function add_metabox_contents($skipped, $post) {
 		$sitenote_active = get_post_meta($post->ID, '_monsterinsights_sitenote_active', true);
 		$sitenote_note = get_post_meta($post->ID, '_monsterinsights_sitenote_note', true);
 		$sitenote_category = get_post_meta($post->ID, '_monsterinsights_sitenote_category', true);
@@ -665,9 +749,7 @@ class MonsterInsights_SiteNotes_Controller
 			'order' => 'asc',
 		);
 
-		$categories = $this->db->get_categories($args);
-
-?>
+		$categories = $this->db->get_categories($args); ?>
 		<div class="monsterinsights-metabox" id="monsterinsights-metabox-site-notes">
 			<div class="monsterinsights-metabox-input monsterinsights-metabox-input-checkbox">
 				<label class="">
@@ -701,8 +783,7 @@ class MonsterInsights_SiteNotes_Controller
 <?php
 	}
 
-	public function load_metabox_assets()
-	{
+	public function load_metabox_assets() {
 		wp_register_style('monsterinsights-admin-metabox-sitenotes-style', plugins_url('assets/css/admin-metabox-sitenotes.css', MONSTERINSIGHTS_PLUGIN_FILE), array(), monsterinsights_get_asset_version());
 		wp_enqueue_style('monsterinsights-admin-metabox-sitenotes-style');
 
@@ -740,7 +821,7 @@ class MonsterInsights_SiteNotes_Controller
 		$prepared_notes = array();
 
 		foreach ( $notes['items'] as $note ) {
-			$date_index = date( 'j M', strtotime( $note['note_date'], current_time( 'U' ) ) );
+			$date_index = date( 'j M', strtotime( $note['note_date'], current_time( 'U' ) ) ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- We need this to depend on the runtime timezone.
 
 			if ( ! isset( $prepared_notes[ $date_index ] ) ) {
 				$prepared_notes[ $date_index ] = array();

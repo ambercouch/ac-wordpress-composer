@@ -65,6 +65,10 @@ class PMPro_Site_Health {
 					'label' => __( 'Cron Job Status', 'paid-memberships-pro' ),
 					'value' => self::get_cron_jobs(),
 				],
+				'pmpro-action-scheduler-health' => [
+					'label' => __( 'Action Scheduler Health', 'paid-memberships-pro' ),
+					'value' => self::action_scheduler_issues(),
+				],
 				'pmpro-gateway'              => [
 					'label' => __( 'Payment Gateway', 'paid-memberships-pro' ),
 					'value' => self::get_gateway(),
@@ -244,11 +248,21 @@ class PMPro_Site_Health {
 			$stripe = new PMProGateway_stripe();
 
 			$legacy  = $stripe->using_legacy_keys();
+			$api = $stripe->using_api_keys();
 			$connect = $stripe->has_connect_credentials();
+
+			if ( defined( 'PMPRO_STRIPE_API_VERSION' ) ) {
+				$gateway_text .= ' (' . __( 'API Version', 'paid-memberships-pro' ) . ': ' . PMPRO_STRIPE_API_VERSION . ')';
+			}
 
 			if ( $legacy ) {
 				$gateway_text .= ' (' . __( 'Legacy Keys', 'paid-memberships-pro' ) . ')';
 				return $gateway_text . ' [' . $gateway . ':legacy-keys]';
+			}
+
+			if ( $api ) {
+				$gateway_text .= ' (' . __( 'API Keys', ' paid-memberships-pro' ) . ')';
+				return $gateway_text . ' [' . $gateway . ':api-keys ]';
 			}
 
 			if ( $connect ) {
@@ -406,6 +420,10 @@ class PMPro_Site_Health {
 		// Build the information of what crons are missing and what crons are going to run.
 		foreach ( $cron_times as $cron_hook => $next_run ) {
 			$cron_information[] = $cron_hook . ' (' . $next_run . ')';
+		}
+
+		if ( empty( $cron_information ) ) {
+			return __( 'No cron jobs scheduled', 'paid-memberships-pro' );
 		}
 
 		return implode( " | \n", $cron_information );
@@ -659,5 +677,24 @@ class PMPro_Site_Health {
 
 		return __( 'Disabled', 'paid-memberships-pro' );
 
+	}
+
+	/**
+	 * Check for Action Scheduler issues.
+	 *
+	 * @since 3.5.3
+	 *
+	 * @return string Count any issues found with Action Scheduler or its tables.
+	 */
+	public function action_scheduler_issues() {
+		// This is a wrapper for the Action Scheduler method.
+		$issues = PMPro_Action_Scheduler::check_action_scheduler_table_health();
+
+		if ( empty( $issues ) ) {
+			return __( 'No issues found with the Action Scheduler tables.', 'paid-memberships-pro' );
+		} else {
+			// Let's format the issues into a semicolon-separated string.
+			return implode( '; ', array_map( 'esc_html', $issues ) ) . '.';
+		}
 	}
 }

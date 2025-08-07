@@ -29,10 +29,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <li id="ai1wmve-db-table-excluder">
-	<label for="ai1wmve-exclude_db_tables" v-show="showDbExcluder">
+	<label for="ai1wmve-exclude_db_tables" v-show="showDbTables">
 		<input type="checkbox" id="ai1wmve-exclude_db_tables" name="options[exclude_db_tables]"/>
-		<?php _e( 'Do <strong>not</strong> include the selected database tables', AI1WM_PLUGIN_NAME ); ?>
+		<?php _e( 'Exclude the selected database tables', AI1WM_PLUGIN_NAME ); ?>
 		<small style="color: red;"><?php _e( 'new', AI1WM_PLUGIN_NAME ); ?></small>
 	</label>
-	<db-tables v-show="showDbExcluder" :db-tables='<?php echo json_encode( $tables, JSON_HEX_APOS ); ?>'></db-tables>
+	<db-tables v-show="showDbTables" :db-tables='<?php echo json_encode( $tables, JSON_HEX_APOS ); ?>' label-id="#ai1wmve-exclude_db_tables" field-name="excluded_db_tables" />
 </li>

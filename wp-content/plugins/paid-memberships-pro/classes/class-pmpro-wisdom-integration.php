@@ -392,18 +392,23 @@ class PMPro_Wisdom_Integration {
 
 		// Get Stripe gateway info for other stats below.
 		$stripe_using_legacy_keys       = PMProGateway_stripe::using_legacy_keys();
+		$stripe_using_api_keys          = PMProGateway_stripe::using_api_keys();
 		$stripe_has_connect_credentials = PMProGateway_stripe::has_connect_credentials( 'live' ) || PMProGateway_stripe::has_connect_credentials( 'sandbox' );
 
 		// Append the Stripe gateway qualifiers.
 		if ( 'stripe' === $stats['pmpro_gateway'] ) {
 			// Add Legacy Keys text if using Legacy Keys.
 			if ( $stripe_using_legacy_keys ) {
-				$stats['pmpro_gateway'] .= ' (' . __( 'Legacy Keys', 'paid-memberships-pro' ) . ')';
+				$stats['pmpro_gateway'] .= ' (Legacy Keys)';
+			}
+
+			if ( $stripe_using_api_keys ) {
+				$stats['pmpro_gateway'] .= ' (API Keys)';
 			}
 
 			// Add Stripe Connect text if using Stripe Connect.
 			if ( $stripe_has_connect_credentials ) {
-				$stats['pmpro_gateway'] .= ' (' . __( 'Stripe Connect', 'paid-memberships-pro' ) . ')';
+				$stats['pmpro_gateway'] .= ' (Stripe Connect)';
 			}
 
 			$stats['pmpro_gateway'] = strtolower( $stats['pmpro_gateway'] );
@@ -418,7 +423,7 @@ class PMPro_Wisdom_Integration {
 			'paypal'         => get_option( 'pmpro_apiusername' ),
 			'paypalexpress'  => get_option( 'paypalexpress_skip_confirmation' ),
 			'paypalstandard' => get_option( 'gateway_email' ),
-			'stripe'         => $stripe_using_legacy_keys || $stripe_has_connect_credentials,
+			'stripe'         => $stripe_using_legacy_keys || $stripe_using_api_keys || $stripe_has_connect_credentials,
 			'stripe_sandbox' => get_option( 'sandbox_stripe_connect_user_id' ),
 			'twocheckout'    => get_option( 'twocheckout_accountnumber' ),
 		];
@@ -502,9 +507,6 @@ class PMPro_Wisdom_Integration {
 	 * @return array The list of Add Ons categorized by active, inactive, and update available.
 	 */
 	public function get_addons_info() {
-		// This file only is usually only required when is_admin().
-		require_once( PMPRO_DIR . '/includes/addons.php' );
-		
 		// Build the list of Add Ons data to track.
 		$addons      = pmpro_getAddons();
 		$plugin_info = get_site_transient( 'update_plugins' );

@@ -39,3 +39,35 @@ function ai1wmfe_is_running() {
 
 	return false;
 }
+
+/**
+ * Check whether export/import is incremental
+ *
+ * @return boolean
+ */
+function ai1wmfe_is_incremental() {
+	if ( isset( $_GET['ftp'], $_GET['incremental'] ) || isset( $_POST['ftp'], $_POST['incremental'] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Raise number into power
+ * Fix for PHP (8.4.1, 8.3.14 and 8.2.26) bug with gmp_pow
+ *
+ * @param $num
+ * @param $exponent
+ *
+ * @return \GMP|mixed|resource
+ */
+function ai1wmfe_gmp_pow( $num, $exponent ) {
+	$buggy_versions = array( 80401, 80314, 80226 );
+
+	if ( in_array( PHP_VERSION_ID, $buggy_versions, true ) ) {
+		return $num ** $exponent;
+	}
+
+	return gmp_pow( $num, $exponent );
+}

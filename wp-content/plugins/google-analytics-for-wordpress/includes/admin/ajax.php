@@ -26,8 +26,8 @@ function monsterinsights_ajax_set_user_setting() {
 	check_ajax_referer( 'monsterinsights-set-user-setting', 'nonce' );
 
 	// Prepare variables.
-	$name  = stripslashes( $_POST['name'] );
-	$value = stripslashes( $_POST['value'] );
+	$name  = stripslashes( !empty($_POST['name']) ? sanitize_text_field($_POST['name']) : '' );
+	$value = stripslashes( !empty($_POST['value']) ? sanitize_text_field($_POST['value']) : '' );
 
 	// Set user setting.
 	set_user_setting( $name, $value );
@@ -135,7 +135,7 @@ function monsterinsights_ajax_activate_addon() {
 	// Activate the addon.
 	if ( isset( $_POST['plugin'] ) ) {
 		$plugin = esc_attr( $_POST['plugin'] );
-
+		
 		if ( isset( $_POST['isnetwork'] ) && $_POST['isnetwork'] ) {
 			$activate = activate_plugin( $plugin, null, true );
 		} else {
@@ -163,6 +163,7 @@ function monsterinsights_ajax_activate_addon() {
 	echo json_encode( true );
 	wp_die();
 }
+
 add_action( 'wp_ajax_monsterinsights_deactivate_addon', 'monsterinsights_ajax_deactivate_addon' );
 /**
  * Deactivates a MonsterInsights addon.
@@ -326,29 +327,29 @@ add_action( 'wp_ajax_monsterinsights_get_aiseo_cta_status', 'monsterinsights_get
 
 function monsterinsights_handle_get_plugin_info() {
 
-    $auth = MonsterInsights()->auth;
+	$auth = MonsterInsights()->auth;
 
-    //  Authenticate with public key
-    $key = sanitize_text_field($_REQUEST['key']);
+	//  Authenticate with public key
+	$key = !empty($_REQUEST['key']) ? sanitize_text_field($_REQUEST['key']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-    $site_key = is_network_admin() ? $auth->get_network_key() : $auth->get_key();
+	$site_key = is_network_admin() ? $auth->get_network_key() : $auth->get_key();
 
-    if ( !hash_equals( $site_key, $key ) ) {
-        wp_send_json_error([
-            'error'     => __( 'Invalid site key.', 'google-analytics-for-wordpress' )
-        ], 401);
-    }
+	if ( !hash_equals( $site_key, $key ) ) {
+		wp_send_json_error([
+			'error'     => __( 'Invalid site key.', 'google-analytics-for-wordpress' )
+		], 401);
+	}
 
-    $v4 = is_network_admin() ? $auth->get_network_v4_id() :  $auth->get_v4_id();
-    $has_secret = is_network_admin() ?
-        !empty( $auth->get_network_measurement_protocol_secret() ) :
-        !empty( $auth->get_measurement_protocol_secret() );
+	$v4 = is_network_admin() ? $auth->get_network_v4_id() :  $auth->get_v4_id();
+	$has_secret = is_network_admin() ?
+		!empty( $auth->get_network_measurement_protocol_secret() ) :
+		!empty( $auth->get_measurement_protocol_secret() );
 
-    wp_send_json([
-        'v4'                => $v4,
-        'has_mp_secret'     => $has_secret,
-        'plugin_version'    => MonsterInsights()->version
-    ]);
+	wp_send_json([
+		'v4'                => $v4,
+		'has_mp_secret'     => $has_secret,
+		'plugin_version'    => MonsterInsights()->version
+	]);
 }
 
 add_action( 'wp_ajax_nopriv_monsterinsights_get_plugin_info', 'monsterinsights_handle_get_plugin_info' );
@@ -423,25 +424,3 @@ function monsterinsights_check_plugin_funnelkit_funnelkit_stripe_woo_gateway_con
 
 }
 add_action( 'wp_ajax_monsterinsights_funnelkit_stripe_woo_gateway_configured', 'monsterinsights_check_plugin_funnelkit_funnelkit_stripe_woo_gateway_configured' );
-
-/**
- * Called whenever a notice is dismissed in MonsterInsights editor blocks.
- *
- * @access public
- * @since 8.26.0
- */
-function monsterinsights_ajax_dismiss_editor_notice() {
-
-	// Run a security check first.
-	check_ajax_referer( 'monsterinsights-dismiss-notice', 'nonce' );
-
-	// Deactivate the notice
-	if ( isset( $_POST['notice'] ) && $_POST['notice'] === 'envira_promo' ) {
-		set_transient( '_monsterinsights_dismiss_envira_promo', true, 30 * DAY_IN_SECONDS );
-		wp_send_json_success();
-	}
-
-	wp_send_json_error();
-}
-
-add_action( 'wp_ajax_monsterinsights_ajax_dismiss_editor_notice', 'monsterinsights_ajax_dismiss_editor_notice' );

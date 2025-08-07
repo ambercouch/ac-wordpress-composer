@@ -1,5 +1,7 @@
 <?php
-
+/*
+* Note: For the new API, we use thbe ASP_Process_IPN_NG class.
+*/
 class AcceptStripePayments_Process_IPN {
 
 
@@ -21,8 +23,9 @@ class AcceptStripePayments_Process_IPN {
 
 	function init() {
 		if ( isset( $_POST['asp_action'] ) ) {
+			//Note: For the new API, we use ASP_Process_IPN_NG::process_ipn( $post_data )
 			if ( 'process_ipn' === $_POST['asp_action'] ) {
-				//check if Legacy API is enabled
+				//Check if Legacy API is enabled.
 				$opt = get_option( 'AcceptStripePayments-settings' );
 				//if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
 
@@ -706,7 +709,6 @@ class AcceptStripePayments_Process_IPN {
 AcceptStripePayments_Process_IPN::get_instance();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = false ) {
-
 	$product_details  = __( 'Product Name', 'stripe-payments' ) . ': {item_name}' . "\n";
 	$product_details .= __( 'Quantity', 'stripe-payments' ) . ': {item_quantity}' . "\n";
 	$product_details .= __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . "\n";
@@ -822,18 +824,23 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		}
 	}
 
-	$first_name = '';
-	$last_name  = '';
+	$first_name = isset($post['customer_first_name']) && !empty($post['customer_first_name']) ? $post['customer_first_name'] : '';
+	$last_name = isset($post['customer_last_name']) && !empty($post['customer_last_name']) ? $post['customer_last_name'] : '';
 
-	if ( ! empty( $post['customer_name'] ) ) {
-		$parts      = explode( ' ', $post['customer_name'], 2 );
-		$first_name = ! empty( $parts[0] ) ? $parts[0] : '';
-		$last_name  = ! empty( $parts[1] ) ? $parts[1] : '';
+	if (empty($first_name) && empty($last_name)){
+		// First name, last name explicitly not set. Try to get them from full name.
+		if ( ! empty( $post['customer_name'] ) ) {
+			$parts      = explode( ' ', $post['customer_name'], 2 );
+			$first_name = ! empty( $parts[0] ) ? $parts[0] : '';
+			$last_name  = ! empty( $parts[1] ) ? $parts[1] : '';
+		}
 	}
 
 	$logged_in_user_id = isset($post['logged_in_user_id']) && ! empty( $post['logged_in_user_id'] ) ? $post['logged_in_user_id'] : '';
 	$logged_in_user_name = isset($post['logged_in_user_name']) && ! empty( $post['logged_in_user_name'] ) ? $post['logged_in_user_name'] : '';
 
+	$item_description = '';
+	$product_url = '';
     $surcharge_total_amt = '';
     $surcharge_label = '';
     if ( isset( $post['product_id'] ) ){
@@ -846,13 +853,18 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
                 $surcharge_total_amt = AcceptStripePayments::formatted_price($post['additional_items'][$surcharge_label], $post['currency_code']);
             }
         }
+
+	    $item_description = get_post_field('post_content', $post['product_id']);
+		$product_url = get_permalink( $post['product_id'] );
     }
 
 	$tags = array(
 		'{item_name}',
 		'{item_short_desc}',
+		'{item_description}',
 		'{item_quantity}',
 		'{item_url}',
+		'{download_url}',
 		'{payer_email}',
 		'{customer_name}',
 		'{first_name}',
@@ -876,6 +888,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{card_last_4}',
 		'{payment_method}',
         '{product_variations}',
+		'{product_url}',
 		'{logged_in_user_name}',
 		'{logged_in_user_id}',
 		'{surcharge_total_amt}',
@@ -884,7 +897,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$vals = array(
 		$post['item_name'],
 		$post['charge_description'],
+		$item_description,
 		$post['item_quantity'],
+		! empty( $post['item_url'] ) ? $post['item_url'] : '',
 		! empty( $post['item_url'] ) ? $post['item_url'] : '',
 		$post['stripeEmail'],
 		$post['customer_name'],
@@ -909,6 +924,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$card_last4,
 		$pm_type,
         $product_variations,
+		$product_url,
 		$logged_in_user_name,
 		$logged_in_user_id,
         $surcharge_total_amt,

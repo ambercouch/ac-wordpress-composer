@@ -36,15 +36,6 @@
   margin: 20px 0;
 }
 
-.monsterinsights-editor-notice {
-  position: relative;
-}
-.monsterinsights-editor-notice-dismiss {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-}
-
 .monsterinsights-headline-analyzer-wrapper {
   font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   position: relative;

@@ -120,7 +120,8 @@ class Ai1wmfe_Main_Controller extends Ai1wmve_Main_Controller {
 			'ai1wmfe_import',
 			array(
 				'ajax' => array(
-					'folder_url' => wp_make_link_relative( admin_url( 'admin-ajax.php?action=ai1wmfe_ftp_folder' ) ),
+					'folder_url'      => wp_make_link_relative( admin_url( 'admin-ajax.php?action=ai1wmfe_ftp_folder' ) ),
+					'incremental_url' => wp_make_link_relative( admin_url( 'admin-ajax.php?action=ai1wmfe_ftp_incremental' ) ),
 				),
 			)
 		);
@@ -220,8 +221,8 @@ class Ai1wmfe_Main_Controller extends Ai1wmve_Main_Controller {
 		if ( ai1wmfe_is_running() ) {
 			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_FTP::execute', 250 );
 			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Upload::execute', 260 );
-			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Retention::execute', 270 );
-			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Done::execute', 280 );
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Retention::execute', 280 );
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Done::execute', 290 );
 			add_filter( 'ai1wm_import', 'Ai1wmfe_Import_FTP::execute', 20 );
 			add_filter( 'ai1wm_import', 'Ai1wmfe_Import_Download::execute', 30 );
 			add_filter( 'ai1wm_import', 'Ai1wmfe_Import_Settings::execute', 290 );
@@ -229,6 +230,21 @@ class Ai1wmfe_Main_Controller extends Ai1wmve_Main_Controller {
 
 			remove_filter( 'ai1wm_export', 'Ai1wm_Export_Download::execute', 250 );
 			remove_filter( 'ai1wm_import', 'Ai1wm_Import_Upload::execute', 5 );
+		}
+
+		if ( ai1wmfe_is_incremental() ) {
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Incremental_Content::execute', 105 );
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Incremental_Media::execute', 115 );
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Incremental_Plugins::execute', 125 );
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Incremental_Themes::execute', 135 );
+			add_filter( 'ai1wm_export', 'Ai1wmfe_Export_Incremental_Backups::execute', 270 );
+
+			add_filter( 'ai1wm_import', 'Ai1wmfe_Import_Incremental_FTP::execute', 20 );
+			add_filter( 'ai1wm_import', 'Ai1wmfe_Import_Incremental_Download::execute', 30 );
+
+			remove_filter( 'ai1wm_export', 'Ai1wmfe_Export_Retention::execute', 280 );
+			remove_filter( 'ai1wm_import', 'Ai1wmfe_Import_FTP::execute', 20 );
+			remove_filter( 'ai1wm_import', 'Ai1wmfe_Import_Download::execute', 30 );
 		}
 	}
 
@@ -293,6 +309,14 @@ class Ai1wmfe_Main_Controller extends Ai1wmve_Main_Controller {
 					'before_invoke' => array( $this, 'activate_extension_commands' ),
 				)
 			);
+			WP_CLI::add_command(
+				'ai1wm ftp incremental',
+				'Ai1wmfe_FTP_WP_CLI_Incremental_Command',
+				array(
+					'shortdesc'     => __( 'All-in-One WP Migration Command for FTP incremental backups', AI1WMFE_PLUGIN_NAME ),
+					'before_invoke' => array( $this, 'activate_extension_incremental_commands' ),
+				)
+			);
 		}
 	}
 
@@ -304,6 +328,16 @@ class Ai1wmfe_Main_Controller extends Ai1wmve_Main_Controller {
 	public function activate_extension_commands() {
 		$_GET['ftp'] = 1;
 		$this->ai1wm_commands();
+	}
+
+	/**
+	 * Activates extension specific commands
+	 *
+	 * @return void
+	 */
+	public function activate_extension_incremental_commands() {
+		$_GET['incremental'] = 1;
+		$this->activate_extension_commands();
 	}
 
 	/**
@@ -349,6 +383,7 @@ class Ai1wmfe_Main_Controller extends Ai1wmve_Main_Controller {
 	public function router() {
 		if ( current_user_can( 'import' ) ) {
 			add_action( 'wp_ajax_ai1wmfe_ftp_folder', 'Ai1wmfe_Import_Controller::folder' );
+			add_action( 'wp_ajax_ai1wmfe_ftp_incremental', 'Ai1wmfe_Import_Controller::incremental' );
 		}
 	}
 }

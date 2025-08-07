@@ -40,9 +40,8 @@ import GeoDatatable from "./GeoBlockList/GeoDatatable";
 import WhiteListDatatable from "./GeoBlockList/WhiteListDatatable";
 import Captcha from "./Captcha/Captcha";
 import CaptchaKey from "./Captcha/CaptchaKey";
-import FileChangeDetection from "./FileChangeDetection/FileChangeDetection";
+import UserAgentTable from "./firewall/UserAgentTable";
 import TwoFaEnabledDropDown from "./TwoFA/TwoFaEnabledDropDown";
-
 const Field = (props) => {
     const scrollAnchor = useRef(null);
     const { updateField, setChangedField, highLightField, setHighLightField , getFieldValue} = useFields();
@@ -128,6 +127,7 @@ const Field = (props) => {
                 }
             }
         }
+
         setChangedField(field.id, fieldValue);
     };
 
@@ -218,7 +218,7 @@ const Field = (props) => {
 
     if (field.type==='email'){
         const sendVerificationEmailField = props.fields.find(field => field.id === 'send_verification_email');
-        const emailIsVerified = sendVerificationEmailField && sendVerificationEmailField.disabled;
+        const emailIsVerified = sendVerificationEmailField && (sendVerificationEmailField.disabled === false);
 
         return (
             <div className={highLightClass} ref={scrollAnchor} style={{position: 'relative'}}>
@@ -233,7 +233,7 @@ const Field = (props) => {
                 />
                 { sendVerificationEmailField &&
                     <div className="rsssl-email-verified" >
-                        {emailIsVerified
+                        {!emailIsVerified
                             ? <Icon name='circle-check' color={'green'} />
                             : <Icon name='circle-times' color={'red'} />}
                     </div>
@@ -247,7 +247,7 @@ const Field = (props) => {
             <div className={highLightClass} ref={scrollAnchor} style={{position: 'relative'}}>
                 <CaptchaKey field={field} fields={props.fields} label={labelWrap(field)} />
             </div>
-        )
+            )
     }
 
     if ( field.type==='number' ){
@@ -506,16 +506,6 @@ const Field = (props) => {
         )
     }
 
-    if (field.type === 'file-change-detection') {
-        return (
-            <div className={highLightClass} ref={scrollAnchor}>
-                <FileChangeDetection
-                    field={props.field}
-                />
-            </div>
-        )
-    }
-
     if (field.type === 'country-datatable') {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
@@ -560,10 +550,21 @@ const Field = (props) => {
         )
     }
 
+    if (field.type === 'user-agents-datatable') {
+        return (
+            <div className={highLightClass} ref={scrollAnchor}>
+                <UserAgentTable
+                    field={props.field}
+                    action={props.field.action}
+                />
+            </div>
+        )
+    }
+
     if (field.type === 'roles_dropdown') {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-                <label htmlFor="rsssl-roles-dropdown-{field.id}">
+                <label htmlFor={`rsssl-two-fa-dropdown-${field.id}`}>
                     {labelWrap(field)}
                 </label>
                 <RolesDropDown field={props.field}
@@ -575,10 +576,10 @@ const Field = (props) => {
     if (field.type === 'roles_enabled_dropdown') {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-                <label htmlFor="rsssl-roles-dropdown-{field.id}">
+                <label htmlFor={`rsssl-two-fa-dropdown-${field.id}`}>
                     {labelWrap(field)}
                 </label>
-                <TwoFaEnabledDropDown field={props.field}
+                <TwoFaEnabledDropDown field={props.field} disabled={disabled}
                 />
             </div>
         );
@@ -587,7 +588,7 @@ const Field = (props) => {
     if(field.type === 'notificationtester') {
         return (
             <div className={'rsssl-field-button ' + highLightClass} ref={scrollAnchor}>
-                <NotificationTester field={props.field} labelWrap={labelWrap}/>
+                <NotificationTester field={props.field} disabled={disabled} labelWrap={labelWrap}/>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2023 ServMask Inc.
+ * Copyright (C) 2014-2025 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Attribution: This code is part of the All-in-One WP Migration plugin, developed by
  *
  * ███████╗███████╗██████╗ ██╗   ██╗███╗   ███╗ █████╗ ███████╗██╗  ██╗
  * ██╔════╝██╔════╝██╔══██╗██║   ██║████╗ ████║██╔══██╗██╔════╝██║ ██╔╝
@@ -34,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="ai1wm-holder">
 				<h1>
 					<i class="ai1wm-icon-export"></i>
-					<?php _e( 'Backups', AI1WM_PLUGIN_NAME ); ?>
+					<?php esc_html_e( 'Backups', 'all-in-one-wp-migration' ); ?>
 				</h1>
 
 				<?php if ( is_readable( AI1WM_BACKUPS_PATH ) && is_writable( AI1WM_BACKUPS_PATH ) ) : ?>
@@ -46,15 +48,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div id="ai1wm-backups-create">
 							<p class="ai1wm-backups-empty-spinner-holder ai1wm-hide">
 								<span class="spinner"></span>
-								<?php _e( 'Refreshing backup list...', AI1WM_PLUGIN_NAME ); ?>
+								<?php esc_html_e( 'Refreshing backup list...', 'all-in-one-wp-migration' ); ?>
 							</p>
 							<p class="ai1wm-backups-empty <?php echo empty( $backups ) ? null : 'ai1wm-hide'; ?>">
-								<?php _e( 'There are no backups available at this time, why not create a new one?', AI1WM_PLUGIN_NAME ); ?>
+								<?php esc_html_e( 'No backups found. Create a new one?', 'all-in-one-wp-migration' ); ?>
 							</p>
 							<p>
 								<a href="#" id="ai1wm-create-backup" class="ai1wm-button-green">
 									<i class="ai1wm-icon-export"></i>
-									<?php _e( 'Create backup', AI1WM_PLUGIN_NAME ); ?>
+									<?php esc_html_e( 'Create backup', 'all-in-one-wp-migration' ); ?>
 								</a>
 							</p>
 						</div>

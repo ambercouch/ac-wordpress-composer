@@ -100,7 +100,6 @@ function monsterinsights_gutenberg_editor_assets() {
 			'nonce'                        => wp_create_nonce( 'monsterinsights_gutenberg_headline_nonce' ),
 			'allowed_post_types'           => apply_filters( 'monsterinsights_headline_analyzer_post_types', array( 'post' ) ),
 			'current_post_type'            => $posttype,
-			'translations'                 => wp_get_jed_locale_data( monsterinsights_is_pro_version() ? 'ga-premium' : 'google-analytics-for-wordpress' ),
 			'is_headline_analyzer_enabled' => apply_filters( 'monsterinsights_headline_analyzer_enabled', true ) && 'true' !== monsterinsights_get_option( 'disable_headline_analyzer' ),
 			'reports_url'                  => add_query_arg( 'page', 'monsterinsights_reports', admin_url( 'admin.php' ) ),
 			'vue_assets_path'              => plugins_url( $version_path . '/assets/vue/', MONSTERINSIGHTS_PLUGIN_FILE ),
@@ -114,9 +113,16 @@ function monsterinsights_gutenberg_editor_assets() {
 			'page_insights_nonce'          => wp_create_nonce( 'mi-admin-nonce' ),
 			'isnetwork'                    => is_network_admin(),
 			'is_v4'                        => true,
-			'dismiss_envira_promo'         => isset($plugins['envira-gallery-lite/envira-gallery-lite.php']) || isset($plugins['envira-gallery/envira-gallery.php']) || get_transient('_monsterinsights_dismiss_envira_promo'),
 		) )
 	);
+
+	$textdomain  = monsterinsights_is_pro_version() ? 'google-analytics-premium' : 'google-analytics-for-wordpress';
+
+	wp_scripts()->add_inline_script(
+		'monsterinsights-gutenberg-editor-js',
+		monsterinsights_get_printable_translations( $textdomain )
+	);
+
 }
 
 add_action( 'enqueue_block_editor_assets', 'monsterinsights_gutenberg_editor_assets' );

@@ -4,6 +4,7 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 	class rsssl_site_health {
 		private static $_this;
 		public function __construct() {
+
 			if ( isset( self::$_this ) ) {
 				wp_die( 'you cannot create a second instance.' );
 			}
@@ -15,6 +16,7 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 		public static function this() {
 			return self::$_this;
 		}
+
 
 		/**
 		 * Add SSL dedicated health check
@@ -42,21 +44,132 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 					);
 				}
 
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) {
-					$tests['direct']['rsssl_debug_display'] = array(
-						'test' => array( $this, 'site_health_debug_display_test' ),
+				if ( rsssl_maybe_disable_404_blocking() ) {
+					$tests['direct']['rsssl_404_test'] = array(
+						'test' => array( $this, 'site_health_404_display' ),
 					);
 				}
 
 				if ( rsssl_get_option( 'enable_vulnerability_scanner' ) ) {
-					$vulnerabilities                          = new rsssl_vulnerabilities();
+					$vulnerabilities = new rsssl_vulnerabilities();
 					$tests['direct']['rsssl_vulnerabilities'] = array(
 						'test' => [ $vulnerabilities, 'get_site_health_notice' ],
 					);
 				}
+				// Two-Factor Authentication (2FA) test
+				$tests['direct']['rsssl_2fa_test'] = array(
+					'label' => __( 'Two-Factor Authentication', 'really-simple-ssl' ),
+					'test'  => array( $this, 'two_factor_auth_test' ),
+				);
+
+				// Limit Login Attempts (LLA) test
+				$tests['direct']['rsssl_lla_test'] = array(
+					'label' => __( 'Limit Login Attempts Protection', 'really-simple-ssl' ),
+					'test'  => array( $this, 'limit_login_attempts_test' ),
+				);
+
+				// Firewall Protection test
+				$tests['direct']['rsssl_firewall_test'] = array(
+					'label' => __( 'Firewall Protection', 'really-simple-ssl' ),
+					'test'  => array( $this, 'firewall_test' ),
+				);
+
 			}
 
 			return $tests;
+		}
+
+		/**
+		 * Test for Two-Factor Authentication (2FA)
+		 * @return array
+		 */
+		public function two_factor_auth_test() {
+			$status = 'recommended';
+			$description = __( 'We recommend to enable Two-Factor Authentication at least for administrators.', 'really-simple-ssl' );
+
+			// Check if RSSSL 2FA, WordFence, Solid Security, AIOS are installed and 2FA is enabled
+			if ( rsssl_get_option('login_protection_enabled') == '1' || is_plugin_active('wordfence/wordfence.php') || is_plugin_active('two-factor/two-factor.php') || is_plugin_active('all-in-one-wp-security-and-firewall/wp-security.php') || is_plugin_active('better-wp-security/better-wp-security.php')  ) {
+				$status = 'good';
+				$description = __( 'Your site is protected by Two-Factor Authentication (2FA).', 'really-simple-ssl' );
+			}
+
+			return array(
+				'label' => __( 'Protect your user logins with Two-Factor Authentication (at least for Administrator accounts)', 'really-simple-ssl' ),
+				'status' => $status,
+				'badge' => array(
+					'label' => __( 'Security', 'really-simple-ssl' ),
+					'color' => 'blue',
+				),
+				'description' => sprintf( '<p>%s</p>', $description ),
+				'actions' => sprintf(
+					'<p><a href="%s" target="_blank">%s</a></p>',
+					esc_url( admin_url( 'admin.php?page=really-simple-security#settings/two-fa' ) ),
+					__( 'Read more', 'really-simple-ssl' )
+				),
+				'test' => 'rsssl_2fa_test',
+			);
+		}
+
+		/**
+		 * Test for Limit Login Attempts (LLA)
+		 * @return array
+		 */
+		public function limit_login_attempts_test() {
+			$status = 'recommended';
+			$description = __( 'Enable Limit Login Attempts to protect the login form against brute-force attacks.', 'really-simple-ssl' );
+
+			// Check if RSSSL LLA or Limit Login Attempts Reloaded is installed and active
+			if ( rsssl_get_option('enable_limited_login_attempts') == '1' || is_plugin_active('wordfence/wordfence.php') || is_plugin_active('limit-login-attempts-reloaded/limit-login-attempts-reloaded.php') || is_plugin_active('better-wp-security/better-wp-security.php') ) {
+				$status = 'good';
+				$description = __( 'Your site is protected by Limit Login Attempts.', 'really-simple-ssl' );
+			}
+
+			return array(
+				'label' => __( 'Protect your login form with Limit Login Attempts', 'really-simple-ssl' ),
+				'status' => $status,
+				'badge' => array(
+					'label' => __( 'Security', 'really-simple-ssl' ),
+					'color' => 'blue',
+				),
+				'description' => sprintf( '<p>%s</p>', $description ),
+				'actions' => sprintf(
+					'<p><a href="%s" target="_blank">%s</a></p>',
+					esc_url( admin_url( 'admin.php?page=really-simple-security#settings/limit_login_attempts' ) ),
+					__( 'Read more', 'really-simple-ssl' )
+				),
+				'test' => 'rsssl_lla_test',
+			);
+		}
+
+		/**
+		 * Test for Firewall Protection
+		 * @return array
+		 */
+		public function firewall_test() {
+			$status = 'recommended';
+			$description = __( 'Secure your site with the performant Firewall.', 'really-simple-ssl' );
+
+			// Check if WordFence, AIOS, or Solid Security is installed
+			if ( rsssl_get_option('enable_firewall') || is_plugin_active('wordfence/wordfence.php') || is_plugin_active('all-in-one-wp-security-and-firewall/wp-security.php') || is_plugin_active('better-wp-security/better-wp-security.php') ) {
+				$status = 'good';
+				$description = __( 'Your site is protected by a firewall.', 'really-simple-ssl' );
+			}
+
+			return array(
+				'label' => __( 'Secure your site with a Firewall', 'really-simple-ssl' ),
+				'status' => $status,
+				'badge' => array(
+					'label' => __( 'Security', 'really-simple-ssl' ),
+					'color' => 'blue',
+				),
+				'description' => sprintf( '<p>%s</p>', $description ),
+				'actions' => sprintf(
+					'<p><a href="%s" target="_blank">%s</a></p>',
+					esc_url( admin_url( 'admin.php?page=really-simple-security#settings/firewall' ) ),
+					__( 'Read more', 'really-simple-ssl' )
+				),
+				'test' => 'rsssl_firewall_test',
+			);
 		}
 
 		/**
@@ -66,7 +179,7 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 		public function site_health_debug_log_test() {
 			$result = array(
 				'label'       => __( 'Your site is set to log errors to a potentially public file' ), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
-				'status'      => 'critical',
+				'status'      => 'recommended',
 				'badge'       => array(
 					'label' => __( 'Security' ), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					'color' => 'blue',
@@ -120,6 +233,36 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 		}
 
 		/**
+		 * Check for 404 errors.
+		 *
+		 */
+		public function site_health_404_display() {
+			$result = array(
+				'label'       => __( '404 errors detected on your homepage', 'really-simple-ssl' ),
+				'status'      => 'critical',
+				'badge'       => array(
+					'label' => __( 'Security' ), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+					'color' => 'blue',
+				),
+				'description' => sprintf(
+					'<p>%s</p>',
+					__( '404 errors detected on your homepage. This means that the page requests images, scripts or other resources that are no longer available. It can interfere with your Firewall as well.', 'really-simple-ssl' )
+				),
+				'actions'     => sprintf(
+					'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s <span class="screen-reader-text">%s</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a></p>',
+					/* translators: Documentation explaining debugging in WordPress. */
+					esc_url( rsssl_link('404-not-found-errors') ),
+					__( 'Read more', 'really-simple-ssl' ),
+					/* translators: Accessibility text. */
+					__( '(opens in a new tab)' )// phpcs:ignore WordPress.WP.I18n.MissingArgDomain
+				),
+				'test'        => 'rsssl_404_test',
+			);
+
+			return $result;
+		}
+
+		/**
 		 * Test to check if the recommended security headers are present
 		 * @return array
 		 */
@@ -151,7 +294,7 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 				$result['actions']     = sprintf(
 					'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></p>',
 					rsssl_link('site-health-recommended-security-headers/'),
-					__( 'Learn more about security headers', 'really-simple-ssl' )
+					__( 'Read more', 'really-simple-ssl' )
 				);
 			}
 
@@ -182,7 +325,7 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 
 			if ( ! rsssl_get_option( 'ssl_enabled' ) ) {
 				if ( rsssl_get_option( 'site_has_ssl' ) ) {
-					$result['status']      = 'critical';
+					$result['status']      = 'recommended';
 					$result['label']       = __( 'SSL is not enabled.', 'really-simple-ssl' );
 					$result['description'] = sprintf(
 						'<p>%s</p>',
@@ -197,7 +340,7 @@ if ( ! class_exists( 'rsssl_site_health' ) ) {
 						__( 'Activate SSL', 'really-simple-ssl' )
 					);
 				} else {
-					$result['status']      = 'critical';
+					$result['status']      = 'recommended';
 					$result['label']       = __( 'No SSL detected', 'really-simple-ssl' );
 					$result['description'] = sprintf(
 						'<p>%s</p>',

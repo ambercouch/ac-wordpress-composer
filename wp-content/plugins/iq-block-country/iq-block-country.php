@@ -1,10 +1,10 @@
 <?php   
 /*
 Plugin Name: iQ Block Country
-Plugin URI: https://webence.nl/plugins/iq-block-country-the-wordpress-plugin-that-blocks-countries-for-you/
-Version: 1.2.23
+Plugin URI: https://webence.net/
+Version: 1.2.24
 Author: Pascal
-Author URI: https://webence.nl/
+Author URI: https://webence.net/
 Description: Block visitors from visiting your website and backend website based on which country their IP address is from. The Maxmind GeoIP lite database is used for looking up from which country an ip address is from.
 License: GPL2
 Text Domain: iq-block-country
@@ -152,10 +152,14 @@ define("GEOIPAPIURLUS", "https://us.geoip.webence.nl/geoipapi.php");
 define("GEOIPAPIURLUS2", "https://us2.geoip.webence.nl/geoipapi.php");
 define("GEOIPAPIURLUS3", "https://us3.geoip.webence.nl/geoipapi.php");
 define("GEOIPAPICHECKURL", "https://eu.geoip.webence.nl/geoipapi-keycheck.php");
+define("GEOIPAPILICENSEURL", "https://webence.net/wp-json/dlm/v1/licenses/activate/");
+define("GEOIPAPILICENSECHECKURL", "https://eu.geoip.webence.nl/keycheck.php");
 define("GEOIPAPICHECKUSAGEURL", "https://eu.geoip.webence.nl/geoipapi-usage.php");
 define("ADMINAPICHECKURL", "https://tracking.webence.nl/adminapi-keycheck.php");
-define("IQVERSION", "1.2.22");
-define("IQDBVERSION", "123");
+define("GEOIPAPITOKEN", "Y2tfOWFiMzQ5ZGNkNTNjNWUyNDMxZmMwOWMzZjc4MGEzYWExODc5YmEyYzpjc182YTc4Mjc5NWIzMDNhYmNmZmZiOWRhZmJiYjg1Yzc1NTUxMDBhY2Ew");
+define("GEOIPHASH","abd7c61d112af8699730a2c21550e7a5649feaf83471075c825fb2de90f53196");
+define("IQVERSION", "1.2.24a");
+define("IQDBVERSION", "124");
 define("IQBCPLUGINPATH", plugin_dir_path(__FILE__)); 
 
 

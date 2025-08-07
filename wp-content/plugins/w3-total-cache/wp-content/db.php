@@ -1,6 +1,13 @@
 <?php
 /**
- * W3 Total Cache Database module
+ * File: db.php
+ *
+ * W3 Total Cache Database module.
+ *
+ * phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+ * phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
+ *
+ * @package W3TC
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,7 +60,9 @@ if ( ! @is_dir( W3TC_DIR ) || ! file_exists( W3TC_DIR . '/w3-total-cache-api.php
 	$is_installing = ( defined( 'WP_INSTALLING' ) && WP_INSTALLING );
 
 	$config = \W3TC\Dispatcher::config();
-	if ( ( ! $is_installing && $config->get_boolean( 'dbcache.enabled' ) ) || \W3TC\Util_Environment::is_dbcluster( $config ) ) {
+	if ( ( ! $is_installing && $config->get_boolean( 'dbcache.enabled' ) && class_exists( '\W3TC\Util_File' ) ) ||
+		\W3TC\Util_Environment::is_dbcluster( $config ) ) {
+
 		if ( defined( 'DB_TYPE' ) ) {
 			$db_driver_path = sprintf( '%s/Db/%s.php', W3TC_LIB_DIR, DB_TYPE );
 

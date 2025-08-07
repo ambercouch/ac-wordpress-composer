@@ -7,6 +7,10 @@ class ASP_Process_IPN_NG {
 	public $asp_class;
 	public $sess;
 	public $p_data;
+
+	//Important Note: This $post_data variable need to be unset so that it does not interfere with the "isset" logic in the get_post_var function.
+	public $post_data;
+
 	protected static $instance = null;
 
 	public function __construct() {
@@ -105,6 +109,10 @@ class ASP_Process_IPN_NG {
 			ASP_Debug_Logger::log( $err_msg, false ); //Log the error
 
 			$this->sess->set_transient_data( 'asp_data', $asp_data );
+
+			//Trigger an action hook for this error condition.
+			//The $_POST data is available in the global $_POST variable which may contain additional details.
+			do_action( 'asp_stripe_process_ipn_error', $err_msg );		
 
 			//send email to notify site admin (if option enabled)
 			$opt = get_option( 'AcceptStripePayments-settings' );
@@ -466,6 +474,7 @@ class ASP_Process_IPN_NG {
 		$p_charge_created  = $p_data->get_charge_created();
 		$p_trans_id        = $p_data->get_trans_id();
 		$p_billing_details = $p_data->get_billing_details();
+		$p_customer_details = $p_data->get_customer_details();
 
 		if ( empty( $p_billing_details->email ) ) {
 			$email = $this->get_post_var( 'asp_email', FILTER_SANITIZE_EMAIL );
@@ -488,7 +497,7 @@ class ASP_Process_IPN_NG {
 		$data['currency_code']      = strtoupper( $p_curr );
 		$data['item_quantity']      = $item->get_quantity();
 		$data['charge']             = $p_charge_data;
-		$data['stripeToken']        = '';
+		// $data['stripeToken']        = '';
 		$data['stripeTokenType']    = 'card';
 		$data['is_live']            = $is_live;
 		$data['charge_description'] = $item->get_description();
@@ -503,6 +512,13 @@ class ASP_Process_IPN_NG {
 		$data['charge_date_raw']    = $p_charge_created;
 		$data['txn_id']             = $p_trans_id;
 		$data['button_key']         = $button_key;
+
+		//Type casting to an array to prevent any potential PHP warnings.
+		$customer_metadata = isset($p_customer_details->metadata) ? (array)$p_customer_details->metadata : array();
+		if ( !empty($customer_metadata) ){
+			$data['customer_first_name'] = isset($customer_metadata['First Name']) ? sanitize_text_field($customer_metadata['First Name']) : '';
+			$data['customer_last_name'] = isset($customer_metadata['Last Name']) ? sanitize_text_field($customer_metadata['Last Name']) : '';
+		}
 
 		$item_url = $item->get_download_url();
 
@@ -630,7 +646,9 @@ class ASP_Process_IPN_NG {
 			}
 			$cf_str = rtrim( $cf_str, ' | ' );
 			//trim the string as metadata value cannot exceed 500 chars
-			$cf_str                    = substr( $cf_str, 0, 499 );
+			$cf_str = substr( $cf_str, 0, 499 );
+			//add custom fields string to metadata
+			ASP_Debug_Logger::log( 'Adding custom fields string to metadata - ' . $cf_str );
 			$metadata['Custom Fields'] = $cf_str;
 		}
 
@@ -642,7 +660,7 @@ class ASP_Process_IPN_NG {
 			}
 			$var_str = rtrim( $var_str, ', ' );
 			//trim the string as metadata value cannot exceed 500 chars
-			$var_str                = substr( $var_str, 0, 499 );
+			$var_str = substr( $var_str, 0, 499 );
 			$metadata['Variations'] = $var_str;
 		}
 
@@ -732,7 +750,8 @@ class ASP_Process_IPN_NG {
 		do_action( 'asp_stripe_payment_completed', $data, $data['charge'] );
 
 		//Let's handle email sending stuff
-		if ( ! empty( $opt['send_emails_to_buyer'] ) ) {
+		$send_emails_to_buyer = apply_filters( 'asp_allow_send_emails_to_buyer', $opt['send_emails_to_buyer'], $prod_id);
+		if ( ! empty( $send_emails_to_buyer ) ) {
 			$from = $opt['from_email_address'];
 			$to   = $data['stripeEmail'];
 			$subj = $opt['buyer_email_subject'];
@@ -765,6 +784,8 @@ class ASP_Process_IPN_NG {
 				$body      = nl2br( $body );
 			}
 			$headers[] = 'From: ' . $from;
+			//Trigger filter to allow modification of the buyer email headers.
+			$headers = apply_filters( 'asp_buyer_email_headers', $headers, $email_data, $data );
 
 			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
 
@@ -775,7 +796,8 @@ class ASP_Process_IPN_NG {
 			}
 		}
 
-		if ( ! empty( $opt['send_emails_to_seller'] ) ) {
+		$send_emails_to_seller = apply_filters( 'asp_allow_send_emails_to_seller', $opt['send_emails_to_seller'], $prod_id);
+		if ( ! empty( $send_emails_to_seller ) ) {
 			$from = $opt['from_email_address'];
 			$to   = $opt['seller_notification_email'];
 			$subj = $opt['seller_email_subject'];
@@ -808,7 +830,11 @@ class ASP_Process_IPN_NG {
 				$body      = nl2br( $body );
 			}
 			$headers[] = 'From: ' . $from;
+			$headers[] = 'Reply-To: ' . $data['stripeEmail'];//For admin notification emails, we set the reply-to header to the buyer's email address.
+			//Trigger filter to allow modification of the seller email headers.
+			$headers = apply_filters( 'asp_seller_email_headers', $headers, $email_data, $data );
 
+			//Send the email to the seller
 			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
 			if ( ! $schedule_result ) {
 				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );

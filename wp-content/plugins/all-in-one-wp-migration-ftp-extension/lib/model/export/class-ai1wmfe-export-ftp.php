@@ -61,6 +61,11 @@ class Ai1wmfe_Export_FTP {
 		// Create folder
 		$ftp->create_folder( ai1wm_archive_folder() );
 
+		// Create incremental backups folder
+		if ( ai1wmfe_is_incremental() ) {
+			$ftp->create_folder( sprintf( '%s/incremental-backups', ai1wm_archive_folder() ) );
+		}
+
 		// Set progress
 		Ai1wm_Status::info( sprintf( __( 'Done connecting to %s server.', AI1WMFE_PLUGIN_NAME ), strtoupper( $model->get_type() ) ) );
 

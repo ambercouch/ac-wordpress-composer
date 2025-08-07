@@ -1,9 +1,9 @@
 === W3 Total Cache ===
-Contributors: boldgrid, fredericktownes, maxicusc, gidomanders, bwmarkle, harryjackson1221, joemoto, vmarko, jacobd91
-Tags: seo, cache, CDN, pagespeed, caching, performance, compression, optimize, cloudflare, nginx, apache, varnish, redis, aws, amazon web services, s3, cloudfront, azure
+Contributors: boldgrid, fredericktownes, maxicusc, gidomanders, bwmarkle, harryjackson1221, joemoto, vmarko, jacobd91, avonville1, jamesros161, elanasparkle, abrender
+Tags: CDN, pagespeed, caching, performance, optimize
 Requires at least: 5.3
-Tested up to: 6.6
-Stable tag: 2.7.5
+Tested up to: 6.8
+Stable tag: 2.8.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,26 @@ W3TC is the **only** web host agnostic Web Performance Optimization (WPO) framew
 * Extension framework for customization or extensibility for Cloudflare, WPML and much more
 * Reverse proxy integration via Nginx or Varnish
 * WebP Converter extension provides WebP image format conversion from common image formats (on upload and on demand)
+
+<h3>W3 Total Cache Pro Features</h3>
+
+With over a million active installs, W3 Total Cache is the most comprehensive WordPress caching plugin available and has robust premium features that help deliver an exceptional user experience.
+
+* Full Site Delivery: Serve your entire site from a Content Delivery Network (CDN), ensuring faster load times worldwide.
+* Fragment Cache: Optimize the caching of dynamic content while still improving performance.
+* REST API Caching: Speed up your headless WordPress site by caching REST API calls.
+* Eliminate Render-Blocking CSS: Ensure your CSS doesn't hold up page loading, providing faster initial paint.
+* Delay Scripts: Improve performance by delaying the loading of non-essential scripts until they are needed.
+* Preload Requests: Boost page performance by preloading critical resources before they're requested.
+* Remove CSS/JS: Clean up unnecessary CSS and JavaScript files that slow down your pages.
+* Lazy Load Google Maps: Load Google Maps only when it's visible, reducing unnecessary requests.
+* WPML Extension: Optimize performance on multilingual sites powered by WPML.
+* Caching Statistics: Get detailed insights on cache usage and performance improvements.
+* Purge Logs: Keep your site clean by automatically purging unnecessary cache logs.
+
+<h3>30-Day Money-Back Guarantee</h3>
+
+Try [W3 Total Cache Pro](https://www.boldgrid.com/w3-total-cache/) risk-free with our 30-day money-back guarantee. If you're not satisfied, we will refund your purchase.
 
 <h3>PAGESPEED SCORE IMPROVEMENTS</h3>
 
@@ -336,10 +356,126 @@ It's quite difficult to recall all of the innovators that have shared their thou
 * [Gopal Vijayaraghavan](http://notmysock.org/)
 * [Bart Vanbraban](http://eaccelerator.net/)
 * [mOo](http://xcache.lighttpd.net/)
+* [villu164] (https://www.wordfence.com/threat-intel/vulnerabilities/researchers/villu164)
 
 Please reach out to all of these people and support their projects if you're so inclined.
 
 == Changelog ==
+
+= 2.8.11 =
+* Fix: Avoid redundant object cache misses in WP 6.4 - 6.7
+* Fix: Admin bar: Do not show "Purge All Caches Except Cloudflare" if disabled after it was configured
+* Fix: Error handling for URL downloads
+* Fix: Menu items for non-administrators
+* Update: Lazy load library: 12.2.0 => 19.1.2
+* Enhancement: Use SimpleXMLElement to parse sitemaps and RSS feeds
+* Enhancement: Flush Elementor cache when all caches are flushed
+
+= 2.8.10 =
+* Fix: Exception handling on activation
+* Fix: wp_resource_hint handling for arrays
+* Enhancement: Added X-W3TC-CDN header
+
+= 2.8.9 =
+* Fix: AWS S3 test
+* Fix: Gravity Forms submissions
+* Fix: Windows: Configuration import
+* Fix: Redis: Fix PHP 8 warning for incrBy value not being an integer
+* Fix: DbCache Cluster: Check for mysqli_result before using the object
+* Fix: PHP 8 warnings
+* Fix: Typos on settings pages
+
+= 2.8.8 =
+* Fix: Usage Statistics JavaScript error
+* Fix: Regex matching for Cookie Cache Groups
+* Fix: Image Service: Error when get_current_screen() is run before admin_init
+* Fix: _load_textdomain_just_in_time timing issue for WP-CLI and the Setup Guide
+* Fix: "DOMDocument::loadHTML(): ID  already defined in Entity" errors
+* Fix: Cloudflare: Saving settings with a value of 0
+* Update: Removed StackPath, Limelight, and Highwinds CDNs due to end of service
+
+= 2.8.7 =
+* Fix: Exit survey email field submission
+* Fix: Setup Guide analytics
+* Update: Allow deleting plugin data when skipping the exit survey on deactivation
+* Update: aws/aws-php-sns-message-validator (1.9.0 => 1.9.1)
+
+= 2.8.6 =
+* Fix: Error deactivating when selected to delete plugin data
+* Fix: WP-CLI: Enable Object Cache depending on settings
+* Fix: Delete all plugin WordPress Options if selected on deactivation
+* Enhancement: Automatically disable Object Cache after plugin update if set to Disk and display a notice
+* Enhancement: WP-CLI: Added settings to enable Object and DB Cache for WP-CLI
+* Enhancement: Added an email field to the exit survey for requesting help
+* Enhancement: Added a popup modal to accept the risk when enabling Object Cache using Disk
+
+= 2.8.5 =
+* Fix: CDN: Amazon S3 long hostname for default region
+* Fix: WP-CLI: Error running "wp w3tc alwayscached_*" commands
+* Fix: WP-CLI: Remove HTML in output
+* Enhancement: Simplified license messsaging
+
+= 2.8.4 =
+* Fix: Deactivation modal JS error
+
+= 2.8.3 =
+* Fix: HTTP API calls for checking required files
+* Fix: script-src-elem and style-src-attr security headers
+* Fix: Handle multiple line srcset attributes for CDN URL replacement
+* Fix: Fragment Cache: Fixed logic for navigation links
+* Fix: Check for modified advanced-cache.php dropin/addin file
+* Fix: Log directory name is made unique
+* Enhancement: Added an exit survey with option to delete plugin data on deactivation
+* Enhancement: Fragment Cache: Added notices for configuration
+* Enhancement: Use admin-ajax for settings help tab content links
+* Update: Handle XML MIME types in cache by default
+* Update: Added "immutable" options for cache-control headers
+* Update: Added WP-CLI command descriptions
+* Update: CDN widget notices for BunnyCDN
+* Update: WebP Converter widget notice
+
+= 2.8.2 =
+* Fix: Added additional user capability checks
+* Fix: Ensure Object Cache garbage collection (disk) WP Cron event is scheduled
+* Fix: Added additional checks when loading the Object Cache dropin
+* Fix: Disable Database, Object, and Fragment Cache when using WP-CLI
+* Fix: Object Cache debug logging
+* Fix: FAQ help tabs
+* Update: Coding standards
+
+= 2.8.1=
+* Fix: Ensure WP Cron events get scheduled when using the Setup Guide wizard and on upgrade
+* Fix: Undefined variable when the Object Cache purge debug log is enabled
+* Update: Added warnings in the Setup Guide and the General Settings page when using Disk for Database and Object Caches
+* Update: Skip Database and Object caches when using WP-CLI
+
+= 2.8.0 =
+* Feature: Always Cached extension
+* Feature: Purge caches on WP-Cron schedules
+* Fix: Cloudflare: Some settings were not saved correctly
+* Fix: Check and update file mode/permissions for cache files
+* Fix: Issue prompting for credentials for some non-direct filesystem types
+* Enhancement: Added an admin notice if WP-Cron is not functioning correctly
+* Enhancement: Added Browser Cache filters
+* Update: Upgraded JSMin library to 2.4.3
+* Update: Added Premium Services tabs
+
+= 2.7.7 =
+* Update: CDN: Added support for Microsoft Azure EntraID Managed identities
+
+= 2.7.6 =
+* Fix: Improved cache flushing on actions/updates
+* Fix: Google PageSpeed authorization
+* Fix: Remove Fragment Cache link if extension is disabled
+* Fix: License status fix
+* Fix: Statistics PHP warning when some data is stale
+* Fix: API improvement for non-200 responses
+* Enhancement: Added notices when choosing Disk for object and database cache engines
+* Update: Object cache improvements
+* Update: Allow WPML extension activation for TranslatePress
+* Update: Added more information for selections in the setup guide wizard
+* Update: Updated cache header directive choices (no-cache/no-store)
+* Update: Nginx configuration examples
 
 = 2.7.5 =
 * Feature: Added dismissible notifications
@@ -1136,6 +1272,12 @@ Please reach out to all of these people and support their projects if you're so 
 
 
 == Upgrade Notice ==
+
+= 2.8.2
+This is a security update.  All users are encouraged to update to this version.
+
+= 2.8.1 =
+Users with Object Cache enabled using Disk storage should upgrade to this version to ensure proper garbage collection.  A memory-based engine is recommended for database and object cache engines.  Using the Disk option can lead to a large number of cache files.  Hosting accounts with inode limits may experience issues, including downtime, if limits are reached.
 
 = 2.7.3 =
 Thanks for using W3 Total Cache! The minimum required PHP version has been raised to PHP 7.2.5.  We recommend using PHP 8.  StackPath CDN has cased all operations and will be removed in a future release.  We recommend switching to Bunny CDN.

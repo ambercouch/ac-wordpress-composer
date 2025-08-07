@@ -897,6 +897,15 @@ function handlePayment() {
 	console.log('Entering handlePayment()');
 
 	var billingNameInput = document.getElementById('billing-name');
+	// If individual first name last name enabled
+	var billingFirstNameInput = document.getElementById('billing-name');
+	var billingLastNameInput = document.getElementById('billing-last-name');
+
+	let billingFirstName = billingFirstNameInput?.value.trim() || '';
+	let billingLastName = billingLastNameInput?.value.trim() || '';
+
+	let billingFullName = billingFirstName + ' ' + billingLastName;
+
 	var emailInput = document.getElementById('email');
 	var raw_email_input_value = emailInput.value;
 	var maybe_encoded_email_input_value = encodeURIComponent(raw_email_input_value);
@@ -911,9 +920,16 @@ function handlePayment() {
 
 	//Create the billing details object.
 	var billingDetails = {
-		name: encodeURIComponent(billingNameInput.value),
+		name: encodeURIComponent(billingFullName),
 		email: maybe_encoded_email_input_value,
 	};
+
+	const customerDetails = {
+		name: encodeURIComponent(billingFullName),
+		firstName: encodeURIComponent(billingFirstName),
+		lastName: encodeURIComponent(billingLastName),
+		email: maybe_encoded_email_input_value,
+	}
 
 	if (vars.data.billing_address) {
 		var bAddr =  document.getElementById('address');
@@ -934,7 +950,7 @@ function handlePayment() {
 	}
 	if (vars.data.shipping_address) {
 		var shippingDetails = {
-			name: encodeURIComponent(billingNameInput.value)
+			name: encodeURIComponent(billingFullName)
 		};
 		var sAddr = document.getElementById('shipping_address');
 		var sCity = document.getElementById('shipping_city');
@@ -993,6 +1009,8 @@ function handlePayment() {
 		if (vars.data.coupon) {
 			reqStr += '&coupon=' + vars.data.coupon.code;
 		}
+
+		reqStr = reqStr + '&customer_details=' + JSON.stringify(customerDetails);
 
 		if (vars.data.surcharge) {
 			let surcharge_amount = cents_to_amount(vars.data.surcharge_amount, vars.data.currency);
@@ -1085,7 +1103,7 @@ function handlePayment() {
 		//Create token for the payment intent then confirm the token.
 		console.log('Creating token');
 		opts = {
-			name: billingNameInput.value
+			name: billingFullName
 		};
 		if (vars.data.billing_address) {
 			opts.address_line1 = bAddr.value;
@@ -1200,7 +1218,7 @@ function handlePayment() {
 	}
 
 	var c_opts = {
-		name: billingNameInput.value
+		name: billingFullName
 	};
 	if (vars.data.billing_address) {
 		c_opts.address_line1 = bAddr.value;
@@ -1236,7 +1254,7 @@ function handlePayment() {
 			opts.payment_method_data.card = { token: vars.data.token_id };
 			if (vars.data.dont_save_card) {
 				opts.payment_method_data.billing_details = {
-					name: encodeURIComponent(billingNameInput.value),
+					name: encodeURIComponent(billingFullName),
 					email: maybe_encoded_email_input_value
 				};
 			}
@@ -1459,7 +1477,29 @@ function toggleRequiredElements(els, hide) {
 }
 
 function saveFormData(success_cb, error_cb) {
-	var reqStr = 'action=asp_pp_save_form_data&nonce=' + vars.asp_pp_ajax_nonce + '&form_data=' + encodeURIComponent(jQuery(form).serialize());
+	// Grab all the form data as an array.
+	let form_data_array = jQuery(form).serializeArray();
+
+	// covert the form data array to object where the field name will be the key, and field value will be the value.
+	let form_data_obj = {};
+	form_data_array.forEach(function(field) {
+		form_data_obj[field.name] = field.value || '';
+	});
+
+	let applied_coupon_code = '';
+
+	// Check if any coupon code was applied.
+	if (vars.data.coupon) {
+		 applied_coupon_code = vars.data?.coupon?.code;
+	}
+
+	if (form_data_obj['coupon-code']){
+		// Take only applied coupon code, don't just take the value from the input field.
+		// Because the 'form_data_array' grabs all the form input values, but we need to make sure the coupon was actually applied.
+		form_data_obj['coupon-code'] = applied_coupon_code;
+	}
+
+	var reqStr = 'action=asp_pp_save_form_data&nonce=' + vars.asp_pp_ajax_nonce + '&form_data=' + encodeURIComponent(jQuery.param(form_data_obj));
 	new ajaxRequest(vars.ajaxURL, reqStr, success_cb, error_cb);
 }
 
@@ -1585,3 +1625,29 @@ jQuery(document).ready(function(){
 		jQuery("#apply-coupon-btn").trigger("click");
 	}
 });
+
+
+/**
+ * Check and apply custom quantity if it is provided in the url.
+ */
+document.addEventListener('DOMContentLoaded', function(){
+	const urlParams = new URLSearchParams(window.location.search);
+	const quantityParam = 'default_quantity';
+
+	if (!urlParams.has(quantityParam) || !urlParams.get(quantityParam)) {
+		// No default quantity found!
+		return;
+	}
+
+	const quantity = parseInt(urlParams.get(quantityParam).trim());
+	const quantityInput = document.getElementById("quantity");
+
+	if (quantityInput){
+		quantityInput.value = quantity;
+
+		const event = new Event("change", { bubbles: true });
+
+		quantityInput.dispatchEvent(event);
+	}
+
+})

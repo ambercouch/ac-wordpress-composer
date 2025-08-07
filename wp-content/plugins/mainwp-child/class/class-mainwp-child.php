@@ -30,7 +30,7 @@ class MainWP_Child {
      *
      * @var string MainWP Child plugin version.
      */
-    public static $version = '5.2'; // NOSONAR - not IP.
+    public static $version = '5.4.0.11'; // NOSONAR - not IP.
 
     /**
      * Private variable containing the latest MainWP Child update version.
@@ -72,9 +72,11 @@ class MainWP_Child {
         $this->plugin_slug = plugin_basename( $plugin_file );
 
         add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+        add_action( 'activated_plugin', array( $this, 'hook_activated_plugin' ) );
         add_action( 'init', array( &$this, 'init_check_login' ), 1 );
         add_action( 'init', array( &$this, 'parse_init' ), 9999 );
         add_action( 'init', array( &$this, 'localization' ), 33 );
+        add_action( 'init', array( &$this, 'init_hooks' ), 9 );
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
         add_action( 'plugin_action_links_mainwp-child/mainwp-child.php', array( &$this, 'plugin_settings_link' ) );
 
@@ -103,6 +105,11 @@ class MainWP_Child {
         MainWP_Child_Plugins_Check::instance();
         MainWP_Child_Themes_Check::instance();
         MainWP_Utility::instance()->run_saved_snippets();
+        MainWP_Child_Vulnerability_Checker::instance();
+
+        if ( defined( 'WP_CLI' ) && WP_CLI ) {
+            MainWP_Child_WP_CLI_Command::init();
+        }
 
         /**
          * Initiate Branding Options.
@@ -256,6 +263,26 @@ class MainWP_Child {
     }
 
     /**
+     * Method hook_activated_plugin()
+     *
+     * @param  mixed $plugin plugin.
+     * @return void
+     */
+    public function hook_activated_plugin( $plugin ) {
+        if ( plugin_basename( MAINWP_CHILD_FILE ) === $plugin && ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) && ( ! empty( $_GET['action'] ) && 'activate' === wp_unslash( $_GET['action'] ) ) ) { //phpcs:ignore -- NOSONAR -ok.
+            $branding = MainWP_Child_Branding::instance()->is_branding();
+            if ( ! $branding && function_exists( '\get_current_screen' ) ) {
+                $screen = get_current_screen();
+                // Check if the current screen is the Plugins page.
+                if ( $screen && 'plugins' === $screen->id ) {
+                    wp_safe_redirect( 'options-general.php?page=mainwp_child_tab' );
+                    exit();
+                }
+            }
+        }
+    }
+
+    /**
      * Method parse_init()
      *
      * Parse the init hook.
@@ -341,6 +368,13 @@ class MainWP_Child {
     }
 
     /**
+     * Method init_hooks()
+     */
+    public function init_hooks() {
+        MainWP_Child_Actions::get_instance()->init_hooks();
+    }
+
+    /**
      * Method admin_init()
      *
      * If the current user is administrator initiate the admin ajax.
@@ -351,7 +385,20 @@ class MainWP_Child {
         if ( MainWP_Helper::is_admin() && is_admin() ) {
             MainWP_Clone::instance()->init_ajax();
         }
-        MainWP_Child_Actions::get_instance()->init_hooks();
+
+        if ( empty( get_option( 'mainwp_child_pubkey' ) ) ) {
+            $ttl_pubkey = (int) get_option( 'mainwp_child_ttl_active_unconnected_site', 20 );
+            if ( ! empty( $ttl_pubkey ) ) {
+                $lasttime_active = get_option( 'mainwp_child_lasttime_not_connected' );
+                if ( empty( $lasttime_active ) ) {
+                    MainWP_Helper::update_option( 'mainwp_child_lasttime_not_connected', time() );
+                } elseif ( $lasttime_active < time() - $ttl_pubkey * MINUTE_IN_SECONDS ) {
+                    include_once ABSPATH . '/wp-admin/includes/plugin.php'; // NOSONAR -- WP compatible.
+                    delete_option( 'mainwp_child_lasttime_not_connected' );
+                    deactivate_plugins( $this->plugin_slug, true );
+                }
+            }
+        }
     }
 
     /**
@@ -373,6 +420,8 @@ class MainWP_Child {
      * @uses \MainWP\Child\MainWP_Child_Pagespeed::init()
      * @uses \MainWP\Child\MainWP_Child_Links_Checker::init()
      * @uses \MainWP\Child\MainWP_Child_WPvivid_BackupRestore::init()
+     * @uses \MainWP\Child\MainWP_Child_Aam::instance()
+     * @uses \MainWP\Child\MainWP_Child_HTML_Regression::instance()->init()
      */
     private function parse_init_extensions() {
         MainWP_Child_Branding::instance()->branding_init();
@@ -392,21 +441,58 @@ class MainWP_Child {
         MainWP_Child_DB_Updater::instance();
         MainWP_Child_Jetpack_Protect::instance();
         MainWP_Child_Jetpack_Scan::instance();
+        MainWP_Child_Aam::instance()->init();
         MainWP_Custom_Post_Type::instance();
+            MainWP_Child_HTML_Regression::instance()->init();
+    }
+
+
+    /**
+     * Method activation()
+     *
+     * Activate the MainWP Child plugin and delete unwanted data.
+     *
+     * @uses \MainWP\Child\MainWP_Helper::update_option()
+     */
+    public function activation() {
+        delete_option( 'mainwp_child_lasttime_not_connected' ); // delete if existed.
     }
 
     /**
      * Method deactivation()
      *
-     * Deactivate the MainWP Child plugin and delete unwanted data.
+     * Deactivate the MainWP Child plugin.
      *
      * @param bool $deact Whether or not to deactivate pugin. Default: true.
      */
     public function deactivation( $deact = true ) {
 
+        delete_option( 'mainwp_child_lasttime_not_connected' ); // delete if existed.
+
         $mu_plugin_enabled = apply_filters( 'mainwp_child_mu_plugin_enabled', false );
         if ( $mu_plugin_enabled ) {
             return;
+        }
+
+        if ( $deact ) {
+            do_action( 'mainwp_child_deactivation' );
+        }
+    }
+
+    /**
+     * Method delete_connection_data()
+     *
+     * Delete connection data.
+     *
+     * @param bool $check_must_use Check must use before delete data.
+     */
+    public function delete_connection_data( $check_must_use = true ) {
+
+        if ( $check_must_use ) {
+            $mu_plugin_enabled = apply_filters( 'mainwp_child_mu_plugin_enabled', false );
+            if ( $mu_plugin_enabled ) {
+                return;
+            }
         }
 
         $to_delete   = array(
@@ -425,43 +511,6 @@ class MainWP_Child {
                 delete_option( $delete );
                 wp_cache_delete( $delete, 'options' );
             }
-        }
-
-        if ( $deact ) {
-            do_action( 'mainwp_child_deactivation' );
-        }
-    }
-
-    /**
-     * Method activation()
-     *
-     * Activate the MainWP Child plugin and delete unwanted data.
-     *
-     * @uses \MainWP\Child\MainWP_Helper::update_option()
-     */
-    public function activation() {
-        $mu_plugin_enabled = apply_filters( 'mainwp_child_mu_plugin_enabled', false );
-        if ( $mu_plugin_enabled ) {
-            return;
-        }
-
-        $to_delete = array(
-            'mainwp_child_pubkey',
-            'mainwp_child_nonce',
-            'mainwp_child_connected_admin',
-            'mainwp_child_openssl_sign_algo',
-        );
-        foreach ( $to_delete as $delete ) {
-            if ( get_option( $delete ) ) {
-                delete_option( $delete );
-            }
-        }
-
-        MainWP_Helper::update_option( 'mainwp_child_activated_once', true );
-
-        $to_delete = array( 'mainwp_ext_snippets_enabled', 'mainwp_ext_code_snippets' );
-        foreach ( $to_delete as $delete ) {
-            delete_option( $delete );
         }
     }
 

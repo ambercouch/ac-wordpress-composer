@@ -781,24 +781,7 @@ class PMPro_Subscription {
 			$format = get_option( 'date_format' );
 		}
 
-		// Get date in WP local timezone.
-		if ( $local_time ) {
-			if( 'U' === $format ){
-				// When formatting using the epoch, the date must already consider the timezone offset.
-				// Then, first apply a simple format to add the timezone.
-				$date = get_date_from_gmt( $date );
-			}
-
-			return get_date_from_gmt( $date, $format );
-		}
-
-		// Allow timestamps.
-		if ( ! is_numeric( $date ) ) {
-			$date = strtotime( $date );
-		}
-
-		// Get date in GMT timezone.
-		return gmdate( $format, $date );
+		return wp_date( $format, strtotime( $date ), $local_time ? null : new DateTimezone( 'UTC' ) );
 	}
 
 	/**
@@ -1010,10 +993,10 @@ class PMPro_Subscription {
 	public function get_cost_text() {
 		if  ( 1 == $this->cycle_number ) {
 			// translators: %1$s - price, %2$s - period.
-			$cost_text = sprintf( __( '%1$s per %2$s', 'paid-memberships-pro' ), pmpro_formatPrice( $this->billing_amount ), $this->cycle_period );
+			$cost_text = sprintf( __( '%1$s per %2$s', 'paid-memberships-pro' ), pmpro_formatPrice( $this->billing_amount ), pmpro_translate_billing_period( $this->cycle_period, $this->cycle_number ) );
 		} else {
 			// translators: %1$s - price, %2$d - number, %3$s - period.
-			$cost_text = sprintf( __( '%1$s every %2$d %3$s', 'paid-memberships-pro' ), pmpro_formatPrice( $this->billing_amount ), $this->cycle_number, $this->cycle_period );
+			$cost_text = sprintf( __( '%1$s every %2$d %3$s', 'paid-memberships-pro' ), pmpro_formatPrice( $this->billing_amount ), $this->cycle_number, pmpro_translate_billing_period( $this->cycle_period, $this->cycle_number ) );
 		}
 
 		/**
@@ -1132,6 +1115,24 @@ class PMPro_Subscription {
 
 		if ( $wpdb->insert_id ) {
 			$this->id = $wpdb->insert_id;
+
+			/**
+			 * Runs when a subscription is added.
+			 *
+			 * @param $this PMPro_Subscription The current subscription object
+			 *
+			 * @since 3.5
+			 */
+			do_action('pmpro_added_subscription', $this);
+		} else {
+			/**
+			 * Runs when a subscription is updated.
+			 *
+			 * @param $this PMPro_Subscription The current subscription object
+			 *
+			 * @since 3.5
+			 */
+			do_action('pmpro_updated_subscription', $this);
 		}
 
 		// The subscription was not created properly.
@@ -1186,7 +1187,15 @@ class PMPro_Subscription {
 		$cancelled = false;
 		$gateway_object = $this->get_gateway_object();
 		if ( is_object( $gateway_object ) ) {
-			if ( method_exists( $gateway_object, 'cancel_subscription' ) ) {
+			/**
+			 * Note here. We want to check if the gateway class
+			 * _overrides_ the cancel_subscription method.
+			 * So we use our new pmpro_method_defined_in_class() function.
+			 * If not, we just look for a cancel method and fallback to cancelling that way.
+			 * For that method_exists check, we are okay if the cancel method is in
+			 * the extended class or the base class.
+			 */
+			if ( pmpro_method_defined_in_class( $gateway_object, 'cancel_subscription' ) ) {
 				$cancelled = $gateway_object->cancel_subscription( $this );
 			} elseif ( method_exists( $gateway_object, 'cancel' ) ) {
 				// Legacy: Build an order to pass to the old cancel() methods in gateways.
@@ -1215,7 +1224,7 @@ class PMPro_Subscription {
 			$pmproemail->data['body'] .= '<p>' . esc_html__( 'Gateway', 'paid-memberships-pro' ) . ': ' . $this->gateway . '</p>' . "\n";
 			$pmproemail->data['body'] .= '<p>' . esc_html__( 'Subscription Transaction ID', 'paid-memberships-pro' ) . ': ' . $this->subscription_transaction_id . '</p>' . "\n";
 			$pmproemail->data['body'] .= '<hr />' . "\n";
-			$pmproemail->data['body'] .= '<p>' . esc_html__( 'Edit User', 'paid-memberships-pro' ) . ': ' . esc_url( add_query_arg( 'user_id', $this->user_id, self_admin_url( 'user-edit.php' ) ) ) . '</p>';
+			$pmproemail->data['body'] .= '<p>' . esc_html__( 'Edit Member', 'paid-memberships-pro' ) . ': ' . esc_url( add_query_arg( array( 'page' => 'pmpro-member', 'user_id' => $this->user_id ), self_admin_url( 'admin.php' ) ) ) . '</p>';
 			$pmproemail->sendEmail( get_bloginfo( 'admin_email' ) );
 
 			pmpro_setMessage( __( 'There was an error cancelling a subscription from your website. Check your payment gateway to see if the subscription is still active.', 'paid-memberships-pro' ), 'pmpro_error', true ); // Will overwrite previous messages.

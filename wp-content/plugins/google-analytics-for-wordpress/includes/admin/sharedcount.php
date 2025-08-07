@@ -199,7 +199,7 @@ class MonsterInsights_SharedCount {
 			'posts_per_page'   => 100, // Don't try to load more than 500 posts at once.
 			'fields'           => 'ids', // Load just the ids.
 			'paged'            => $page,
-			'suppress_filters' => true, // Avoid loading additional functionality from other plugins/theme.
+			'suppress_filters' => true, // phpcs:ignore -- Avoid loading additional functionality from other plugins/theme.
 		);
 		$posts_query = new WP_Query( $posts_args );
 		$urls        = array();

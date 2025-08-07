@@ -122,7 +122,6 @@ class ASP_Order_Item {
 		$output .= '<h2>' . __( 'Order Details', 'stripe-payments' ) . "</h2>\n";
 		$output .= __( 'Order Time', 'stripe-payments' ) . ': ' . $order_date . "\n";
 		$output .= __( 'Transaction ID', 'stripe-payments' ) . ': ' . $charge_details->id . "\n";
-		$output .= __( 'Stripe Token', 'stripe-payments' ) . ': ' . $order_details['stripeToken'] . "\n";
 		$output .= __( 'Description', 'stripe-payments' ) . ': ' . $order_details['charge_description'] . "\n";
 		$output .= '--------------------------------' . "\n";
 		$output .= __( 'Product Name', 'stripe-payments' ) . ': ' . $order_details['item_name'] . "\n";
@@ -138,6 +137,11 @@ class ASP_Order_Item {
 		$output .= '<h2>' . __( 'Customer Details', 'stripe-payments' ) . "</h2>\n";
 		// translators: %s is email address
 		$output .= sprintf( __( 'E-Mail Address: %s', 'stripe-payments' ), $order_details['stripeEmail'] ) . "\n";
+
+		if (isset($order_details['customer_name']) && !empty($order_details['customer_name'])){
+			$output .= sprintf( __( 'Customer\'s Name: %s', 'stripe-payments' ), $order_details['customer_name'] ) . "\n";
+		}
+
 		// translators: %s is payment source (e.g. 'card' etc)
 		$output .= sprintf( __( 'Payment Source: %s', 'stripe-payments' ), $order_details['stripeTokenType'] ) . "\n";
 

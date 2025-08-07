@@ -1,6 +1,10 @@
 <?php
 /**
- * Email Header
+ * Email Header Template
+ *
+ * Uses modern HTML/CSS while maintaining email client compatibility.
+ * CSS classes are prefixed with 'mset-' (MonsterInsights Summary Email Template)
+ * to avoid conflicts with email client styles.
  *
  * @since 8.19.0
  */
@@ -9,315 +13,560 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$text_direction = is_rtl() ? 'rtl' : 'ltr';
-
+$mail_text_direction = is_rtl() ? 'rtl' : 'ltr';
 ?>
 <!doctype html>
-<html dir="<?php echo esc_attr( $text_direction ); ?>" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
-	  xmlns:o="urn:schemas-microsoft-com:office:office">
+<html dir="<?php echo esc_attr( $mail_text_direction ); ?>" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!--[if gte mso 15]>
-	<xml>
-		<o:OfficeDocumentSettings>
-			<o:AllowPNG/>
-			<o:PixelsPerInch>96</o:PixelsPerInch>
-		</o:OfficeDocumentSettings>
-	</xml>
-	<![endif]-->
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php echo esc_html( get_bloginfo( 'name' ) ); ?></title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 	<style type="text/css">
-		p {
-			margin: 10px 0;
-			padding: 0;
+		<?php if ( isset( $assets_url ) && $assets_url ) : ?>
+		@font-face {
+			font-family: 'eicons';
+			src: url('<?php echo esc_url($assets_url . '/assets/fonts/eicons.eot?76342541'); ?>');
+			src: url('<?php echo esc_url($assets_url . '/assets/fonts/eicons.eot?76342541#iefix'); ?>') format('embedded-opentype'),
+				url('<?php echo esc_url($assets_url . '/assets/fonts/eicons.woff2?76342541'); ?>') format('woff2'),
+				url('<?php echo esc_url($assets_url . '/assets/fonts/eicons.woff?76342541'); ?>') format('woff'),
+				url('<?php echo esc_url($assets_url . '/assets/fonts/eicons.ttf?76342541'); ?>') format('truetype'),
+				url('<?php echo esc_url($assets_url . '/assets/fonts/eicons.svg?76342541#eicons'); ?>') format('svg');
+			font-weight: normal;
+			font-style: normal;
 		}
+		<?php endif; ?>
+		.mset-icon { font-family: 'eicons'; }
+		.mset-icon-long-arrow-right:before { content: '\e804'; } /* '' */
 
-		table {
-			border-collapse: collapse;
-		}
-
-		h1, h2, h3, h4, h5, h6 {
-			display: block;
+		/* Base styles */
+		body {
 			margin: 0;
 			padding: 0;
+			width: 100%;
+			background-color: #f6f7f8;
+			font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			-webkit-text-size-adjust: 100%;
+			-ms-text-size-adjust: 100%;
 		}
 
-		img, a img {
+		/* Image handling */
+		img {
 			border: 0;
 			height: auto;
+			line-height: 100%;
+			max-width: 100% !important; /* Force max-width */
 			outline: none;
 			text-decoration: none;
+			-ms-interpolation-mode: bicubic; /* Smoother resizing in IE */
+			display: inline-block;
+			vertical-align: middle;
 		}
 
-		body, #bodyTable, #bodyCell {
-			height: 100%;
-			margin: 0;
-			padding: 0;
+		/* Container styles */
+		.mset-wrapper {
 			width: 100%;
+			max-width: 680px;
+			margin: 0 auto;
+			padding: 50px 0;
+			box-sizing: border-box;
 		}
 
-		#outlook a {
-			padding: 0;
+		.mset-container {
+			background: transparent;
+			border-radius: 4px;
+			overflow: hidden;
+			width: 100% !important; /* Force width */
 		}
 
-		img {
-			-ms-interpolation-mode: bicubic;
+		/* Header styles */
+		.mset-header {
+			background-color: #6F4BBB;
+			<?php if ( isset( $assets_url ) && $assets_url ) : ?>
+			background-image: url('<?php echo esc_html( $assets_url . '/assets/img/header-background-monsterinsights.png' ); ?>');
+			background-position: bottom right;
+			background-repeat: no-repeat;
+			background-size: contain;
+			<?php endif; ?>
+			padding: 40px 30px;
+			color: #ffffff;
 		}
 
-		table {
-			mso-table-lspace: 0pt;
-			mso-table-rspace: 0pt;
+		.mset-header-logo {
+			width: 160px;
+			margin: 20px 0;
 		}
 
-		.ReadMsgBody {
-			width: 100%;
-		}
-
-		.ExternalClass {
-			width: 100%;
-		}
-
-		p, a, li, td, blockquote {
-			mso-line-height-rule: exactly;
-		}
-
-		a[href^=tel], a[href^=sms] {
-			color: inherit;
-			cursor: default;
-			text-decoration: none;
-		}
-
-		p, a, li, td, body, table, blockquote {
-			-ms-text-size-adjust: 100%;
-			-webkit-text-size-adjust: 100%;
-		}
-
-		.ExternalClass, .ExternalClass p, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass font {
-			line-height: 100%;
-		}
-
-		a[x-apple-data-detectors] {
-			color: inherit !important;
-			text-decoration: none !important;
-			font-size: inherit !important;
-			font-family: inherit !important;
-			font-weight: inherit !important;
-			line-height: inherit !important;
-		}
-
-		#bodyCell {
-			padding: 50px 50px;
-		}
-
-		.templateContainer {
-			max-width: 450px !important;
-			border: 0;
-		}
-
-		a.mcnButton {
-			display: block;
-		}
-
-		.mcnTextContent {
-			word-break: break-word;
-		}
-
-		.mcnTextContent img {
-			height: auto !important;
-		}
-
-		.mcnTextIncrease {
-			color: #5CC0A5 !important;
-		}
-
-		.mcnTextDecrease {
-			color: #EB5757 !important;
-		}
-
-		.mcnDividerBlock {
-			table-layout: fixed !important;
-		}
-
-		/***** Make theme edits below if needed *****/
-		/* Page - Background Style */
-		body, #bodyTable {
-			background-color: #F6F7F8;
-		}
-
-		/* Page - Heading 1 */
-		h1 {
-			color: #202020;
-			font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+		.mset-header-title {
+			max-width: 360px;
+			margin: 20px 0;
 			font-size: 26px;
-			font-style: normal;
-			font-weight: bold;
-			line-height: 125%;
-			letter-spacing: normal;
+			font-weight: 600;
+			line-height: 32px;
 		}
 
-		/* Page - Heading 2 */
-		h2 {
-			color: #202020;
-			font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-			font-size: 22px;
-			font-style: normal;
-			font-weight: bold;
-			line-height: 125%;
-			letter-spacing: normal;
-		}
-
-		/* Page - Heading 3 */
-		h3 {
-			color: #202020;
-			font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-			font-size: 20px;
-			font-style: normal;
-			font-weight: bold;
-			line-height: 125%;
-			letter-spacing: normal;
-		}
-
-		/* Page - Heading 4 */
-		h4 {
-			color: #202020;
-			font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-			font-size: 18px;
-			font-style: normal;
-			font-weight: bold;
-			line-height: 125%;
-			letter-spacing: normal;
-		}
-
-		/* Header - Header Style */
-		#templateHeader {
-			border-top: 0;
-			border-bottom: 0;
-			padding-top: 0;
-			padding-bottom: 20px;
-			text-align: left;
-		}
-
-		/* Body - Body Style */
-		#templateBody {
-			background-color: #FFFFFF;
-			border-top: 0;
-			border: 1px solid #c1c1c1;
-			padding-top: 0;
-			padding-bottom: 0px;
-		}
-
-		/* Body -Body Text */
-		#templateBody .mcnTextContent,
-		#templateBody .mcnTextContent p {
-			color: #555555;
-			font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-			font-size: 14px;
-			line-height: 150%;
-		}
-
-		/* Body - Body Link */
-		#templateBody .mcnTextContent a,
-		#templateBody .mcnTextContent p a {
-			color: #4B9BF0;
-			font-weight: normal;
+		.mset-date-range {
+			display: inline-block;
+			background-color: #8E64E5;
+			color: #ffffff;
+			padding: 7px 15px;
+			border-radius: 4px;
 			text-decoration: none;
+			font-size: 15px;
+			font-weight: 700;
+			margin: 20px 0;
 		}
 
-		/* Footer - Footer Style */
-		#templateFooter {
-			background-color: #F6F7F8;
-			border-top: 0;
-			border-bottom: 0;
-			padding-top: 0;
-			padding-bottom: 0;
+		/* Content wrapper */
+		.mset-content {
+			padding: 30px 0;
+			width: 100% !important;
 		}
 
-		/* Footer - Footer Text */
-		#templateFooter .mcnTextContent,
-		#templateFooter .mcnTextContent p {
-			color: #cccccc;
-			font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+		/* Footer styles */
+		.mset-footer {
+			background: #F3F5F6;
+			padding: 30px;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.mset-footer-logo-image {
+			width: 60px;
+			height: auto;
+			margin-bottom: 20px;
+		}
+
+		.mset-footer-content {
+			color: #23262E;
+			font-family: Inter;
+			font-weight: 400;
 			font-size: 12px;
 			line-height: 20px;
 			text-align: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: center;
 		}
 
-		/* Footer - Footer Link */
-		#templateFooter .mcnTextContent a,
-		#templateFooter .mcnTextContent p a {
-			color: #4B9BF0;
-			font-weight: normal;
+		.mset-footer-content a {
 			text-decoration: underline;
+			color: #23262E;
 		}
 
-		@media only screen and (min-width: 768px) {
-			.templateContainer {
-				width: 450px !important;
-			}
+		.mset-footer-bar {
+			border-top: 1px solid #EBEBEB;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding: 10px 0;
 		}
 
+		.mset-footer-left-image {
+			width: 130px;
+			height: auto;
+			margin-left: 0;
+			margin-right: auto;
+		}
+
+		.mset-footer-link {
+			color: #393F4C;
+			text-decoration: none;
+			font-weight: normal;
+			margin: 0 5px;
+		}
+
+		/* Responsive styles */
 		@media only screen and (max-width: 480px) {
-			body, table, td, p, a, li, blockquote {
-				-webkit-text-size-adjust: none !important;
+			.mset-wrapper {
+				padding: 20px;
+			}
+			
+			.mset-header {
+				padding: 30px 20px;
+			}
+
+			.mset-header-title {
+				font-size: 22px;
+				line-height: 28px;
+			}
+
+			.mset-footer {
+				padding: 20px;
 			}
 		}
 
+		/* Content sections */
+		.mset-section {
+			background: #fff;
+			margin-bottom: 30px;
+			border-radius: 4px;
+			overflow: hidden;
+		}
+
+		.mset-section-header {
+			padding: 20px 30px;
+			border-bottom: 1px solid #EAEAEA;
+		}
+
+		.mset-section-header h2 {
+			color: #393E4B;
+			font-family: Inter, sans-serif;
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 26px;
+			margin: 0;
+		}
+
+		.mset-section-header h2 img {
+			vertical-align: middle;
+		}
+
+		.mset-section-content {
+			padding: 20px 30px;
+		}
+
+		/* Update notice */
+		.mset-update-notice {
+			background-color: #FDFBEC;
+			border: 2px solid #D68936;
+			border-radius: 4px;
+			padding: 20px;
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.mset-update-notice p {
+			color: #393E4B;
+			font-family: Inter, sans-serif;
+			font-size: 20px;
+			font-weight: 500;
+			line-height: 26px;
+			margin: 0;
+		}
+
+		/* Analytics Report Section */
+		.mset-report-image {
+			width: 100%;
+			height: auto;
+		}
+
+		.mset-report-description {
+			color: #393F4C;
+			font-family: Inter, sans-serif;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 24px;
+			text-align: center;
+			margin: 25px 0;
+		}
+
+		.mset-report-features {
+			max-width: 400px;
+			margin: 20px auto 0 auto;
+		}
+
+		.mset-feature-item {
+			color: #393F4C;
+			font-family: Inter, sans-serif;
+			font-size: 14px;
+			line-height: 17px;
+			padding-bottom: 15px;
+			padding-right: 15px;
+			display: inline-block;
+			max-width: 50%;
+			width: 180px;
+		}
+
+		.mset-feature-item-icon {
+			font-family: 'eicons';
+			font-size: 14px;
+			line-height: 16px;
+			padding: 5px;
+			border-radius: 32px;
+			color: #46BF40;
+			background: #EAFAEE;
+		}
+
+		.mset-report-center-button {
+			text-align: center;
+		}
+
+		/* Analytics Stats Section */
+		.mset-stats-grid {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 20px;
+			margin-bottom: 20px;
+		}
+
+		.mset-stat-item {
+			text-align: center;
+			padding: 15px 5px;
+			flex: 1 1 30%;
+			box-sizing: border-box;
+			background: #FBFDFF;
+			border: 1px solid #E3F0FD;
+			border-radius: 2px;
+			width: 195px;
+		}
+
+		.mset-stat-item-icon {
+			display: inline-block;
+			width: 30px;
+			height: 30px;
+			background: #6F4BBB;
+			border-radius: 50%;
+			color: #ffffff;
+			font-family: 'eicons';
+			font-size: 16px;
+			line-height: 30px;
+			padding: 4px;
+			text-align: center;
+		}
+
+		.mset-stat-label {
+			color: #393F4C;
+			font-family: Inter, sans-serif;
+			font-size: 14px;
+			font-weight: 500;
+			margin: 10px 0;
+		}
+
+		.mset-stat-value {
+			color: #393F4C;
+			font-family: Inter, sans-serif;
+			font-size: 24px;
+			font-weight: 600;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.mset-stat-trend {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+			font-size: 14px;
+		}
+
+		.mset-stat-trend img {
+			display: inline;
+			vertical-align: middle;
+		}
+
+		/* Top Pages Section */
+		.mset-pages-table {
+			width: 100%;
+			margin-bottom: 20px;
+		}
+
+		.mset-table-header {
+			display: flex;
+			padding: 10px;
+			background: #6F4BBB;
+			color: #ffffff;
+			font-weight: 600;
+			justify-content: space-between;
+		}
+
+		.mset-table-row {
+			display: flex;
+			padding: 10px;
+			border-bottom: 1px solid #E3F0FD;
+			justify-content: space-between;
+		}
+
+		.mset-table-cell {
+			padding: 5px;
+			color: #338EEF;
+		}
+
+		.mset-table-cell a {
+			color: #23262E;
+			text-decoration: none;
+		}
+
+		.mset-blog-posts {
+			margin: 0;
+			padding: 0;
+		}
+
+		.mset-blog-post {
+			display: flex;
+			justify-content: space-between;
+			gap: 20px;
+			padding-bottom: 20px;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #E3F0FD;
+		}
+
+		.mset-blog-post-title {
+			font-family: Inter;
+			font-weight: 700;
+			font-size: 16px;
+			line-height: 24px;
+			letter-spacing: 0%;
+			color: #23262E;
+			margin: 0;
+		}
+
+		.mset-blog-post p {
+			font-family: Inter;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 20px;
+			color: #393F4C;
+		}
+
+		.mset-blog-post a {
+			font-family: Inter;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 20px;
+			letter-spacing: 0%;
+			text-decoration: underline;
+			text-decoration-style: solid;
+			text-decoration-offset: Auto;
+			text-decoration-thickness: Auto;
+			text-decoration-skip-ink: auto;
+			color: #338EEF;
+		}
+
+		.mset-blog-post-image {
+			width: 230px;
+			height: auto;
+			flex-grow: 0;
+			flex-shrink: 0;
+		}
+
+		.mset-blog-post-image img {
+			width: 230px;
+			height: auto;
+		}
+
+		/* Pro Tip Section */
+		.mset-pro-tip .mset-section-header {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.mset-tip-content {
+			color: #393F4C;
+			font-family: Inter, sans-serif;
+			font-size: 14px;
+			line-height: 1.5;
+			margin: 15px 0;
+		}
+
+		/* Buttons */
+		.mset-button-primary {
+			display: inline-block;
+			background-color: #338EEF;
+			color: #ffffff;
+			padding: 12px 24px;
+			border-radius: 4px;
+			text-decoration: none;
+			font-family: Inter, sans-serif;
+			font-weight: 500;
+			text-align: center;
+			margin: 10px;
+		}
+
+		.mset-button-secondary {
+			display: inline-block;
+			background-color: transparent;
+			color: #338EEF;
+			padding: 12px 24px;
+			border-radius: 4px;
+			text-decoration: none;
+			font-family: Inter, sans-serif;
+			font-weight: 500;
+			text-align: center;
+		}
+
+		/* Utility classes */
+		.mset-text-increase {
+			color: #5CC0A5;
+		}
+
+		.mset-text-decrease {
+			color: #EB5757;
+		}
+
+		/* Responsive adjustments */
 		@media only screen and (max-width: 480px) {
-			body {
-				width: 100% !important;
-				min-width: 100% !important;
+			.mset-section-header,
+			.mset-section-content,
+			.mset-footer {
+				padding: 15px;
 			}
-		}
-
-		@media only screen and (max-width: 680px) {
-			#bodyCell {
-				padding: 20px 20px !important;
+			.mset-header {
+				background-size: 30%;
 			}
-		}
 
-		@media only screen and (max-width: 480px) {
-			.mcnTextContentContainer {
-				max-width: 100% !important;
-				width: 100% !important;
+			.mset-feature-item {
+				width: 100%;
+				max-width: 100%;
+			}
+			.mset-stats-grid {
+				flex-direction: row;
+			}
+
+			.mset-stat-item {
+				flex-basis: 45%;
+			}
+
+			.mset-blog-post {
+				flex-direction: column;
+			}
+
+			.mset-blog-post-image {
+				width: 100%;
+				height: auto;
+				margin-bottom: 10px;
+			}
+
+			.mset-blog-post-image img {
+				width: 100%;
+				height: auto;
 			}
 		}
 	</style>
 </head>
-<body
-	style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #F6F7F8;">
-<!-- Don't forget to run final template through http://templates.mailchimp.com/resources/inline-css/ -->
-<center>
-	<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable"
-		   style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;background-color: #F6F7F8;">
-		<tr>
-			<td align="center" valign="top" id="bodyCell"
-				style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 50px 50px;width: 100%;">
-				<!-- BEGIN TEMPLATE // -->
-				<!--[if gte mso 9]>
-				<table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
-					<tr>
-						<td align="center" valign="top" width="600" style="width:600px;">
-				<![endif]-->
-				<table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer"
-					   style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 450px !important;">
-					<?php
-					if ( ! empty( $header_image ) ) {
-						echo '<tr><td valign="top" align="center" id="templateHeader" style="padding-top:40px;padding-right:40px;padding-bottom:30px;padding-left:40px;text-align:left;background:#ffffff;border-radius:5px 5px 0 0;">';
-						echo '<a href="' . esc_url( get_site_url() ) . '">';
-						if ( ! empty( $header_image['2x'] ) ) {
-							echo '<img style="max-width:300px;"  src="' . esc_url( $header_image['url'] ) . '" srcset="' . esc_url( $header_image['2x'] ) . ' 2x" alt="' . esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ) . '" />';
-						} else {
-							echo '<img style="max-width:300px;"  src="' . esc_url( $header_image['url'] ) . '" alt="' . esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ) . '" />';
-						}
-						echo '</a>';
-						echo '</td></tr>';
-					}
+<body>
+	<div class="mset-wrapper">
+		<div class="mset-container">
+			<div class="mset-header">
+				<?php if ( isset( $header_image ) && $header_image ) : ?>
+				<a href="<?php echo esc_url( $logo_link ); ?>">
+					<img class="mset-header-logo" 
+						 src="<?php echo esc_url( $header_image ); ?>" 
+						 alt="<?php echo esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ); ?>" />
+				</a>
+				<?php endif; ?>
+				<h1 class="mset-header-title">
+					<?php esc_html_e('It\'s your Monthly Website Analytics Summary', 'google-analytics-for-wordpress'); ?>
+				</h1>
+				<?php if ( isset( $start_date ) && isset( $end_date ) ) : ?>
+				<a href="<?php echo esc_url( $reports_url ); ?>" class="mset-date-range">
+					<?php 
+					printf(
+						'%s - %s',
+						esc_html( $start_date ),
+						esc_html( $end_date )
+					);
 					?>
-					<tr>
-						<td valign="top" id="templateBody"
-							style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;border-top: 0;border: 0;padding-top: 0;padding-bottom: 0px;border-radius:0 0 5px 5px;">
-							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock"
-								   style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-								<tbody class="mcnTextBlockOuter">
+				</a>
+				<?php endif; ?>
+			</div>
+			<div class="mset-content">

@@ -457,7 +457,7 @@
 	}
 
 	#pmpro_tos_fields {
-		margin-top: var(--pmpro--base--spacing--large);
+		margin: var(--pmpro--base--spacing--medium) 0;
 	}
 
 	#pmpro_tos_fields #pmpro_license {
@@ -471,7 +471,7 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		gap: var(--pmpro--base--spacing--medium);
-		margin-top: var(--pmpro--base--spacing--large);
+		margin-top: var(--pmpro--base--spacing--medium);
 	}
 
 	.pmpro_checkout_gateway-stripe form.pmpro_form #pmpro_payment_information_fields div#AccountNumber,
@@ -534,9 +534,10 @@
 	}
 
 	.pmpro_section #loginform .input {
-		background-color: var(--pmpro--color--white);
+		background-color: var(--pmpro--color--base);
 		border: 1px solid var(--pmpro--color--border);
 		border-radius: var(--pmpro--base--border-radius);
+		box-shadow: none;
 		box-sizing: border-box;
 		color: var(--pmpro--color--contrast);
 		font-size: 16px;
@@ -548,7 +549,7 @@
 	}
 
 	.pmpro_section #loginform .input:focus {
-		background-color: var(--pmpro--color--white);
+		background-color: var(--pmpro--color--base);
 		border-color: #80BDFF;
 		box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 		outline: none;
@@ -631,6 +632,20 @@
 		justify-self: end;
 	}
 
+	#resetpassform .pmpro_cols-2 {
+		container: resetpassform / inline-size;
+	}
+
+	@container resetpassform (max-width: 620px) {
+		#resetpassform .pmpro_cols-2 {
+			flex-direction: column;
+		}
+
+		#resetpassform .pmpro_cols-2 > * {
+			width: 100%;
+		}
+	}
+
 	/**
 	* List Styles
 	*/
@@ -710,6 +725,21 @@
 
 	}
 
+	#pmpro_account-membership {
+
+		.pmpro_account-membership-message {
+			border-top: 1px solid var(--pmpro--color--border--variation);
+			margin-top: var(--pmpro--base--spacing--large);
+			padding-top: var(--pmpro--base--spacing--large);
+
+			> *:first-child {
+				margin-top: 0;
+				padding-top: 0;
+			}
+		}
+
+	}
+
 	#pmpro_account-links {
 
 		.pmpro_card_content {
@@ -737,6 +767,21 @@
 	.pmpro_level .pmpro_btn {
 		display: block;
 		text-decoration: none;
+	}
+
+	/**
+	* Membership Billing
+	*/
+	[id^="pmpro_billing-"] .pmpro_card .pmpro_card {
+		background-color: transparent;
+		border: none;
+		border-radius: unset;
+		box-shadow: none;
+		margin: 0;
+
+		.pmpro_card_content {
+			padding: 0;
+		}
 	}
 
 	/**
@@ -848,6 +893,72 @@
 	}
 
 	/**
+	 * Pagination
+	 */
+	.pmpro_pagination {
+		align-items: center;
+		display: flex;
+		gap: var(--pmpro--base--spacing--small);
+		justify-content: center;
+		margin: var(--pmpro--base--spacing--medium) 0;
+
+		a {
+			background-color: var(--pmpro--color--base);
+			border: 1px solid var(--pmpro--color--border--variation);
+			border-radius: var(--pmpro--base--border-radius);
+			color: var(--pmpro--color--contrast);
+			padding: 2px var(--pmpro--base--spacing--small);
+			text-decoration: none;
+			transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+
+			&:hover {
+				background-color: var(--pmpro--color--accent--variation);
+				border-color: var(--pmpro--color--accent--variation);
+				color: var(--pmpro--color--base);
+			}
+		}
+
+		span {
+			background-color: var(--pmpro--color--base);
+			border: 1px solid var(--pmpro--color--border--variation);
+			border-radius: var(--pmpro--base--border-radius);
+			color: var(--pmpro--color--contrast);
+			padding: 2px var(--pmpro--base--spacing--small);
+		}
+
+		.pmpro_pagination-current {
+			background-color: var(--pmpro--color--accent);
+			color: var(--pmpro--color--base);
+			cursor: default;
+			font-weight: 700;
+		}
+
+		.pmpro_pagination-disabled {
+			background-color: var(--pmpro--color--base--variation);
+			border-color: var(--pmpro--color--border--variation);
+			color: var(--pmpro--color--contrast--variation);
+			cursor: not-allowed;
+			opacity: 0.7;
+		}
+
+		.pmpro_pagination-dots {
+			background: none;
+			border: none;
+			color: var(--pmpro--color--contrast--variation);
+			padding: 0;
+		}
+
+		.pmpro_pagination-previous {
+			margin-right: 0;
+		}
+
+		.pmpro_pagination-next {
+			margin-left: 0;
+		}
+
+	}
+
+	/**
 	 * Misc
 	 */
 	.avatar {
@@ -876,18 +987,22 @@
 
 	.pmpro_font-x-large {
 		font-size: 32px;
+		line-height: 1.4;
 	}
 
 	.pmpro_font-large {
 		font-size: 24px;
+		line-height: 1.5;
 	}
 
 	.pmpro_font-medium {
 		font-size: 16px;
+		line-height: 1.6;
 	}
 
 	.pmpro_font-small {
 		font-size: 14px;
+		line-height: 1.5;
 	}
 
 	.pmpro_tag-discount-code {
@@ -956,10 +1071,50 @@
 }
 
 /**
+ * Print Styles
+ */
+@media print {
+	.pmpro {
+		.pmpro_card {
+			background-color: transparent;
+			border: none;
+			box-shadow: none;
+		}
+		.pmpro_card_title,
+		.pmpro_card_content,
+		.pmpro_section:has(.pmpro_form) .pmpro_card_title + .pmpro_card_content {
+			padding: 0;
+		}
+		.pmpro_form_legend {
+			margin-bottom: 0;
+		}
+	}
+}
+
+/**
  * Responsive Styles
  */
 @media screen and (max-width: 767px) {
 	.pmpro {
+
+		.pmpro_table {
+
+			tbody tr th:first-child,
+			tbody tr td:first-child {
+				border-top-width: 4px;
+				padding-top: var(--pmpro--base--spacing--large);
+			}
+
+			tbody tr th:last-child,
+			tbody tr td:last-child {
+				padding-bottom: var(--pmpro--base--spacing--large);
+			}
+
+			tbody tr:first-child th:first-child,
+			tbody tr:first-child td:first-child {
+				border-top: none;
+			}
+		}
 
 		#pmpro_order_single {
 

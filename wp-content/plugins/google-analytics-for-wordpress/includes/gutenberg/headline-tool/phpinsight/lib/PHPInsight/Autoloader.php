@@ -36,7 +36,7 @@ class Autoloader {
 			$filepath = $this->directory . DIRECTORY_SEPARATOR . implode( DIRECTORY_SEPARATOR, $parts ) . '.php';
 
 			if ( is_file( $filepath ) ) {
-				require( $filepath );
+				require( $filepath ); // phpcs:ignore
 			}
 		}
 	}

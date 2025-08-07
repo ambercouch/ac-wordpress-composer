@@ -39,6 +39,11 @@ function rsssl_fix_rest_url_for_wpml($url, $path, $blog_id, $scheme)
 		if (strpos($url, '/'.$current_language.'/wp-json/')) {
 			$url = str_replace('/'.$current_language.'/wp-json/', '/wp-json/', $url);
 		}
+
+		// Handle plain permalinks
+		if (strpos($url, '/'.$current_language.'/?rest_route=')) {
+			$url = str_replace('/'.$current_language.'/?rest_route=', '/?rest_route=', $url);
+		}
 	}
 
 	return $url;
@@ -142,6 +147,7 @@ function rsssl_plugin_admin_scripts()
 				'rsssl_nonce' => wp_create_nonce('rsssl_nonce'),
 				'wpconfig_fix_required' => RSSSL()->admin->do_wpconfig_loadbalancer_fix() && ! RSSSL()->admin->wpconfig_has_fixes() && ! RSSSL()->admin->uses_bitnami(),
 				'cloudflare' => rsssl_uses_cloudflare(),
+				'email_verified' => rsssl_is_email_verified(),
 			])
 		);
 	}
@@ -245,67 +251,6 @@ function rsssl_settings_page()
  *
  * @return void
  */
-function rsssl_rest_api_fallback()
-{
-	$response = $data = [];
-	$error    = $action = $test = $do_action = false;
-
-	if ( ! rsssl_user_can_manage()) {
-		$error = true;
-	}
-	//if the site is using this fallback, we want to show a notice
-	update_option('rsssl_ajax_fallback_active', time(), false);
-	if (isset($_GET['rest_action'])) {
-		$action = sanitize_text_field($_GET['rest_action']);
-		if (strpos($action, 'reallysimplessl/v1/tests/') !== false) {
-			$test = strtolower(str_replace('reallysimplessl/v1/tests/', '', $action));
-		}
-	}
-	$requestData = json_decode(file_get_contents('php://input'), true);
-	if ($requestData) {
-		$action = $requestData['path'] ?? false;
-		$action = sanitize_text_field($action);
-		$data = $requestData['data'] ?? false;
-		if (strpos($action, 'reallysimplessl/v1/do_action/') !== false) {
-			$do_action = strtolower(str_replace('reallysimplessl/v1/do_action/', '', $action));
-		}
-	}
-	if (!$error) {
-		if (strpos($action, 'fields/get') !== false) {
-			$response = rsssl_rest_api_fields_get();
-		} else if (strpos($action, 'fields/set') !== false) {
-			$request = new WP_REST_Request();
-			$response = rsssl_rest_api_fields_set($request, $data);
-		} else if ($test) {
-			$request = new WP_REST_Request();
-			$data = $_GET['data'] ?? false;
-			$data = json_decode(stripcslashes($data));
-			$data = (array)$data;
-			$nonce = isset($_GET['nonce']) ? sanitize_text_field($_GET['nonce']) : false;
-			$id = isset($_GET['id']) ? sanitize_text_field($_GET['id']) : false;
-			$state = isset($_GET['state']) ? sanitize_title($_GET['state']) : false;
-			$request->set_param('test', $test);
-			$request->set_param('state', $state);
-			$request->set_param('id', $id);
-			$request->set_param('nonce', $nonce);
-			//remove
-			foreach ($_GET as $key => $value) {
-				$data[$key] = sanitize_text_field($value);
-			}
-			$response = rsssl_run_test($request, $data);
-		} elseif ($do_action) {
-			$request = new WP_REST_Request();
-			$request->set_param('action', $do_action);
-			$response = rsssl_do_action($request, $data);
-		}
-	}
-	header("Content-Type: application/json");
-	echo json_encode($response);
-	exit;
-}
-
-add_action('wp_ajax_rsssl_rest_api_fallback', 'rsssl_rest_api_fallback');
-
 add_action('rest_api_init', 'rsssl_settings_rest_route', 10);
 function rsssl_settings_rest_route()
 {
@@ -362,13 +307,6 @@ function rsssl_store_ssl_labs($data)
 	return [];
 }
 
-function rsssl_remove_fallback_notice()
-{
-	if (get_option('rsssl_ajax_fallback_active') !== false) {
-		delete_option('rsssl_ajax_fallback_active');
-	}
-}
-
 /**
  * @param WP_REST_Request $request
  * @param array|bool $ajax_data
@@ -381,9 +319,6 @@ function rsssl_do_action($request, $ajax_data = false)
 		return;
 	}
 
-	if (!$ajax_data) {
-		rsssl_remove_fallback_notice();
-	}
 	$action = sanitize_title($request->get_param('action'));
 	$data = $ajax_data !== false ? $ajax_data : $request->get_params();
 
@@ -536,9 +471,6 @@ function rsssl_run_test($request, $ajax_data = false)
 	if (!rsssl_user_can_manage()) {
 		return [];
 	}
-	if (!$ajax_data) {
-		rsssl_remove_fallback_notice();
-	}
 	$nonce = $request->get_param('nonce');
 	if (!wp_verify_nonce($nonce, 'rsssl_nonce')) {
 		return [];
@@ -575,16 +507,7 @@ function rsssl_other_plugins_data($slug = false)
 	}
 	$plugins = array(
 		[
-			'slug' => 'burst-statistics',
-			'constant_free' => 'burst_version',
-			'constant_premium' => 'burst_pro',
-			'wordpress_url' => 'https://wordpress.org/plugins/burst-statistics/',
-			'upgrade_url' => 'https://burst-statistics.com/pricing?src=rsssl-plugin',
-			'title' => 'Burst Statistics - '. __("Self-hosted and privacy-friendly analytics tool.", 'really-simple-ssl'),
-		],
-		[
 			'slug' => 'complianz-gdpr',
-			'constant_free' => 'cmplz_plugin',
 			'constant_premium' => 'cmplz_premium',
 			'wordpress_url' => 'https://wordpress.org/plugins/complianz-gdpr/',
 			'upgrade_url' => 'https://complianz.io/pricing?src=rsssl-plugin',
@@ -592,10 +515,15 @@ function rsssl_other_plugins_data($slug = false)
 		],
 		[
 			'slug' => 'complianz-terms-conditions',
-			'constant_free' => 'cmplz_tc_version',
 			'wordpress_url' => 'https://wordpress.org/plugins/complianz-terms-conditions/',
 			'upgrade_url' => 'https://complianz.io?src=rsssl-plugin',
 			'title' => 'Complianz - ' . __("Terms and Conditions", "really-simple-ssl"),
+		],
+		[
+			'slug' => 'simplybook',
+			'wordpress_url' => 'https://wordpress.org/plugins/simplybook/',
+			'upgrade_url' => 'https://simplybook.me/en/pricing',
+			'title' => 'SimplyBook.me - ' . __("Online Booking System", "really-simple-ssl"),
 		],
 	);
 
@@ -631,41 +559,39 @@ function rsssl_other_plugins_data($slug = false)
  * List of allowed field types
  * @param $type
  *
- * @return mixed|string
+ * @return string|bool
  */
-function rsssl_sanitize_field_type($type)
-{
-	$types = [
-		'hidden',
-		'license',
-		'database',
-		'checkbox',
-		'password',
-		'radio',
-		'text',
-		'textarea',
-		'number',
-		'email',
-		'select',
-		'host',
-		'permissionspolicy',
-		'learningmode',
-		'mixedcontentscan',
-		'vulnerablemeasures',
-		'LetsEncrypt',
-		'postdropdown',
-		'two_fa_roles',
-		'roles_enabled_dropdown',
-		'roles_dropdown',
-		'captcha',
-		'captcha_key',
-//        'two_fa_table',
-//        'verify_email',
-	];
-	if ( in_array( $type, $types, true ) ) {
-		return $type;
-	}
-	return 'checkbox';
+function rsssl_sanitize_field_type($type) {
+    $types = [
+        'hidden',
+        'license',
+        'database',
+        'checkbox',
+        'password',
+        'radio',
+        'text',
+        'textarea',
+        'number',
+        'email',
+        'select',
+        'host',
+        'permissionspolicy',
+        'learningmode',
+        'mixedcontentscan',
+        'vulnerablemeasures',
+        'LetsEncrypt',
+        'postdropdown',
+        'two_fa_roles',
+        'roles_enabled_dropdown',
+        'roles_dropdown',
+        'captcha',
+        'captcha_key',
+    ];
+    if (in_array($type, $types, true)) {
+        return $type;
+    }
+    // re-moving checkbox as a return type to the end of the function
+    return false;
 }
 
 /**
@@ -704,6 +630,12 @@ function rsssl_rest_api_fields_set(WP_REST_Request $request, $ajax_data = false)
 			continue;
 		}
 		$type = rsssl_sanitize_field_type($field['type']);
+        if ($type === false) {
+            return [
+                'success' => false,
+                'error'   => 'Invalid field type provided for field ' . sanitize_text_field($field['id']),
+            ];
+        }
 		$field_id = sanitize_text_field($field['id']);
 		$value = rsssl_sanitize_field($field['value'], $type, $field_id);
 		//if an endpoint is defined, we use that endpoint instead
@@ -1189,3 +1121,13 @@ function rsssl_add_user_role_to_api_response( $response, $user, $request ) {
 	return $response;
 }
 add_filter( 'rest_prepare_user', 'rsssl_add_user_role_to_api_response', 10, 3 );
+
+if ( ! function_exists('rsssl_change_email_status_on_email_change' ) ) {
+	function rsssl_change_email_status_on_email_change(string $field_id, $new_value, $previous_value) {
+		if ( $field_id === 'notifications_email_address' && $new_value !== $previous_value ) {
+			update_option( 'rsssl_email_verification_status', 'email_changed' );
+		}
+	}
+}
+
+add_filter('rsssl_after_save_field', 'rsssl_change_email_status_on_email_change', 10, 3);

@@ -72,6 +72,12 @@ class Ai1wmfe_Export_Upload {
 			);
 		}
 
+		if ( ai1wmfe_is_incremental() ) {
+			$remote_file = sprintf( '%s/incremental-backups/%s', ai1wm_archive_folder(), ai1wm_archive_name( $params ) );
+		} else {
+			$remote_file = sprintf( '%s/%s', ai1wm_archive_folder(), ai1wm_archive_name( $params ) );
+		}
+
 		// Check whether FTP server supports resumable uploads?
 		if ( get_option( 'ai1wmfe_ftp_append', false ) ) {
 
@@ -88,7 +94,7 @@ class Ai1wmfe_Export_Upload {
 					$params['upload_backoff'] *= 2;
 
 					// Upload file chunk data
-					$ftp->upload_file_chunk( $file_chunk_data, sprintf( '%s/%s', ai1wm_archive_folder(), ai1wm_archive_name( $params ) ), $params['archive_offset'] );
+					$ftp->upload_file_chunk( $file_chunk_data, $remote_file, $params['archive_offset'] );
 
 					// Unset upload retries
 					unset( $params['upload_retries'] );
@@ -150,7 +156,7 @@ class Ai1wmfe_Export_Upload {
 				$params['upload_backoff'] *= 2;
 
 				// Upload file data
-				$ftp->upload_file( ai1wm_archive_path( $params ), sprintf( '%s/%s', ai1wm_archive_folder(), ai1wm_archive_name( $params ) ), $params['archive_size'] );
+				$ftp->upload_file( ai1wm_archive_path( $params ), $remote_file, $params['archive_size'] );
 
 				// Unset upload retries
 				unset( $params['upload_retries'] );

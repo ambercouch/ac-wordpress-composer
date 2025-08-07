@@ -85,7 +85,7 @@ function iqblockcountry_retrieve_geoipapi($iqbc_ipaddress)
             }
         }
         elseif (403 == $iqbc_result['response']['code'] ) {
-             update_option('blockcountry_geoapikey', '');
+             //update_option('blockcountry_geoapikey', '');
         }
         else { return "Unknown";
         }

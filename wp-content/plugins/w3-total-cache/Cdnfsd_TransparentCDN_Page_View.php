@@ -2,6 +2,8 @@
 /**
  * File: Cdnfsd_TransparentCDN_Page_View.php
  *
+ * @package W3TC
+ *
  * @since 0.15.0
  */
 
@@ -16,11 +18,7 @@ $authorized = ! empty( $key );
 
 ?>
 		<?php
-		Util_Ui::postbox_header(
-			__( 'Configuration: Full-Site Delivery', 'w3-total-cache' ),
-			'',
-			'configuration'
-		);
+		Util_Ui::postbox_header( __( 'Configuration: Full-Site Delivery', 'w3-total-cache' ), '', 'configuration-fsd' );
 		?>
 		<table class="form-table">
 			<tr>

@@ -134,9 +134,9 @@ class MonsterInsights_Review {
 				<p>
 					<a
 						href="https://wordpress.org/support/plugin/google-analytics-for-wordpress/reviews/?filter=5#new-post"
-					   	class="monsterinsights-dismiss-review-notice monsterinsights-review-out"
+						   class="monsterinsights-dismiss-review-notice monsterinsights-review-out"
 						target="_blank"
-					   	rel="noopener noreferrer"
+						   rel="noopener noreferrer"
 					>
 						<?php esc_html_e( 'Ok, you deserve it', 'google-analytics-for-wordpress' ); ?>
 					</a>
@@ -144,7 +144,7 @@ class MonsterInsights_Review {
 					<a
 						href="#"
 						class="monsterinsights-dismiss-review-notice monsterinsights-review-later"
-					   	rel="noopener noreferrer"
+						   rel="noopener noreferrer"
 					>
 						<?php esc_html_e( 'Nope, maybe later', 'google-analytics-for-wordpress' ); ?>
 					</a>
@@ -152,7 +152,7 @@ class MonsterInsights_Review {
 					<a
 						href="#"
 						class="monsterinsights-dismiss-review-notice"
-					   	rel="noopener noreferrer"
+						   rel="noopener noreferrer"
 					>
 						<?php esc_html_e( 'I already did', 'google-analytics-for-wordpress' ); ?>
 					</a>
@@ -160,18 +160,18 @@ class MonsterInsights_Review {
 			</div>
 		</div>
 		<script type="text/javascript">
-            jQuery(document).ready(function ($) {
-                $(document).on('click', '.monsterinsights-dismiss-review-notice', function (event) {
-                    if (!$(this).hasClass('monsterinsights-review-out')) {
-                        event.preventDefault();
-                    }
-                    $.post(ajaxurl, {
-                        action: 'monsterinsights_review_dismiss',
-                        review_later: $(this).hasClass('monsterinsights-review-later')
-                    });
-                    $('.monsterinsights-review-notice').remove();
-                });
-            });
+			jQuery(document).ready(function ($) {
+				$(document).on('click', '.monsterinsights-dismiss-review-notice', function (event) {
+					if (!$(this).hasClass('monsterinsights-review-out')) {
+						event.preventDefault();
+					}
+					$.post(ajaxurl, {
+						action: 'monsterinsights_review_dismiss',
+						review_later: $(this).hasClass('monsterinsights-review-later')
+					});
+					$('.monsterinsights-review-notice').remove();
+				});
+			});
 		</script>
 		<?php
 	}

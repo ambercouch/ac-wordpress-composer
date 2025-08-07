@@ -7,7 +7,7 @@
  * Author:              MonsterInsights
  * Author URI:          https://www.monsterinsights.com/lite/?utm_source=liteplugin&utm_medium=pluginheader&utm_campaign=authoruri&utm_content=7%2E0%2E0
  *
- * Version:             9.0.1
+ * Version:             9.6.1
  * Requires at least:   5.6.0
  * Requires PHP:        7.2
  *
@@ -17,7 +17,7 @@
  * Domain Path:         /languages
  *
  * MonsterInsights Lite
- * Copyright (C) 2008-2018, MonsterInsights, support@monsterinsights.com
+ * Copyright (C) 2008-2024, MonsterInsights, support@monsterinsights.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,8 +71,7 @@ final class MonsterInsights_Lite {
 	 * @access public
 	 * @var string $version Plugin version.
 	 */
-	public $version = '9.0.1';
-
+	public $version = '9.6.1';
 	/**
 	 * Plugin file.
 	 *
@@ -246,13 +245,6 @@ final class MonsterInsights_Lite {
 				monsterinsights_lite_call_install_and_upgrade();
 			}
 
-			if ( is_admin() ) {
-				new AM_Deactivation_Survey( 'MonsterInsights', basename( __DIR__ ) );
-			}
-
-			// Load the plugin textdomain.
-			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ), 15 );
-
 			// Load admin only components.
 			if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
 				self::$instance->notices            = new MonsterInsights_Notice_Admin();
@@ -269,11 +261,7 @@ final class MonsterInsights_Lite {
 			} else {
 				require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/load.php';
 			}
-
-			// Run hook to load MonsterInsights addons.
-			do_action( 'monsterinsights_load_plugins' ); // the updater class for each addon needs to be instantiated via `monsterinsights_updater`
 		}
-
 		return self::$instance;
 	}
 
@@ -389,49 +377,7 @@ final class MonsterInsights_Lite {
 		if ( ! defined( 'MONSTERINSIGHTS_PLUGIN_URL' ) ) {
 			define( 'MONSTERINSIGHTS_PLUGIN_URL', plugin_dir_url( $this->file ) );
 		}
-	}
 
-	/**
-	 * Loads the plugin textdomain for translation.
-	 *
-	 * @access public
-	 * @return void
-	 * @since 6.0.0
-	 *
-	 */
-	public function load_plugin_textdomain() {
-
-		$mi_locale = get_locale();
-		if ( function_exists( 'get_user_locale' ) ) {
-			$mi_locale = get_user_locale();
-		}
-
-		// Traditional WordPress plugin locale filter.
-		$mi_locale = apply_filters( 'plugin_locale', $mi_locale, 'google-analytics-for-wordpress' );
-		$mi_mofile = sprintf( '%1$s-%2$s.mo', 'google-analytics-for-wordpress', $mi_locale );
-
-		// Look for wp-content/languages/google-analytics-for-wordpress/google-analytics-for-wordpress-{lang}_{country}.mo
-		$mi_mofile1 = WP_LANG_DIR . '/google-analytics-for-wordpress/' . $mi_mofile;
-
-		// Look in wp-content/languages/plugins/google-analytics-for-wordpress/google-analytics-for-wordpress-{lang}_{country}.mo
-		$mi_mofile2 = WP_LANG_DIR . '/plugins/google-analytics-for-wordpress/' . $mi_mofile;
-
-		// Look in wp-content/languages/plugins/google-analytics-for-wordpress-{lang}_{country}.mo
-		$mi_mofile3 = WP_LANG_DIR . '/plugins/' . $mi_mofile;
-
-		// Look in wp-content/plugins/google-analytics-for-wordpress/languages/google-analytics-for-wordpress-{lang}_{country}.mo
-		$mi_mofile4 = dirname( plugin_basename( MONSTERINSIGHTS_PLUGIN_FILE ) ) . '/languages/';
-		$mi_mofile4 = apply_filters( 'monsterinsights_lite_languages_directory', $mi_mofile4 );
-
-		if ( file_exists( $mi_mofile1 ) ) {
-			load_textdomain( 'google-analytics-for-wordpress', $mi_mofile1 );
-		} elseif ( file_exists( $mi_mofile2 ) ) {
-			load_textdomain( 'google-analytics-for-wordpress', $mi_mofile2 );
-		} elseif ( file_exists( $mi_mofile3 ) ) {
-			load_textdomain( 'google-analytics-for-wordpress', $mi_mofile3 );
-		} else {
-			load_plugin_textdomain( 'google-analytics-for-wordpress', false, $mi_mofile4 );
-		}
 	}
 
 	/**
@@ -523,7 +469,6 @@ final class MonsterInsights_Lite {
 		if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
 
 			// Lite and Pro files
-			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'assets/lib/pandora/class-am-deactivation-survey.php';
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/ajax.php';
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/admin.php';
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/common.php';
@@ -543,6 +488,7 @@ final class MonsterInsights_Lite {
 			// Reports
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/reports/abstract-report.php';
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/reports/overview.php';
+			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/reports/site-summary.php';
 
 			// Reporting Functionality
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/reporting.php';
@@ -574,10 +520,26 @@ final class MonsterInsights_Lite {
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/tracking.php';
 		}
 
+		if (is_admin()) {
+			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/class-monsterinsights-am-deactivation-survey.php';
+			add_action('admin_menu', function () {
+
+				new \MonsterInsights_AM_Deactivation_Survey(
+					apply_filters(
+						'monsterinsights_deactivation_survey_url',
+						'https://monsterinsights.com/wp-json/am-deactivate-survey/v1/deactivation-data'
+					),
+					'MonsterInsights Lite',
+					'google-analytics-for-wordpress'
+				);
+			}, 100);
+		}
+
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/frontend.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/seedprod.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/measurement-protocol-v4.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/feature-feedback/class-monsterInsights-feature-feedback.php';
+		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/class-monsterinsights-onboarding.php';
 	}
 
 	/**
@@ -628,6 +590,9 @@ function monsterinsights_lite_activation_hook( $network_wide ) {
 
 	// Add transient to trigger redirect.
 	set_transient( '_monsterinsights_activation_redirect', 1, 30 );
+
+	// Hook to trigger when plugin activate.
+	do_action( 'monsterinsights_plugin_activated' );
 }
 
 register_activation_hook( __FILE__, 'monsterinsights_lite_activation_hook' );
@@ -715,6 +680,17 @@ function monsterinsights_lite_uninstall_hook() {
 
 	// Delete the notifications data.
 	$instance->notifications->delete_notifications_data();
+
+	// Popular posts.
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/popular-posts/class-popular-posts-themes.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/popular-posts/class-popular-posts.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/popular-posts/class-popular-posts-helper.php';
+	// Lite popular posts specific.
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-inline.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-cache.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-widget.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-widget-sidebar.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-ajax.php';
 
 	// Delete Popular Posts data.
 	MonsterInsights_Popular_Posts_Inline()->get_cache()->delete_data();
@@ -849,6 +825,9 @@ if ( ! function_exists( 'MonsterInsights' ) ) {
 function monsterinsights_lite_deactivation_hook() {
 	wp_clear_scheduled_hook( 'monsterinsights_usage_tracking_cron' );
 	wp_clear_scheduled_hook( 'monsterinsights_email_summaries_cron' );
+
+	// Hook to trigger on deactivation.
+	do_action( 'monsterinsights_plugin_deactivated' );
 }
 
 register_deactivation_hook( __FILE__, 'monsterinsights_lite_deactivation_hook' );

@@ -43,4 +43,36 @@ class ASP_Utils_Misc {
 		return $pageURL;
 	}
 
+	public static function secure_badge_allowed_tags() {
+		return array(
+			'img' => array(
+				'src'	=> array(),
+				'alt'	=> array(),
+				'class' => array(),
+				'id' => array(),
+			),
+			'ul' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'li' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'p' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'br' => array()
+		);
+	}
+
+	public static function secure_badge_default_content() {
+		$output = '<ul>'.PHP_EOL;
+		$output .= ' <li>100% Secure Checkout</li>'.PHP_EOL;
+		$output .= ' <li>All transactions are encrypted using SSL/TLS technology.</li>'.PHP_EOL;
+		$output .= '</ul>';
+
+		return $output;
+	}
 }

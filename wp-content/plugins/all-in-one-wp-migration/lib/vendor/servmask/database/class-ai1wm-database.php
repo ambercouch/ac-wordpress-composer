@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2023 ServMask Inc.
+ * Copyright (C) 2014-2025 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Attribution: This code is part of the All-in-One WP Migration plugin, developed by
  *
  * ███████╗███████╗██████╗ ██╗   ██╗███╗   ███╗ █████╗ ███████╗██╗  ██╗
  * ██╔════╝██╔════╝██╔══██╗██║   ██║████╗ ████║██╔══██╗██╔════╝██║ ██╔╝
@@ -213,7 +215,7 @@ abstract class Ai1wm_Database {
 						'Your WordPress installation uses Microsoft SQL Server. ' .
 						'To use All-in-One WP Migration, please change your installation to MySQL and try again. ' .
 						'<a href="https://help.servmask.com/knowledgebase/microsoft-sql-server/" target="_blank">Technical details</a>',
-						AI1WM_PLUGIN_NAME
+						'all-in-one-wp-migration'
 					),
 					501
 				);
@@ -359,6 +361,21 @@ abstract class Ai1wm_Database {
 	 */
 	public function get_old_replace_values() {
 		return $this->old_replace_values;
+	}
+
+	/**
+	 * Get old replace values min length
+	 *
+	 * @return integer
+	 */
+	protected function get_old_replace_values_min_length() {
+		static $cached_result = null;
+
+		if ( $cached_result === null ) {
+			$cached_result = min( array_map( 'strlen', $this->get_old_replace_values() ) );
+		}
+
+		return $cached_result;
 	}
 
 	/**
@@ -956,8 +973,11 @@ abstract class Ai1wm_Database {
 							$select_columns = implode( ', ', $select_columns );
 
 							// Set query with offset and rows count
-							$query = sprintf( 'SELECT %s FROM `%s` AS t1 JOIN (SELECT %s FROM `%s` WHERE %s ORDER BY %s LIMIT %d, %d) AS t2 USING (%s)', $select_columns, $table_name, $table_keys, $table_name, $table_where, $table_keys, $table_offset, AI1WM_MAX_SELECT_RECORDS, $table_keys );
-
+							if ( defined( 'AI1WM_DISABLE_LATE_ROW_LOOKUPS' ) ) {
+								$query = sprintf( 'SELECT %s FROM `%s` AS t1 WHERE %s ORDER BY %s LIMIT %d, %d', $select_columns, $table_name, $table_where, $table_keys, $table_offset, AI1WM_MAX_SELECT_RECORDS );
+							} else {
+								$query = sprintf( 'SELECT %s FROM `%s` AS t1 JOIN (SELECT %s FROM `%s` WHERE %s ORDER BY %s LIMIT %d, %d) AS t2 USING (%s)', $select_columns, $table_name, $table_keys, $table_name, $table_where, $table_keys, $table_offset, AI1WM_MAX_SELECT_RECORDS, $table_keys );
+							}
 						} else {
 
 							$table_keys = 1;
@@ -1164,7 +1184,7 @@ abstract class Ai1wm_Database {
 
 							// Check tablespace exists
 							if ( $this->errno() === 1813 ) {
-								throw new Ai1wm_Database_Exception( __( 'Error importing database table. <a href="https://help.servmask.com/knowledgebase/mysql-error-importing-table/" target="_blank">Technical details</a>', AI1WM_PLUGIN_NAME ), 503 );
+								throw new Ai1wm_Database_Exception( __( 'Error importing database table. <a href="https://help.servmask.com/knowledgebase/mysql-error-importing-table/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), 503 );
 							}
 
 							// Check max queries per hour
@@ -1175,7 +1195,7 @@ abstract class Ai1wm_Database {
 											'Your WordPress installation has reached the maximum allowed queries per hour set by your server admin or hosting provider. ' .
 											'To use All-in-One WP Migration, please increase MySQL max_queries_per_hour limit. ' .
 											'<a href="https://help.servmask.com/knowledgebase/mysql-error-codes/#max-queries-per-hour" target="_blank">Technical details</a>',
-											AI1WM_PLUGIN_NAME
+											'all-in-one-wp-migration'
 										),
 										503
 									);
@@ -1185,7 +1205,7 @@ abstract class Ai1wm_Database {
 											'Your WordPress installation has reached the maximum allowed updates per hour set by your server admin or hosting provider. ' .
 											'To use All-in-One WP Migration, please increase MySQL max_updates_per_hour limit. ' .
 											'<a href="https://help.servmask.com/knowledgebase/mysql-error-codes/#max-updates-per-hour" target="_blank">Technical details</a>',
-											AI1WM_PLUGIN_NAME
+											'all-in-one-wp-migration'
 										),
 										503
 									);
@@ -1195,7 +1215,7 @@ abstract class Ai1wm_Database {
 											'Your WordPress installation has reached the maximum allowed connections per hour set by your server admin or hosting provider. ' .
 											'To use All-in-One WP Migration, please increase MySQL max_connections_per_hour limit. ' .
 											'<a href="https://help.servmask.com/knowledgebase/mysql-error-codes/#max-connections-per-hour" target="_blank">Technical details</a>',
-											AI1WM_PLUGIN_NAME
+											'all-in-one-wp-migration'
 										),
 										503
 									);
@@ -1205,7 +1225,7 @@ abstract class Ai1wm_Database {
 											'Your WordPress installation has reached the maximum allowed user connections set by your server admin or hosting provider. ' .
 											'To use All-in-One WP Migration, please increase MySQL max_user_connections limit. ' .
 											'<a href="https://help.servmask.com/knowledgebase/mysql-error-codes/#max-user-connections" target="_blank">Technical details</a>',
-											AI1WM_PLUGIN_NAME
+											'all-in-one-wp-migration'
 										),
 										503
 									);
@@ -1642,7 +1662,9 @@ abstract class Ai1wm_Database {
 			$matches[1] = Ai1wm_Database_Utility::base64_decode( $matches[1] );
 
 			// Replace values
-			$matches[1] = Ai1wm_Database_Utility::replace_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $matches[1] );
+			if ( strlen( $matches[1] ) >= $this->get_old_replace_values_min_length() ) {
+				$matches[1] = Ai1wm_Database_Utility::replace_values( $matches[1], $this->get_old_replace_values(), $this->get_new_replace_values() );
+			}
 
 			// Encode base64 characters
 			$matches[1] = Ai1wm_Database_Utility::base64_encode( $matches[1] );
@@ -1665,7 +1687,9 @@ abstract class Ai1wm_Database {
 			$matches[2] = Ai1wm_Database_Utility::base64_decode( $matches[2] );
 
 			// Replace values
-			$matches[2] = Ai1wm_Database_Utility::replace_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $matches[2] );
+			if ( strlen( $matches[2] ) >= $this->get_old_replace_values_min_length() ) {
+				$matches[2] = Ai1wm_Database_Utility::replace_values( $matches[2], $this->get_old_replace_values(), $this->get_new_replace_values() );
+			}
 
 			// Encode base64 characters
 			$matches[2] = Ai1wm_Database_Utility::base64_encode( $matches[2] );
@@ -1688,7 +1712,9 @@ abstract class Ai1wm_Database {
 			$matches[1] = Ai1wm_Database_Utility::base64_decode( $matches[1] );
 
 			// Replace serialized values
-			$matches[1] = Ai1wm_Database_Utility::replace_serialized_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $matches[1] );
+			if ( strlen( $matches[1] ) >= $this->get_old_replace_values_min_length() ) {
+				$matches[1] = Ai1wm_Database_Utility::replace_serialized_values( $matches[1], $this->get_old_replace_values(), $this->get_new_replace_values() );
+			}
 
 			// Encode base64 characters
 			$matches[1] = Ai1wm_Database_Utility::base64_encode( $matches[1] );
@@ -1708,7 +1734,9 @@ abstract class Ai1wm_Database {
 		$matches[1] = Ai1wm_Database_Utility::unescape_mysql( $matches[1] );
 
 		// Replace serialized values
-		$matches[1] = Ai1wm_Database_Utility::replace_serialized_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $matches[1] );
+		if ( strlen( $matches[1] ) >= $this->get_old_replace_values_min_length() ) {
+			$matches[1] = Ai1wm_Database_Utility::replace_serialized_values( $matches[1], $this->get_old_replace_values(), $this->get_new_replace_values() );
+		}
 
 		// Escape MySQL special characters
 		$matches[1] = Ai1wm_Database_Utility::escape_mysql( $matches[1] );
@@ -1752,7 +1780,7 @@ abstract class Ai1wm_Database {
 	 * @return string
 	 */
 	protected function replace_raw_values( $input ) {
-		return Ai1wm_Database_Utility::replace_values( $this->get_old_replace_raw_values(), $this->get_new_replace_raw_values(), $input );
+		return Ai1wm_Database_Utility::replace_values( $input, $this->get_old_replace_raw_values(), $this->get_new_replace_raw_values() );
 	}
 
 	/**
@@ -2099,11 +2127,19 @@ abstract class Ai1wm_Database {
 	/**
 	 * Use MySQL transactions
 	 *
-	 * @return bolean
+	 * @return boolean
 	 */
 	protected function use_transactions() {
 		return true;
 	}
+
+	/**
+	 * Check whether table has auto increment attribute
+	 *
+	 * @param  string  $table_name Table name
+	 * @return boolean
+	 */
+	abstract public function has_auto_increment( $table_name );
 
 	/**
 	 * Run MySQL query

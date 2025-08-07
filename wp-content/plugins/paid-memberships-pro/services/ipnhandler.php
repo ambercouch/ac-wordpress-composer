@@ -222,19 +222,8 @@ if ( $txn_type == "recurring_payment" ) {
 		} elseif ( in_array( $payment_status, $failed_payment_statuses ) ) {
 			// Check if the subscription has been suspended/paused in PPE.
 			if ( $profile_status == "suspended") {
-				// Subscription was suspended. Let's remove the user's membership level, which will also cancel the subscription.
-				$subscription = $last_subscription_order->get_subscription();
-				if ( ! empty( $subscription ) ) {
-					$user = get_userdata( $subscription->get_user_id() );
-					if ( ! empty( $user ) ) {
-						pmpro_cancelMembershipLevel( $subscription->get_membership_level_id(), $user->ID );
-						ipnlog( 'Subscription #' . $subscription->get_id() . ' with subscription transaction id = ' . $subscr_id . ' was cancelled after payment failure.' );
-					} else {
-						ipnlog( 'ERROR: Could not cancel membership level for user with subscription transaction id = ' . $subscr_id . ' after payment failure. No user attached to subscription.' );
-					}
-				} else {
-					ipnlog( 'ERROR: Could not find this subscription to cancel after payment failure (subscription_transaction_id=' . $subscr_id . ').' );
-				}
+				// Subscription was suspended. This should trigger another IPN message which should treat this as a cancellation (recurring_payment_suspended_due_to_max_failed_payment).
+				ipnlog( 'Subscription is suspended. Waiting for another IPN message to handle this.' );
 			} else {
 				// Subscription is not suspended. Send failed payment email.
 				pmpro_ipnFailedPayment( $last_subscription_order );
@@ -273,41 +262,14 @@ if ( in_array( $txn_type, $failed_payment_txn_types ) ) {
 }
 
 // Recurring Payment Profile Cancelled (PayPal Express)
-if ( $txn_type == 'recurring_payment_profile_cancel' ) {
-	// Find subscription.
+if ( $txn_type == 'recurring_payment_profile_cancel' || $txn_type == 'recurring_payment_failed' || $txn_type == 'recurring_payment_suspended_due_to_max_failed_payment' ) {
+	// If the subscription was cancelled due to failed payments, make sure that we don't "cancel on next payment date".
+	if ( $txn_type == 'recurring_payment_failed' || $txn_type == 'recurring_payment_suspended_due_to_max_failed_payment' ) {
+		add_filter( 'pmpro_cancel_on_next_payment_date', '__return_false' );
+	}
+
+	// Handle the cancellation.
 	ipnlog( pmpro_handle_subscription_cancellation_at_gateway( $recurring_payment_id, 'paypalexpress', $gateway_environment ) );
-	pmpro_ipnExit();
-}
-
-// All payment collection retries have failed (PayPal Express)
-if ( $txn_type == 'recurring_payment_failed' || $txn_type == 'recurring_payment_suspended_due_to_max_failed_payment' ) {
-	// Find subscription.
-	$subscription = PMPro_Subscription::get_subscription_from_subscription_transaction_id( $recurring_payment_id, 'paypalexpress', $gateway_environment );
-	if ( empty( $subscription ) ) {
-		// The subscription does not exist on this site. Bail.
-		ipnlog( 'ERROR: Could not find this subscription to cancel after failed payment attempts (subscription_transaction_id=' . $recurring_payment_id . ').' );
-		pmpro_ipnExit();
-	}
-
-	// Get the user associated with the subscription.
-	$user = get_userdata( $subscription->get_user_id() );
-	if ( empty( $user ) ) {
-		// The user for this subscription does not exist. Let's just cancel the subscription.
-		$subscription->cancel_at_gateway();
-		ipnlog( 'ERROR: Could not cancel subscription after failed payment attempts. No user attached to subscription #' . $subscription->get_id() . ' with subscription transaction id = ' . $recurring_payment_id . '.' );
-		pmpro_ipnExit();
-	}
-
-	// Cancel the user's membership level which will also cancel the subscription.
-	if ( ! pmpro_cancelMembershipLevel( $subscription->get_membership_level_id(), $user->ID ) ) {
-		// User didn't have the level. Let's just cancel the subscription.
-		$subscription->cancel_at_gateway();
-		ipnlog( 'ERROR: Could not cancel membership level for user ' . $user->user_email . ' after failed payment attempts. Subscription #' . $subscription->get_id() . ' with subscription transaction id = ' . $recurring_payment_id . ' was cancelled.' );
-		pmpro_ipnExit();
-	}
-
-	// Cancellation was successful.
-	ipnlog( 'Subscription #' . $subscription->get_id() . ' with subscription transaction id = ' . $recurring_payment_id . ' was cancelled after failed payment attempts.' );
 	pmpro_ipnExit();
 }
 
@@ -376,7 +338,7 @@ if ( strtolower( $payment_status ) === 'refunded' ) {
 
 		ipnlog( sprintf( 'IPN: Order successfully refunded on %1$s for transaction ID %2$s at the gateway.', date_i18n('Y-m-d H:i:s'), $payment_transaction_id ) );
 
-		$user = get_user_by( 'email', $morder->Email );
+		$user = get_userdata( $morder->user_id );
 
 		// Send an email to the member.
 		$myemail = new PMProEmail();
@@ -428,7 +390,7 @@ function pmpro_ipnExit() {
 				//should avoid counterintuitive interpretation of false.
 			} elseif ( PMPRO_IPN_DEBUG === "log" ) {
 				//file
-				$logfile = apply_filters( 'pmpro_ipn_logfile', dirname( __FILE__ ) . "/../logs/ipn.txt" );
+				$logfile = apply_filters( 'pmpro_ipn_logfile', pmpro_get_restricted_file_path( 'logs', 'ipn.txt' ) );
 				$loghandle = fopen( $logfile, "a+" );
 				fwrite( $loghandle, $logstr );
 				fclose( $loghandle );
@@ -699,12 +661,15 @@ function pmpro_ipnFailedPayment( $last_order ) {
 	//hook to do other stuff when payments fail
 	do_action( "pmpro_subscription_payment_failed", $last_order );
 
+	// Get the subscription object.
+	$subscription = $last_order->get_subscription();
+
 	//create a blank order for the email
 	$morder          = new MemberOrder();
-	$morder->user_id = $last_order->user_id;
-	$morder->membership_id = $last_order->membership_id;
+	$morder->user_id = empty( $subscription ) ? $last_order->user_id : $subscription->get_user_id();
+	$morder->membership_id = empty( $subscription ) ? $last_order->membership_id : $subscription->get_membership_level_id();
 
-	$user                   = new WP_User( $last_order->user_id );
+	$user                   = new WP_User( $morder->user_id );
 
 	//add billing information if appropriate
 	if ( $last_order->gateway == "paypal" )        //website payments pro
@@ -725,6 +690,7 @@ function pmpro_ipnFailedPayment( $last_order ) {
 
 		$morder->billing->name    = $last_order->billing->name;
 		$morder->billing->street  = $last_order->billing->street;
+		$morder->billing->street2 = $last_order->billing->street2;
 		$morder->billing->city    = $last_order->billing->city;
 		$morder->billing->state   = $last_order->billing->state;
 		$morder->billing->zip     = $last_order->billing->zip;
@@ -759,10 +725,13 @@ function pmpro_ipnSaveOrder( $txn_id, $last_order ) {
 	$old_txn = $wpdb->get_var( $wpdb->prepare( "SELECT payment_transaction_id FROM $wpdb->pmpro_membership_orders WHERE payment_transaction_id = %s LIMIT 1", $txn_id ) );
 
 	if ( empty( $old_txn ) ) {
+		// Get the subscription object.
+		$subscription = $last_order->get_subscription();
+
 		//save order
 		$morder                              = new MemberOrder();
-		$morder->user_id                     = $last_order->user_id;
-		$morder->membership_id               = $last_order->membership_id;
+		$morder->user_id                     = empty( $subscription ) ? $last_order->user_id : $subscription->get_user_id();
+		$morder->membership_id               = empty( $subscription ) ? $last_order->membership_id : $subscription->get_membership_level_id();
 		$morder->payment_transaction_id      = $txn_id;
 		$morder->subscription_transaction_id = $last_order->subscription_transaction_id;
 		$morder->gateway                     = $last_order->gateway;
@@ -777,31 +746,25 @@ function pmpro_ipnSaveOrder( $txn_id, $last_order ) {
 		if ( false !== stripos( $last_order->gateway, "paypal" ) ) {
 
 			if ( isset( $_POST['mc_gross'] ) && ! empty( $_POST['mc_gross'] ) ) {
-				$morder->InitialPayment = sanitize_text_field( $_POST['mc_gross'] );    //not the initial payment, but the class is expecting that
-				$morder->PaymentAmount  = sanitize_text_field( $_POST['mc_gross'] );
+				$morder->total  = sanitize_text_field( $_POST['mc_gross'] );
 			} elseif ( isset( $_POST['amount'] ) && ! empty( $_POST['amount'] ) ) {
-				$morder->InitialPayment = sanitize_text_field( $_POST['amount'] );    //not the initial payment, but the class is expecting that
-				$morder->PaymentAmount  = sanitize_text_field( $_POST['amount'] );
+				$morder->total  = sanitize_text_field( $_POST['amount'] );
 			} elseif ( isset( $_POST['payment_gross'] )  && ! empty( $_POST['payment_gross' ] ) ) {
-				$morder->InitialPayment = sanitize_text_field( $_POST['payment_gross'] );    //not the initial payment, but the class is expecting that
-				$morder->PaymentAmount  = sanitize_text_field( $_POST['payment_gross'] );
+				$morder->total  = sanitize_text_field( $_POST['payment_gross'] );
 			}
 			
 			//check for tax
 			if ( isset( $_POST['tax'] ) && ! empty( $_POST['tax'] ) ) {
 				$morder->tax = (float) $_POST['tax'];
-				if ( isset( $_POST['amount'] ) && ! empty( $_POST['amount'] ) && $morder->InitialPayment > (float) $_POST['amount'] ) {
-					$morder->tax *= (float) $morder->InitialPayment / (float) $_POST['amount'];
+				if ( isset( $_POST['amount'] ) && ! empty( $_POST['amount'] ) && $morder->total > (float) $_POST['amount'] ) {
+					$morder->tax *= (float) $morder->total / (float) $_POST['amount'];
 				}
-
-				$morder->total = $morder->InitialPayment;	//so tax isn't added into the subtotal again
 				$morder->subtotal = $morder->total - $morder->tax;
+			} else {
+				$morder->tax = 0;
+				$morder->subtotal = $morder->total;
 			}
 		}
-
-		$morder->FirstName = sanitize_text_field( $_POST['first_name'] );
-		$morder->LastName  = sanitize_text_field( $_POST['last_name'] );
-		$morder->Email     = sanitize_text_field( $_POST['payer_email'] );
 
 		$morder->find_billing_address();
 
@@ -842,7 +805,7 @@ function pmpro_ipnSaveOrder( $txn_id, $last_order ) {
 
 		//email the user their order
 		$pmproemail = new PMProEmail();
-		$pmproemail->sendInvoiceEmail( get_userdata( $last_order->user_id ), $morder );
+		$pmproemail->sendInvoiceEmail( get_userdata( empty( $subscription ) ? $last_order->user_id : $subscription->get_user_id() ), $morder );
 
 		//hook for successful subscription payments
 		do_action( "pmpro_subscription_payment_completed", $morder );

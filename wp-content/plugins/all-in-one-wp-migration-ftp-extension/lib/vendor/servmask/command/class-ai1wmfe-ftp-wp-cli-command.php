@@ -77,6 +77,9 @@ if ( defined( 'WP_CLI' ) && class_exists( 'Ai1wm_Backup_WP_CLI_Base' ) ) {
 		 * [--exclude-tables[=<comma_separated_names>]]
 		 * : Do not export selected database tables (sql)
 		 *
+		 * [--include-tables[=<comma_separated_names>]]
+		 * : Include the selected non‑WP tables (sql)
+		 *
 		 * [--exclude-email-replace]
 		 * : Do not replace email domain (sql)
 		 *

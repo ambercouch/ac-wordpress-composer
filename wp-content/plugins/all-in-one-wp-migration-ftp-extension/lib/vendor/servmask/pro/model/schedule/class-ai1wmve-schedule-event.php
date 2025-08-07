@@ -88,6 +88,8 @@ if ( ! class_exists( 'Ai1wmve_Schedule_Event' ) ) {
 
 		protected $excluded_db_tables;
 
+		protected $included_db_tables;
+
 		protected $password;
 
 		protected $incremental = false;
@@ -200,6 +202,7 @@ if ( ! class_exists( 'Ai1wmve_Schedule_Event' ) ) {
 				'notification'       => $this->notification,
 				'excluded_files'     => $this->excluded_files,
 				'excluded_db_tables' => $this->excluded_db_tables,
+				'included_db_tables' => $this->included_db_tables,
 				'password'           => $this->password(),
 				'incremental'        => $this->incremental,
 				'sites'              => array_map( 'intval', $this->sites ),
@@ -420,7 +423,7 @@ if ( ! class_exists( 'Ai1wmve_Schedule_Event' ) ) {
 			return array_map(
 				function ( $log ) {
 					$log['id']            = $log['time'];
-					$log['time']          = date_i18n( 'd.m.Y', $log['time'] );
+					$log['time']          = date_i18n( 'Y-m-d H:i:s', $log['time'] );
 					$log['status_locale'] = __( $log['status'], AI1WM_PLUGIN_NAME );
 					$log['status_class']  = strtolower( $log['status'] );
 
@@ -469,6 +472,11 @@ if ( ! class_exists( 'Ai1wmve_Schedule_Event' ) ) {
 			if ( ! empty( $this->excluded_db_tables ) ) {
 				$params['options']['exclude_db_tables'] = 1;
 				$params['excluded_db_tables']           = $this->excluded_db_tables;
+			}
+
+			if ( ! empty( $this->included_db_tables ) ) {
+				$params['options']['include_db_tables'] = 1;
+				$params['included_db_tables']           = $this->included_db_tables;
 			}
 
 			if ( $this->incremental ) {

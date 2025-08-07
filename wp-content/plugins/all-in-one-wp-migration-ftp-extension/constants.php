@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ==================
 // = Plugin Version =
 // ==================
-define( 'AI1WMFE_VERSION', '2.85' );
+define( 'AI1WMFE_VERSION', '2.92' );
 
 // ===============
 // = Plugin Name =
@@ -101,6 +101,11 @@ define( 'AI1WMFE_DEFAULT_FILE_CHUNK_SIZE', 5 * 1024 * 1024 );
 // = Minimal Base Plugin Version =
 // ===============================
 define( 'AI1WMFE_MIN_AI1WM_VERSION', '7.84' );
+
+// ================================
+// = Add incremental to scheduler =
+// ================================
+define( 'AI1WMFE_PRO_INCREMENTAL', 1 );
 
 // ===============
 // = Purchase ID =

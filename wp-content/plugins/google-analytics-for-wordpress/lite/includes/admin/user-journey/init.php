@@ -130,9 +130,9 @@ final class MonsterInsights_Lite_User_Journey_Admin {
 			$providers = $this->providers;
 
 			foreach ( $providers as $provider ) {
-				$file = MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/user-journey/providers/' . $provider . '.php';
-				if ( file_exists( $file ) ) {
-					require_once wp_normalize_path( $file );
+				$file = MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/user-journey/providers/' . $provider;
+				if ( file_exists( $file . '.php' ) ) {
+					require_once wp_normalize_path( $file . '.php' );
 				}
 			}
 		}

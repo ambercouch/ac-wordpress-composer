@@ -245,8 +245,8 @@ class AcceptStripePayments_Admin {
 			//check if required php modules are installed
 			$this->check_php_modules();
 
-                        //check if captcha is enabled
-                        $this->check_captcha_settings_and_show_msg();
+            //check if captcha is enabled
+            $this->check_captcha_settings_and_show_msg();
 		}
 
 		//Handle feedback in the admin area.
@@ -256,9 +256,14 @@ class AcceptStripePayments_Admin {
 
 	}
 
-        private function check_captcha_settings_and_show_msg() {
-                $asp_main = AcceptStripePayments::get_instance();
-                $captcha_type = $asp_main->get_setting('captcha_type');
+    private function check_captcha_settings_and_show_msg() {
+        $hide_captcha_disabled_warning = apply_filters('asp_hide_captcha_disabled_warning_notice_in_admin', false);
+        if ($hide_captcha_disabled_warning){
+            return;
+        }
+
+        $asp_main = AcceptStripePayments::get_instance();
+        $captcha_type = $asp_main->get_setting('captcha_type');
 
                 if ( empty( $captcha_type ) || $captcha_type == 'none' ) {
                         //Captcha is not enabled. Show warning message.
@@ -479,15 +484,20 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-additional-email-section', __( 'Additional Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 
 		add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
-		add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-payment-popup-related', __( 'Payment Popup Related', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-tos', __( 'Terms and Conditions', 'stripe-payments' ), array( $this, 'tos_description' ), $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experimental Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
 		add_settings_section( 'AcceptStripePayments-txn-rate-limiting', __( 'Transaction Rate Limiting', 'stripe-payments' ), array( $this, 'txn_rate_limiting_section_description' ), $this->plugin_slug . '-txn-rate-limit' );
 
-		// Global section
+		// Global settings section
+
+		//Thank You Page URL
+		$ty_description = __( 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment. If you have accidentally deleted this page, then re-create it using <a href="https://s-plugins.com/recreating-required-stripe-plugin-pages/" target="_blank">this documentation</a>.', 'stripe-payments' );
+		$ty_description .= '<br /><b>' . __( 'Important Note: ', 'stripe-payments' ) . '</b> ' . __( 'If you are using a caching solution on your site (e.g., WP Super Cache), you must exclude this page from caching. Failing to do so can result in unpredictable behavior on the Thank You page.', 'stripe-payments' );
 		add_settings_field(
 			'checkout_url',
 			__( 'Checkout Result Page URL', 'stripe-payments' ),
@@ -496,10 +506,12 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-global-section',
 			array(
 				'field' => 'checkout_url',
-				'desc'  => __( 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'stripe-payments' ) . '<br /><b><i>' . __( 'Important Notice:', 'stripe-payments' ) . '</i></b> ' . __( 'if you are using caching plugins on your site (similar to W3 Total Cache, WP Rocket etc), you must exclude checkout results page from caching. Failing to do so will result in unpredictable checkout results output.', 'stripe-payments' ),
+				'desc'  => $ty_description,
 				'size'  => 100,
 			)
 		);
+
+		//Products Page URL.
 		add_settings_field(
 			'products_page_id',
 			__( 'Products Page URL', 'stripe-payments' ),
@@ -513,6 +525,7 @@ class AcceptStripePayments_Admin {
 			)
 		);
 
+		//Currency Code.
 		add_settings_field(
 			'currency_code',
 			__( 'Currency', 'stripe-payments' ),
@@ -635,50 +648,6 @@ class AcceptStripePayments_Admin {
 				'https://s-plugins.com/stripe-country-autodetect-addon/'
 			);
 		}
-		add_settings_field(
-			'popup_default_country',
-			__( 'Popup Default Country', 'stripe-payments' ) ,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'popup_default_country',
-				'desc'  => __(
-					'Select the default country that should be set on the payment popup window for billing and shipping address.',
-					'stripe-payments'
-				) . $country_autodetect_addon_txt,
-			)
-		);
-
-		add_settings_field(
-			'hide_state_field',
-			__( 'Hide the State Field', 'stripe-payments' ) ,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'hide_state_field',
-				'desc'  => __(
-					'Hide the State field on the payment popup window. The State field for the address is an optional field.',
-					'stripe-payments'
-				),
-			)
-		);
-
-		add_settings_field(
-			'prefill_wp_user_details',
-			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ) ,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'prefill_wp_user_details',
-				'desc'  => __(
-					'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.',
-					'stripe-payments'
-				),
-			)
-		);
 
 		// Credentials section
 		add_settings_field(
@@ -1211,17 +1180,97 @@ class AcceptStripePayments_Admin {
 				'field' => 'allowed_currencies',
 			)
 		);
+
+		// Payment Popup Related section
+		add_settings_field(
+			'popup_default_country',
+			__( 'Popup Default Country', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'popup_default_country',
+				'desc'  => __(
+                       'Select the default country that should be set on the payment popup window for billing and shipping address.',
+                       'stripe-payments'
+                   ) . $country_autodetect_addon_txt,
+			)
+		);
+
+		add_settings_field(
+			'prefill_wp_user_details',
+			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'prefill_wp_user_details',
+				'desc'  => __(
+					'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.',
+					'stripe-payments'
+				),
+			)
+		);
+
+		add_settings_field(
+			'hide_state_field',
+			__( 'Hide the State Field', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'hide_state_field',
+				'desc'  => __(
+					'Hide the State field on the payment popup window. The State field for the address is an optional field.',
+					'stripe-payments'
+				),
+			)
+		);
+
+		add_settings_field(
+			'use_separate_name_fields_enabled',
+			__( 'Use Separate Name Fields', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'use_separate_name_fields_enabled',
+				'desc'  => __( 'When enabled, the checkout form will display separate fields for first and last names instead of a single full name field.', 'stripe-payments' ),
+			)
+		);
+        add_settings_field(
+			'display_security_badge',
+			__( 'Display Security Badge and Message', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'display_security_badge',
+				'desc'  => __( 'When enabled, the Security Badge and Message Content are displayed below the Pay button in the payment popup window.', 'stripe-payments' ),
+			)
+		);
+        add_settings_field(
+			'security_badge_and_message_content',
+			__( 'Security Badge and Message Content', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'security_badge_and_message_content',
+				'desc'  => __( 'This content will appear below the Pay button in the payment popup window. Allowed HTML tags are p, img, ul, li, and br.', 'stripe-payments' ),
+			)
+		);
 		add_settings_field(
 			'pp_additional_css',
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-additional-settings',
+			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'pp_additional_css',
-				'desc'  => __( 'Enter additional CSS code that would be added to payment popup page.', 'stripe-payments' ),
+				'desc'  => __( 'Enter additional CSS code to be applied to the payment popup page.', 'stripe-payments' ),
 			)
-		);
+		);		
 
 		//Experimental Settings
 		add_settings_field(
@@ -1440,6 +1489,11 @@ class AcceptStripePayments_Admin {
 
 		$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
+        // Show default content for security badge.
+        if ($field == 'security_badge_and_message_content' && empty(trim($field_value))){
+	        $field_value = ASP_Utils_Misc::secure_badge_default_content();
+        }
+
 		$desc = isset( $args['desc'] ) ? $args['desc'] : '';
 
 		$size = esc_attr( isset( $args['size'] ) ? $args['size'] : 40 );
@@ -1539,6 +1593,8 @@ class AcceptStripePayments_Admin {
 			case 'enable_zip_validation':
 			case 'dont_use_cookie':                            
 			case 'dont_create_order':
+			case 'use_separate_name_fields_enabled':
+			case 'display_security_badge':
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
@@ -1659,6 +1715,7 @@ class AcceptStripePayments_Admin {
 				<?php
 				break;
 			case 'pp_additional_css':
+			case 'security_badge_and_message_content':
 				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70" style="resize:both;max-width:100%%;min-height:100px;">%s</textarea>', esc_attr( $field ), esc_attr( $field_value ) );
 				echo '<p class="description">' . wp_kses_post( $desc ) . '</p>';
 				break;
@@ -1739,6 +1796,8 @@ class AcceptStripePayments_Admin {
 		$output ['frontend_prefetch_scripts'] = empty( $input['frontend_prefetch_scripts'] ) ? 0 : 1;
 
 		$output['pp_additional_css'] = ! empty( $input['pp_additional_css'] ) ? $input['pp_additional_css'] : '';
+
+		$output['security_badge_and_message_content'] = isset( $input['security_badge_and_message_content'] ) && !empty( trim($input['security_badge_and_message_content']) ) ? wp_kses($input['security_badge_and_message_content'], ASP_Utils_Misc::secure_badge_allowed_tags() ) : ASP_Utils_Misc::secure_badge_default_content();
 
 		$output['tos_text'] = ! empty( $input['tos_text'] ) ? $input['tos_text'] : '';
 
@@ -1830,6 +1889,10 @@ class AcceptStripePayments_Admin {
                 $output['dont_use_cookie'] = empty( $input['dont_use_cookie'] ) ? 0 : 1;
                 
 		$output['dont_create_order'] = empty( $input['dont_create_order'] ) ? 0 : 1;
+
+		$output['use_separate_name_fields_enabled'] = empty( $input['use_separate_name_fields_enabled'] ) ? 0 : 1;
+
+		$output['display_security_badge'] = isset($input['display_security_badge']) && !empty( $input['display_security_badge'] ) ? 1 : 0;
 
 		$output['enable_zip_validation'] = empty( $input['enable_zip_validation'] ) ? 0 : 1;
 
@@ -2049,7 +2112,8 @@ class AcceptStripePayments_Admin {
 		if ( empty( $email_tags ) ) {
 			$email_tags = array(
 				'{item_name}'         => __( 'Name of the purchased item', 'stripe-payments' ),
-				'{item_short_desc}'   => __( 'Short description of item', 'stripe-payments' ),
+				'{item_short_desc}'   => __( 'Short description of the item', 'stripe-payments' ),
+				'{item_description}'  => __( 'The product description field\'s content.', 'stripe-payments' ),				
 				'{item_quantity}'     => __( 'Number of items purchased', 'stripe-payments' ),
 				'{item_price}'        => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
 				'{item_price_curr}'   => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
@@ -2058,15 +2122,16 @@ class AcceptStripePayments_Admin {
 				'{tax}'               => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
 				'{tax_amt}'           => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
 				'{shipping_amt}'      => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
-				'{item_url}'          => __( 'Item download URL (if it\'s set)', 'stripe-payments' ),
+				'{download_url}'      => __( 'The download URL of the item (if configured)', 'stripe-payments' ),
 				'{product_details}'   => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
 				'{product_variations}' => __( 'The selected product variations (if any) of the purchased product.', 'stripe-payments' ),
-                                '{transaction_id}'    => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
+				'{product_url}' 	  => __( 'The permalink to the product\'s single page', 'stripe-payments' ),
+                '{transaction_id}'    => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
 				'{shipping_address}'  => __( 'Shipping address of the buyer', 'stripe-payments' ),
 				'{billing_address}'   => __( 'Billing address of the buyer', 'stripe-payments' ),
 				'{customer_name}'     => __( 'Customer name. Available only if collect billing address option is enabled', 'stripe-payments' ),
-				'{first_name}'        => __( 'Customer\'s first name. Available only if collect billing address option is enabled', 'stripe-payments' ),
-				'{last_name}'         => __( 'Customer\'s last name. Available only if collect billing address option is enabled', 'stripe-payments' ),
+				'{first_name}' => __( 'Customer\'s first name. Available only if collect billing address option is enabled', 'stripe-payments' ),
+				'{last_name}' => __( 'Customer\'s last name. Available only if collect billing address option is enabled', 'stripe-payments' ),
 				'{payer_email}'       => __( 'Email Address of the buyer', 'stripe-payments' ),
 				'{currency}'          => __( 'Currency symbol. Example: $', 'stripe-payments' ),
 				'{currency_code}'     => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
