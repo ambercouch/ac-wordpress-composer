@@ -1,0 +1,7 @@
+# Ignore node_modules in theme
+wp-content/themes/fantasybakeoff/node_modules/
+
+# Optional: ignore other dev files
+*.log
+*.env
+.DS_Store
