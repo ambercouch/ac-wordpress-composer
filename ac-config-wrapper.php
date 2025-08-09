@@ -23,16 +23,16 @@ if (!defined('WP_HOSTNAME')) {
  * These are required because wordpress is installed in a subdirectory.
  */
 if (!defined('WP_SITEURL')) {
-  define('WP_SITEURL', $protocol . $server_name  . '/cms');
+  //define('WP_SITEURL', $protocol . $server_name  . '/cms');
 }
 if (!defined('WP_HOME')) {
-  define('WP_HOME', $protocol . $server_name  . '');
+  //define('WP_HOME', $protocol . $server_name  . '');
 }
 if (!defined('WP_CONTENT_DIR')) {
-  define('WP_CONTENT_DIR', dirname(__FILE__) . ACT_CONTENT);
+  //define('WP_CONTENT_DIR', dirname(__FILE__) . ACT_CONTENT);
 }
 if (!defined('WP_CONTENT_URL')) {
-  define('WP_CONTENT_URL', $protocol . $server_name  . ACT_CONTENT);
+  //define('WP_CONTENT_URL', $protocol . $server_name  . ACT_CONTENT);
 }
 //if (!defined('UPLOADS')) {
 //  define('UPLOADS', '..'.ACT_CONTENT.'/uploads');
