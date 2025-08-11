@@ -1,4 +1,13 @@
 <?php
+
+// Force early logging no matter what
+@ini_set('log_errors', '1');
+@ini_set('error_reporting', E_ALL);
+@ini_set('error_log', '/tmp/php-app.log');
+
+// Sanity ping so we know this file ran
+error_log('AC production config loaded at ' . gmdate('c'));
+
 define('DB_NAME', $_SERVER['RDS_DB_NAME']);
 define('DB_USER', $_SERVER['RDS_USERNAME']);
 define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
