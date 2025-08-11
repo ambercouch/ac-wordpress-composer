@@ -42,6 +42,7 @@ content/wp-cache-config.php
 
 /dev-config.php
 /vendor/
+/cms/
 /.idea/
 
 ac-config-local\.php
