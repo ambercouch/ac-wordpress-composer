@@ -75,7 +75,9 @@ if ( ! class_exists( 'MonsterInsights_MetaBox_ExcludePage' ) ) {
 			if ( $this->is_gutenberg_editor() && $this->posttype_supports_gutenberg() ) {
 				return;
 			}
-			add_action( 'add_meta_boxes', [ $this, 'create_meta_box' ] );
+			if ( 'attachment' !== $post_type ) {
+				add_action( 'add_meta_boxes', [ $this, 'create_meta_box' ] );
+			}
 		}
 
 		public function register_meta() {

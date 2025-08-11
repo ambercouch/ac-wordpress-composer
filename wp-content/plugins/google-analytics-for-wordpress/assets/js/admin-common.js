@@ -24,6 +24,30 @@ jQuery(document).ready(function ($) {
 
   });
 
+  /**
+   * WP Consent Notice Dismiss
+   * - Handles the dismissal of the WP Consent notice
+   */
+  $('#monsterinsights-wpconsent-notice-close').on('click', function (e) {
+    e.preventDefault();
+
+    var $notice = $('#monsterinsights-wpconsent-notice');
+
+    // Fade out the notice immediately for better UX
+    $notice.fadeOut();
+
+    // Send AJAX request to dismiss the notice
+    $.post(
+      monsterinsights_admin_common.ajax,
+      {
+        action: 'monsterinsights_dismiss_wpconsent_notice',
+        nonce: monsterinsights_admin_common.dismiss_notice_nonce
+      },
+      function () {},
+      'json'
+    );
+  });
+
   $('div.wp-menu-name > .monsterinsights-menu-notification-indicator').click(function (event) {
     event.preventDefault();
     event.stopPropagation();

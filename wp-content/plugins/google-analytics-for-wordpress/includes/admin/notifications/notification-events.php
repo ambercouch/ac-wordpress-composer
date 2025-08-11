@@ -25,3 +25,4 @@ require_once plugin_dir_path( $base->file ) . '/includes/admin/notifications/not
 require_once plugin_dir_path( $base->file ) . '/includes/admin/notifications/notification-install-aioseo.php';
 require_once plugin_dir_path( $base->file ) . '/includes/admin/notifications/notification-install-wp-forms.php';
 require_once plugin_dir_path( $base->file ) . '/includes/admin/notifications/notification-multiple-gtags.php';
+require_once plugin_dir_path( $base->file ) . '/includes/admin/notifications/notification-upgrade-to-pro-five-hundred-session.php';

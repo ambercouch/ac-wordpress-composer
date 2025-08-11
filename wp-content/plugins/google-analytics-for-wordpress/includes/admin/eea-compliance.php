@@ -214,7 +214,7 @@ class MonsterInsights_EEA_Compliance {
 				$link,
 				__( 'Check Now', 'google-analytics-for-wordpress' )
 			),
-			'test'        => 'monsterinsights_eea_compliance_checker',
+			'test'        => 'eea_compliance_checker',
 		);
 	}
 
@@ -222,7 +222,7 @@ class MonsterInsights_EEA_Compliance {
 	 * Get checker data
 	 */
 	private function get_checker_data() {
-		$checker = get_option( 'monsterinsights_eea_compliance_checker', false );
+		$checker = monsterinsights_get_option( 'eea_compliance_checker', false );
 
 		if ( $checker && isset( $checker['last_checked'] ) ) {
 			$data = $checker;
@@ -254,7 +254,7 @@ class MonsterInsights_EEA_Compliance {
 		if ( isset( $response['data'] ) && ! empty( $response['data'] ) ) {
 			$data = array( 'ga_checker' => $response['data'] );
 			$data['last_checked'] = time();
-			update_option( 'monsterinsights_eea_compliance_checker', $data );
+			monsterinsights_update_option( 'eea_compliance_checker', $data );
 		}
 
 		return $data;

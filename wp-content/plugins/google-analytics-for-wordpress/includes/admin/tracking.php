@@ -81,7 +81,7 @@ class MonsterInsights_Tracking {
 		$data['mi_version']     = MONSTERINSIGHTS_VERSION;
 		$data['wp_version']     = get_bloginfo( 'version' );
 		$data['server']         = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : ''; // phpcs:ignore
-		$data['over_time']      = get_option( 'monsterinsights_over_time', array() );
+		$data['over_time']      = wp_json_encode( get_option( 'monsterinsights_over_time', array() ) );
 		$data['multisite']      = is_multisite();
 		$data['url']            = home_url();
 		$data['themename']      = $theme_data->Name;
@@ -89,13 +89,13 @@ class MonsterInsights_Tracking {
 		$data['email']          = get_bloginfo( 'admin_email' );
 		$data['key']            = monsterinsights_get_license_key();
 		$data['sas']            = monsterinsights_get_shareasale_id();
-		$data['settings']       = monsterinsights_get_options();
+		$data['settings']       = wp_json_encode( monsterinsights_get_options() );
 		$data['tracking_mode']  = $tracking_mode;
 		$data['events_mode']    = $events_mode;
 		$data['autoupdate']     = $update_mode;
 		$data['pro']            = (int) monsterinsights_is_pro_version();
 		$data['sites']          = $count_b;
-		$data['usagetracking']  = get_option( 'monsterinsights_usage_tracking_config', false );
+		$data['usagetracking']  = wp_json_encode( get_option( 'monsterinsights_usage_tracking_config', false ) );
 		$data['usercount']      = function_exists( 'get_user_count' ) ? get_user_count() : 'Not Set';
 		$data['usesauth']       = $usesauth;
 		$data['timezoneoffset'] = date( 'P' ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- We need this to depend on the runtime timezone.
@@ -105,9 +105,37 @@ class MonsterInsights_Tracking {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			include ABSPATH . '/wp-admin/includes/plugin.php';
 		}
-
-		$plugins        = array_keys( get_plugins() );
-		$active_plugins = get_option( 'active_plugins', array() );
+		$checklist                 = get_option( 'monsterinsights_setup_checklist', array() );
+		$data['last_plugin_error'] = wp_json_encode( get_option( 'monsterinsights_last_plugin_error', null ) );
+		// Find the last completed checklist step
+		$last_checklist_step = '';
+		if ( ! empty( $checklist ) && is_array( $checklist ) ) {
+			// Iterate through the checklist to find the last true value
+			foreach ( $checklist as $key => $value ) {
+				// Skip the settings key
+				if ( 'settings' === $key ) {
+					continue;
+				}
+				if ( is_array( $value ) ) {
+					$all_true = true;
+					foreach ( $value as $sub_value ) {
+						if ( ! $sub_value ) {
+							$all_true = false;
+							break;
+						}
+					}
+					if ( $all_true ) {
+						$last_checklist_step = $key;
+					}
+				} elseif ( true === $value ) {
+					$last_checklist_step = $key;
+				}
+			}
+		}
+		$data['setup_checklist_highest_completed_step']  = $last_checklist_step;
+		$data['setup_checklist_dismissed'] = isset( $checklist['settings'] ) && isset( $checklist['settings']['dismiss'] ) ? $checklist['settings']['dismiss'] : false;
+		$plugins                           = array_keys( get_plugins() );
+		$active_plugins                    = get_option( 'active_plugins', array() );
 
 		foreach ( $plugins as $key => $plugin ) {
 			if ( in_array( $plugin, $active_plugins ) ) {
@@ -115,16 +143,13 @@ class MonsterInsights_Tracking {
 				unset( $plugins[ $key ] );
 			}
 		}
-
-		$data['active_plugins']   = $active_plugins;
-		$data['inactive_plugins'] = $plugins;
+		$data['active_plugins']   = wp_json_encode( $active_plugins );
+		$data['inactive_plugins'] = wp_json_encode( $plugins );
 		$data['locale']           = get_locale();
-
 		return $data;
 	}
 
 	public function send_checkin( $override = false, $ignore_last_checkin = false ) {
-
 		$home_url = trailingslashit( home_url() );
 		if ( strpos( $home_url, 'monsterinsights.com' ) !== false ) {
 			return false;
@@ -133,7 +158,6 @@ class MonsterInsights_Tracking {
 		if ( ! $this->tracking_allowed() && ! $override ) {
 			return false;
 		}
-
 		// Send a maximum of once per week
 		$last_send = get_option( 'monsterinsights_usage_tracking_last_checkin' );
 		if ( is_numeric( $last_send ) && $last_send > strtotime( '-1 week' ) && ! $ignore_last_checkin ) {
@@ -147,9 +171,9 @@ class MonsterInsights_Tracking {
 			'httpversion' => '1.1',
 			'blocking'    => false,
 			'body'        => $this->get_data(),
-			'user-agent'  => 'MI/' . MONSTERINSIGHTS_VERSION . '; ' . get_bloginfo( 'url' )
+			'user-agent'  => 'MI/' . MONSTERINSIGHTS_VERSION . '; ' . get_bloginfo( 'url' ) 
 		) );
-
+		
 		// If we have completed successfully, recheck in 1 week
 		update_option( 'monsterinsights_usage_tracking_last_checkin', time() );
 
@@ -248,5 +272,4 @@ class MonsterInsights_Tracking {
 		return $schedules;
 	}
 }
-
 new MonsterInsights_Tracking();

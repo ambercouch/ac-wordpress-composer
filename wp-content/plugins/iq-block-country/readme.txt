@@ -4,7 +4,7 @@ Donate link: https://webence.net/donate
 Tags: Block Spam, Block Countries, Geoblocking, Ban countries, Block
 Requires at least: 3.5.2
 Tested up to: 6.8.2
-Stable tag: 1.2.24
+Stable tag: 1.2.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
@@ -30,8 +30,7 @@ You can (dis)allow visitors to blog articles, blog categories or pages or all co
 Stop visitors from doing harmful things on your WordPress site or limit the countries that can access your blog. Add an additional layer of security to your WordPress site.
 
 This plugin uses the GeoLite database from Maxmind. It has a 99.5% accuracy so that is pretty good for a free database. If you need higher accuracy you can buy a license from MaxMind directly.
-If you cannot or do not want to download the GeoIP database from Maxmind you can use the GeoIP API website available on https://webence.nl/geoip-api/
-
+If you cannot or do not want to download the GeoIP database from Maxmind you can use the GeoIP API website available on https://webence.net/
 If you want to use the GeoLite database from Maxmind you will have to download the GeoIP database from MaxMind directly and upload it to your site.
 The Wordpress license does not allow this plugin to download the MaxMind Geo database for you.
 
@@ -40,7 +39,7 @@ This is not a security issue but a simple fact of today. Nobody can guarantee yo
 
 If you are sure your webhosting or yourself does not use any form of caching or proxying we recommend setting the "Override IP information" on the Home tab to REMOTE_ADDR 
 
-Do you need help with this plugin? Please email support@webence.nl.
+Do you need help with this plugin? Please email support@webence.net.
 
 = GDPR Information =
 
@@ -255,7 +254,7 @@ For your convenience we offer a GeoIP API service. This API is not mandatory to 
 
 If you do not want or can't go through the hassle of updating your MaxMind GeoIP database we provide an API service to convert the IP address of your visitors to a country.
 
-If you decide to purchase an GeoIP API Key via https://webence.nl/geoip-api/ you'll get an eMail with your API Key (License Key). 
+If you decide to purchase an GeoIP API Key via https://webence.net you'll get an eMail with your API Key (License Key). 
 Once you enter this key in your iQ Block Country settings your license key will be validated at our API service and a the nearest API server to you will be chosen. To do this your website will contact all API servers once to request
 an empty file.
 
@@ -266,8 +265,7 @@ What is logged on our end?
 * Upon checking an IP address of your visitor this IP address is only used to convert it to the country it belongs to and is not logged. We have no way to link a visitors IP address to your website.
   What is logged is your API Key and the Website URL making the request.
 
-If you decide to purchase the GeoIP API key your PayPal account will be charged by PayPal on a yearly basis. If you want to cancel your subscription you can cancel the subscription at the PayPal website.
-If no payments are made by PayPal your API key will automatically expire.
+If you decide to purchase the GeoIP API key your chosen payment account will be charged by on a time basis. This subscription will not renew itself unless you subscribed to our service prior to September 2024.
 
 Privacy policy regarding this service specific can be found here: https://webence.nl/wp-content/uploads/2022/06/Privacy-Policy-Webence-API.pdf
 
@@ -278,22 +276,15 @@ This plugin uses the Free version of the MaxMind GeoIP2 Country Database. You ca
 MaxMind Terms of Use: https://www.maxmind.com/en/terms-of-use
 MaxMind Privacy Policy: https://www.maxmind.com/en/privacy-policy
 
-== Admin Block API ==
-
-For some extra protection we offer the Admin Block API Key. This contains a list of known IP addresses that have visited various WordPress backends in the past month and were blocked.
-
-If you decide to purchase an Admin Block API Key via https://webence.nl/admin-block-api/ you'll get an eMail with your API Key (License Key). 
-
-If you decide to purchase an Admin Block API Key all visitors of your backend will be matched against this list and even if the visitor is from a country that is not blocked they will be blocked if the IP address is on the Admin Block List.
-
-What is logged on our end?
-* Upon validation of your license key your request will be logged in our webserver logs. (This will be the IP address of your webserver).
-* Upon retrieving the updated blocklist (multiple times a day) this request is logged in our webserver logs (This will be the IP address of your webserver).
-
-Privacy policy regarding this service specific can be found here: https://webence.nl/wp-content/uploads/2022/06/Privacy-Policy-Webence-API.pdf
-
 
 == Changelog ==
+
+= 1.2.26 =
+* Fix: Plugin was no longer compatible with PHP 7
+
+= 1.2.25 =
+* Changed: Fixed some PHP 8.1 compability errors
+* Changed: Altered license check
 
 = 1.2.24 =
 

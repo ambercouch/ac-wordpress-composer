@@ -144,6 +144,11 @@ function iqblockcountry_check_geoapilicense($iqbc_input)
 {
     // Check first if API key is empty....
     if (!empty($iqbc_input)) {    
+        
+        if (get_option('blockcountry_geoapikey') == $iqbc_input)
+        {
+            return $iqbc_input;
+        }
     
         //$iqbc_license = filter_var($iqbc_input, FILTER_SANITIZE_STRING);
         $iqbc_license = "hashed-" . hash_hmac('sha256', $iqbc_input, GEOIPHASH);
@@ -166,7 +171,6 @@ function iqblockcountry_check_geoapilicense($iqbc_input)
             return false;
         }
         elseif ($iqbc_json['data']['status'] == 404 || $iqbc_json['data']['status'] == 405 || $iqbc_json['data']['status'] == 401 || $iqbc_json['data']['status'] == 403 ) {
-            echo "Error";
             $iqbc_message = esc_html($iqbc_json['message']);
             $iqbc_type = "error";
             $iqbc_input = false;

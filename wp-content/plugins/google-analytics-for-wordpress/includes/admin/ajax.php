@@ -135,7 +135,7 @@ function monsterinsights_ajax_activate_addon() {
 	// Activate the addon.
 	if ( isset( $_POST['plugin'] ) ) {
 		$plugin = esc_attr( $_POST['plugin'] );
-		
+
 		if ( isset( $_POST['isnetwork'] ) && $_POST['isnetwork'] ) {
 			$activate = activate_plugin( $plugin, null, true );
 		} else {
@@ -412,7 +412,7 @@ function monsterinsights_check_plugin_funnelkit_funnelkit_stripe_woo_gateway_con
 	// Run a security check first.
 	check_ajax_referer( 'monsterinsights-funnelkit-stripe-woo-nonce', 'nonce' );
 
-	$fkwcs_con_status = get_option('fkwcs_con_status'); 
+	$fkwcs_con_status = get_option('fkwcs_con_status');
 
 	if ( 'success' === $fkwcs_con_status ) {
 		echo json_encode( true );
@@ -424,3 +424,22 @@ function monsterinsights_check_plugin_funnelkit_funnelkit_stripe_woo_gateway_con
 
 }
 add_action( 'wp_ajax_monsterinsights_funnelkit_stripe_woo_gateway_configured', 'monsterinsights_check_plugin_funnelkit_funnelkit_stripe_woo_gateway_configured' );
+
+/**
+ * AJAX handler to dismiss WPConsent notice.
+ */
+function monsterinsights_ajax_dismiss_wpconsent_notice() {
+	// Check nonce for security
+	check_ajax_referer( 'monsterinsights-dismiss-notice', 'nonce' );
+
+	// Check if user has proper capabilities
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => 'Insufficient permissions' ) );
+		return;
+	}
+
+	// Save the dismissal
+	update_option( 'monsterinsights_wpconsent_notice_dismissed', true );
+	wp_send_json_success( array( 'dismissed' => true ) );
+}
+add_action( 'wp_ajax_monsterinsights_dismiss_wpconsent_notice', 'monsterinsights_ajax_dismiss_wpconsent_notice' );

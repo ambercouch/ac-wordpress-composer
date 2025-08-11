@@ -102,4 +102,4 @@ add_action('init', function () {
 
 	// Run hook to load MonsterInsights addons.
 	do_action( 'monsterinsights_load_plugins' ); // the updater class for each addon needs to be instantiated via `monsterinsights_updater`
-});
+}, 0 );

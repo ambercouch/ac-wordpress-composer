@@ -19,10 +19,10 @@ function iq_missing_db_notice()
         ?> 
         <div class="notice notice-error">
             <h3>iQ Block Country</h3>
-            <p><?php esc_html_e('The MaxMind GeoIP2 database does not exist. Please download this file manually or if you wish to use the GeoIP API get an API key from: ', 'iq-block-country'); ?> <a href="https://webence.nl/geoip-api/" target="_blank">https://webence.nl/geoip-api/</a></p>
+            <p><?php esc_html_e('The MaxMind GeoIP2 database does not exist. Please download this file manually or if you wish to use the GeoIP API get an API key from: ', 'iq-block-country'); ?> <a href="https://webence.net/" target="_blank">https://webence.net/</a></p>
         <p><?php esc_html_e("Please download the database (GeoLite2-Country.tar.gz) from: ", 'iq-block-country'); ?>
                <?php esc_html_e("If you do not have an account at Maxmind yet for the Geolite2 database sign up for a free account at:", 'iq-block-country'); ?>
-               <?php esc_html_e("<a href=\"" . IQBCMAXMINDURL . "\" target=\"_blank\">" . IQBCMAXMINDURL . "</a> "); ?>
+               <?php  echo IQBCMAXMINDURL ; ?>
                <?php esc_html_e("unzip the file and afterwards upload the GeoLite2-Country.mmdb file to the following location: ", 'iq-block-country'); ?>
                     <b><?php esc_html_e(IQBCGEOIP2DBFILE); ?></b></p>
                    
@@ -60,7 +60,7 @@ function iq_old_db_notice()
     ?> 
         <div class="notice notice-warning">
             <h3>iQ Block Country</h3>
-            <p><?php esc_html_e('The MaxMind GeoIP database is older than 3 months. Please update this file manually or if you wish to use the GeoIP API get an API key from: ', 'iq-block-country'); ?><a href="https://webence.nl/geoip-api/" target="_blank">https://webence.nl/geoip-api/</a></p>
+            <p><?php esc_html_e('The MaxMind GeoIP database is older than 3 months. Please update this file manually or if you wish to use the GeoIP API get an API key from: ', 'iq-block-country'); ?><a href="https://webence.net/" target="_blank">https://webence.net/</a></p>
         <p><?php esc_html_e("Please download the database (GeoLite2-Country.tar.gz) from MaxMind. ", 'iq-block-country'); ?>
                    <?php esc_html_e("If you do not have an account at Maxmind yet for the Geolite2 database sign up for a free account at:", 'iq-block-country'); ?>
                    <?php esc_html_e("<a href=\"" . IQBCMAXMINDURL . "\" target=\"_blank\">" . IQBCMAXMINDURL . "</a> "); ?>
@@ -481,7 +481,7 @@ function iqblockcountry_settings_tools()
 
         <table class="widefat">
         <tbody><tr><td><?php esc_html_e('Website url', 'iq-block-country'); ?>: <strong><?php echo esc_url(get_site_url()); ?></strong></td></tr></tbody>
-        <tbody><tr><td><?php esc_html_e('Document Root Path', 'iq-block-country'); ?>: <strong><?php echo esc_html(filter_var($_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_STRING)); ?></strong></td></tr></tbody>
+        <tbody><tr><td><?php esc_html_e('Document Root Path', 'iq-block-country'); ?>: <strong><?php echo esc_html(filter_var($_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_SPECIAL_CHARS)); ?></strong></td></tr></tbody>
         </table>
 
         
@@ -508,10 +508,10 @@ function iqblockcountry_settings_tools()
         
         <table class="widefat">
 
-                <tbody><tr><td><?php esc_html_e('Server Type', 'iq-block-country'); ?>: <strong><?php echo esc_html(filter_var(filter_var($_SERVER['SERVER_SOFTWARE'], FILTER_SANITIZE_STRING))); ?></strong></td></tr></tbody>
+                <tbody><tr><td><?php esc_html_e('Server Type', 'iq-block-country'); ?>: <strong><?php echo esc_html(filter_var(filter_var($_SERVER['SERVER_SOFTWARE'], FILTER_SANITIZE_SPECIAL_CHARS))); ?></strong></td></tr></tbody>
                 <tbody><tr><td><?php esc_html_e('Operating System', 'iq-block-country'); ?>: <strong><?php echo esc_html(PHP_OS); ?></strong></td></tr></tbody>
                 <tbody><tr><td><?php esc_html_e('Browser Compression Supported', 'iq-block-country'); ?>: 
-                        <strong><?php echo esc_html(filter_var($_SERVER['HTTP_ACCEPT_ENCODING'], FILTER_SANITIZE_STRING)); ?></strong></td></tr></tbody>
+                        <strong><?php echo esc_html(filter_var($_SERVER['HTTP_ACCEPT_ENCODING'], FILTER_SANITIZE_SPECIAL_CHARS)); ?></strong></td></tr></tbody>
                 <?php
 
                 if (is_callable('posix_geteuid') && ( false === in_array('posix_geteuid', $iqbc_disabled_functions_array) ) ) {
@@ -548,7 +548,7 @@ function iqblockcountry_settings_tools()
                 
                 <?php
                 if (ini_get('memory_limit') ) {
-                        $iqbc_memory_limit = filter_var(ini_get('memory_limit'), FILTER_SANITIZE_STRING);
+                        $iqbc_memory_limit = filter_var(ini_get('memory_limit'), FILTER_SANITIZE_SPECIAL_CHARS);
                 } else {
                         $iqbc_memory_limit =  esc_html('N/A', 'iq-block-country');
                 }
@@ -556,7 +556,7 @@ function iqblockcountry_settings_tools()
                 <tbody><tr><td><?php esc_html_e('PHP Memory Limit', 'iq-block-country'); ?>: <strong><?php echo esc_html($iqbc_memory_limit); ?></strong></td></tr></tbody>
                 <?php
                 if (ini_get('upload_max_filesize') ) {
-                        $iqbc_upload_max = filter_var(ini_get('upload_max_filesize'), FILTER_SANITIZE_STRING);
+                        $iqbc_upload_max = filter_var(ini_get('upload_max_filesize'), FILTER_SANITIZE_SPECIAL_CHARS);
                 } else {
                         $iqbc_upload_max =  esc_html('N/A', 'iq-block-country');
                 }
@@ -564,7 +564,7 @@ function iqblockcountry_settings_tools()
                 <tbody><tr><td><?php esc_html_e('PHP Max Upload Size', 'iq-block-country'); ?>: <strong><?php echo esc_html($iqbc_upload_max); ?></strong></td></tr></tbody>
                 <?php
                 if (ini_get('post_max_size') ) {
-                        $iqbc_post_max = filter_var(ini_get('post_max_size'), FILTER_SANITIZE_STRING);
+                        $iqbc_post_max = filter_var(ini_get('post_max_size'), FILTER_SANITIZE_SPECIAL_CHARS);
                 } else {
                         $iqbc_post_max =  esc_html('N/A', 'iq-block-country');
                 }
@@ -1896,7 +1896,7 @@ function iqblockcountry_settings_page()
         
         ?>
         
-        <p>If you need assistance with this plugin please send an email to <a href="mailto:support@webence.nl">support@webence.nl</a></p>
+        <p>If you need assistance with this plugin please send an email to <a href="mailto:support@webence.net">support@webence.net</a></p>
         
         <p>This product uses GeoIP2 data created by MaxMind, available from <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.</p>
 
