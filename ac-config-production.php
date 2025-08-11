@@ -15,9 +15,13 @@ define('LOGGED_IN_SALT',   $_SERVER['LOGGED_IN_SALT']);
 define('NONCE_SALT',       $_SERVER['NONCE_SALT']);
 
 
-if (($_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] == 'https') OR ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'))
-{$_SERVER['HTTPS']='on';}
-
+// Respect HTTPS behind CloudFront/ALB without notices
+$proto_cf  = $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] ?? null;
+$proto_fwd = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? null;
+if ($proto_cf === 'https' || $proto_fwd === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+    if (!defined('FORCE_SSL_ADMIN')) define('FORCE_SSL_ADMIN', true);
+}
 
 /**
  *
@@ -45,10 +49,10 @@ define('WPLANG', '');
  * It is strongly recommended that plugin and theme developers use WP_DEBUG
  * in their development environments.
  */
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-//dont show warnings
+ddefine('WP_DEBUG', true);
+define('WP_DEBUG_LOG', '/tmp/wp-debug.log'); // <— force EB-safe log path
 define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
 
 
 /* WP Memory Limit */
