@@ -63,6 +63,8 @@ define('WP_DEBUG_LOG', '/tmp/wp-debug.log'); // <— force EB-safe log path
 define('WP_DEBUG_DISPLAY', true);
 @ini_set('display_errors', 0);
 
+define('DISALLOW_FILE_MODS', true);
+define('AUTOMATIC_UPDATER_DISABLED', true);
 
 /* WP Memory Limit */
 define('WP_MEMORY_LIMIT', '512M');
