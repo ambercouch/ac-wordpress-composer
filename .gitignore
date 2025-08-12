@@ -101,3 +101,27 @@ wp-content/advanced-cache.php
 malcare-waf.php
 
 .user.ini
+
+wp-content/plugins/all-in-one-wp-migration/
+
+wp-content/plugins/classic-editor/
+
+wp-content/plugins/google-analytics-for-wordpress/
+
+wp-content/plugins/imsanity/
+
+wp-content/plugins/mailin/
+
+wp-content/plugins/paid-memberships-pro/
+
+wp-content/plugins/really-simple-ssl/
+
+wp-content/plugins/remove-dashboard-access-for-non-admins/
+
+wp-content/plugins/stripe-payments/
+
+wp-content/plugins/w3-total-cache/
+
+wp-content/plugins/wordfence/
+
+wp-content/plugins/wp-mail-smtp/
